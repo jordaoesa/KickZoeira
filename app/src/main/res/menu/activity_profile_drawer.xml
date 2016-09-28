@@ -4,23 +4,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_perfil"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_person_outline"
             android:title="Perfil" />
         <item
             android:id="@+id/nav_seguindo"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_people"
             android:title="Seguindo" />
         <item
             android:id="@+id/nav_seguidores"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_people_outline"
             android:title="Seguidores" />
         <item
             android:id="@+id/nav_simular"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_timeline"
             android:title="Simular" />
         <item
             android:id="@+id/nav_sobre"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_info_outline"
             android:title="Sobre" />
     </group>
 
@@ -28,11 +28,11 @@
         <menu>
             <item
                 android:id="@+id/nav_sugestoes"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_speaker_notes"
                 android:title="Sugestoes" />
             <item
                 android:id="@+id/nav_sair"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_exit_to_app"
                 android:title="Sair" />
         </menu>
     </item>
