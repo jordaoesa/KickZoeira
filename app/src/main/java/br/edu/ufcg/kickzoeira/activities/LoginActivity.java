@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(LoginActivity.this, "success", Toast.LENGTH_SHORT).show();
-                            Intent it = new Intent(getApplicationContext(), ProfileActivity.class);
+                            Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
                             startActivity(it);
                         }
 

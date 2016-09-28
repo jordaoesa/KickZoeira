@@ -22,9 +22,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ProfileActivity"
+            android:name=".activities.KickZoeiraMainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.NewUserActivity"></activity>
+        <activity android:name=".activities.NewUserActivity" />
     </application>
 
 </manifest>
