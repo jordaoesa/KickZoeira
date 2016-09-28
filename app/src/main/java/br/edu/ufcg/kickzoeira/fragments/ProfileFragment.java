@@ -1,15 +1,33 @@
 package br.edu.ufcg.kickzoeira.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
+import br.edu.ufcg.kickzoeira.model.PerfilStatistic;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +42,8 @@ public class ProfileFragment extends Fragment {
     private View rootView;
 
     private OnFragmentInteractionListener mListener;
+
+    private PieChart pie_chart;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -46,6 +66,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
     }
 
     @Override
@@ -57,8 +80,16 @@ public class ProfileFragment extends Fragment {
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Perfil Zoeira");
 
+        // TESTE
+
+        this.pie_chart = (PieChart) rootView.findViewById(R.id.pie_chart);
+
+        PerfilStatistic perfil_statistic = new PerfilStatistic(this.pie_chart);
+
         return rootView;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
