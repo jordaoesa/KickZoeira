@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import br.edu.ufcg.kickzoeira.R;
+import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +20,8 @@ import br.edu.ufcg.kickzoeira.R;
  * create an instance of this fragment.
  */
 public class SimularFragment extends Fragment {
+
+    private View rootView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -49,8 +52,12 @@ public class SimularFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        getActivity().setTitle("Simular Zoeira");
-        return inflater.inflate(R.layout.fragment_simular, container, false);
+        rootView = inflater.inflate(R.layout.fragment_simular, container, false);
+
+        ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
+        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Simular Zoeira");
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
