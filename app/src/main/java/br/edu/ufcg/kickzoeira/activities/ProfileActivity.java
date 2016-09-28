@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.net.URL;
+
 import br.edu.ufcg.kickzoeira.R;
 
 public class ProfileActivity extends AppCompatActivity
@@ -67,6 +69,11 @@ public class ProfileActivity extends AppCompatActivity
         tvUserName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName() == null ? "Default Name" : FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         tvUserEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
+        //FIXME: this is the way to add name and photoURI
+//        UserProfileChangeRequest builder = new UserProfileChangeRequest.Builder().setDisplayName("J @ M").build();
+//        FirebaseAuth.getInstance().getCurrentUser().updateProfile(builder);
+
+
     }
 
     @Override
@@ -108,8 +115,10 @@ public class ProfileActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_perfil) {
-            // Handle the camera action
-        } else if (id == R.id.nav_amigos) {
+
+        } else if (id == R.id.nav_seguindo) {
+
+        } else if (id == R.id.nav_seguidores) {
 
         } else if (id == R.id.nav_simular) {
 

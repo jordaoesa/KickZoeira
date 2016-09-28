@@ -7,9 +7,13 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Perfil" />
         <item
-            android:id="@+id/nav_amigos"
+            android:id="@+id/nav_seguindo"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Amigos" />
+            android:title="Seguindo" />
+        <item
+            android:id="@+id/nav_seguidores"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Seguidores" />
         <item
             android:id="@+id/nav_simular"
             android:icon="@drawable/ic_menu_slideshow"
