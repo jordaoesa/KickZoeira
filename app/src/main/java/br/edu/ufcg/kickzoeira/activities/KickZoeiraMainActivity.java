@@ -1,6 +1,9 @@
 package br.edu.ufcg.kickzoeira.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -58,6 +62,11 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         imageViewLogoTop = (ImageView) findViewById(R.id.backdrop);
+        imageViewLogoTop.setImageResource(R.mipmap.estadio);
+
+        //getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        collapsingToolbar.setStatusBarScrimColor(Color.parseColor("#00000000"));
+        collapsingToolbar.setContentScrimColor(Color.parseColor("#66000000"));
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -76,6 +85,38 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         setTitle("Perfil Zoeira");
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragmentView, fragment).commit();
+    }
+
+    public static int getDominantColor(Bitmap bitmap) {
+        if (null == bitmap) return Color.TRANSPARENT;
+
+        int redBucket = 0;
+        int greenBucket = 0;
+        int blueBucket = 0;
+        int alphaBucket = 0;
+
+        boolean hasAlpha = bitmap.hasAlpha();
+        int pixelCount = bitmap.getWidth() * bitmap.getHeight();
+        int[] pixels = new int[pixelCount];
+        bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        for (int y = 0, h = bitmap.getHeight(); y < h; y++)
+        {
+            for (int x = 0, w = bitmap.getWidth(); x < w; x++)
+            {
+                int color = pixels[x + y * w]; // x + y * width
+                redBucket += (color >> 16) & 0xFF; // Color.red
+                greenBucket += (color >> 8) & 0xFF; // Color.greed
+                blueBucket += (color & 0xFF); // Color.blue
+                if (hasAlpha) alphaBucket += (color >>> 24); // Color.alpha
+            }
+        }
+
+        return Color.argb(
+                (hasAlpha) ? (alphaBucket / pixelCount) : 255,
+                redBucket / pixelCount,
+                greenBucket / pixelCount,
+                blueBucket / pixelCount);
     }
 
     private void setupHeader(){
@@ -178,5 +219,13 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public void openNavigation(View view){
+        String URL = view.getTag().toString();
+        Log.d("URL", URL);
+        Uri uri = Uri.parse(URL);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }
