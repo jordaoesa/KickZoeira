@@ -1,5 +1,6 @@
 package br.edu.ufcg.kickzoeira.activities;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,11 +13,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import br.edu.ufcg.kickzoeira.R;
 
 public class ProfileActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private View headerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,22 @@ public class ProfileActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        headerView = navigationView.inflateHeaderView(R.layout.nav_header_profile);
+
+        setupHeader();
+
+    }
+
+    private void setupHeader(){
+        ImageView profileImage = (ImageView) headerView.findViewById(R.id.imageView);
+        TextView tvUserName = (TextView) headerView.findViewById(R.id.tvUserName);
+        TextView tvUserEmail = (TextView) headerView.findViewById(R.id.tvUserEmail);
+
+        profileImage.setImageURI(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl());
+        tvUserName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName() == null ? "Default Name" : FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        tvUserEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
     }
 
     @Override
@@ -82,19 +107,20 @@ public class ProfileActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_perfil) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_amigos) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_simular) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_sobre) {
 
         }
+//        else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

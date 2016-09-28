@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void handleLogin(View view){
 
-
         String email = edtEmail.getText().toString();
         String password = edtPass.getText().toString();
 
