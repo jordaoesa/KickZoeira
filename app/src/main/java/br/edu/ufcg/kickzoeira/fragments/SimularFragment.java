@@ -49,6 +49,7 @@ public class SimularFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle("Simular Zoeira");
         return inflater.inflate(R.layout.fragment_simular, container, false);
     }
 

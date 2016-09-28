@@ -1,5 +1,6 @@
 package br.edu.ufcg.kickzoeira.activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,14 +21,18 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.fragments.ProfileFragment;
 import br.edu.ufcg.kickzoeira.fragments.SeguidoresFragment;
 import br.edu.ufcg.kickzoeira.fragments.SeguindoFragment;
 import br.edu.ufcg.kickzoeira.fragments.SimularFragment;
+import br.edu.ufcg.kickzoeira.fragments.SobreFragment;
 
 public class KickZoeiraMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, SeguindoFragment.OnFragmentInteractionListener, SeguidoresFragment.OnFragmentInteractionListener, SimularFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, SeguindoFragment.OnFragmentInteractionListener, SeguidoresFragment.OnFragmentInteractionListener, SimularFragment.OnFragmentInteractionListener, SobreFragment.OnFragmentInteractionListener {
 
     private View headerView;
 
@@ -97,9 +102,9 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -121,9 +126,15 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         } else if (id == R.id.nav_simular) {
             fragmentClass = SimularFragment.class;
         } else if (id == R.id.nav_sobre) {
-            //TODO: carinha dos dev
+            fragmentClass = SobreFragment.class;
         } else if (id == R.id.nav_sugestoes) {
-            //TODO: enviar email pra nois
+
+            SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss a");
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "kickaboutapp@gmail.com", null));
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Kick Zoeira - Feedback / Sugestão - "+ dt1.format(new Date(System.currentTimeMillis())));
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, new Intent(Intent.ACTION_SENDTO));
+            startActivity(Intent.createChooser(emailIntent, "Enviar email..."));
+
         } else if (id == R.id.nav_sair) {
             finish();
             return true;

@@ -49,6 +49,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle("Perfil Zoeira");
         return inflater.inflate(R.layout.fragment_perfil, container, false);
     }
 

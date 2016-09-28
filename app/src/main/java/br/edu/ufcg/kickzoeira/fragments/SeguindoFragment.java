@@ -49,6 +49,7 @@ public class SeguindoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle("Seguindo Zoeira");
         return inflater.inflate(R.layout.fragment_seguindo, container, false);
     }
 
