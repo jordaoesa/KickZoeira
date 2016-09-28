@@ -1,12 +1,14 @@
 package br.edu.ufcg.kickzoeira.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
@@ -55,7 +57,7 @@ public class SobreFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_sobre, container, false);
 
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
-        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Sobre Kick Zoeira");
+        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Sobre Zoeira");
 
         return rootView;
     }

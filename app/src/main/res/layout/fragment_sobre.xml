@@ -1,13 +1,370 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+tools:context="br.edu.ufcg.kickzoeira.fragments.SobreFragment">
+
+
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="br.edu.ufcg.kickzoeira.fragments.SobreFragment">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:scrollbars="vertical"
+    android:isScrollContainer="true"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Sobre Fragment" />
+        android:layout_height="45dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:background="@color/colorAccent"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Sobre"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:id="@+id/tv_sobre"
+            android:textStyle="bold"
+            android:gravity="center"/>
 
-</FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Sobre/versao/icone..."
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:background="@color/colorAccent"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Desenvolvedores"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:id="@+id/tv_info"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/linearLayout2"
+        android:layout_above="@+id/linearLayout3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="2">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_person_outline"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="1dp"
+                android:id="@+id/c_iview_arthur"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Arthur Senha"
+                android:id="@+id/textView1"
+                android:layout_below="@+id/view"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"/>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center">
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_linkedin"
+                    android:id="@+id/ib_linkedin_arthur"
+                    android:onClick="openNavigation"
+                    android:tag="https://br.linkedin.com/in/arthursena1/en"
+                    android:layout_below="@+id/textView1"
+                    android:layout_toLeftOf="@+id/space"
+                    android:layout_toStartOf="@+id/space"
+                    android:layout_marginRight="3dp"
+                    />
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_github"
+                    android:onClick="openNavigation"
+                    android:tag="https://github.com/arthursena"
+                    android:id="@+id/imageButton2"
+                    android:layout_below="@+id/textView1"
+                    android:layout_toRightOf="@+id/space"
+                    android:layout_toEndOf="@+id/space"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/jordao"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="1dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/c_iview_jordao" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jordão Serafim"
+                android:id="@+id/textView2"
+                android:layout_below="@+id/view2"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center">
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_linkedin"
+                    android:id="@+id/ib_linkedin_jordao"
+                    android:onClick="openNavigation"
+                    android:tag="https://br.linkedin.com/in/jordao-serafim-48516723"
+                    android:layout_below="@+id/textView2"
+                    android:layout_toLeftOf="@+id/space2"
+                    android:layout_toStartOf="@+id/space2"
+                    android:layout_marginRight="3dp"/>
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_github"
+                    android:onClick="openNavigation"
+                    android:tag="https://github.com/jordaoesa"
+                    android:id="@+id/imageButton"
+                    android:layout_below="@+id/textView2"
+                    android:layout_toRightOf="@+id/space2"
+                    android:layout_toEndOf="@+id/space2"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/linearLayout3"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_person_outline"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="1dp"
+                android:id="@+id/c_iview_jeremias"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jeremias Serafim"
+                android:id="@+id/textView4"
+                android:layout_below="@+id/view4"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center">
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_linkedin"
+                    android:id="@+id/ib_linkedin_pedro"
+                    android:onClick="openNavigation"
+                    android:tag="https://br.linkedin.com/in/jeremias-serafim-b91037115"
+                    android:layout_below="@+id/textView4"
+                    android:layout_alignLeft="@+id/view4"
+                    android:layout_alignStart="@+id/view4"
+                    android:layout_toLeftOf="@+id/space4"
+                    android:layout_toStartOf="@+id/space4"
+                    android:layout_marginRight="3dp"/>
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_github"
+                    android:onClick="openNavigation"
+                    android:tag="https://github.com/jeremiasdsa"
+                    android:id="@+id/imageButton3"
+                    android:layout_below="@+id/textView4"
+                    android:layout_toRightOf="@+id/space4"
+                    android:layout_toEndOf="@+id/space4"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_person_outline"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="1dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/c_iview_yuri" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yuri Siqueira"
+                android:id="@+id/textView5"
+                android:layout_below="@+id/view5"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center">
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_linkedin"
+                    android:id="@+id/ib_linkedin_yuri"
+                    android:onClick="openNavigation"
+                    android:tag="https://br.linkedin.com/in/yuri-melo-4229033a/en"
+                    android:layout_below="@+id/textView5"
+                    android:layout_alignLeft="@+id/view5"
+                    android:layout_alignStart="@+id/view5"
+                    android:layout_toLeftOf="@+id/space5"
+                    android:layout_toStartOf="@+id/space5"
+                    android:layout_marginRight="3dp"/>
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@mipmap/ic_github"
+                    android:onClick="openNavigation"
+                    android:tag="https://github.com/yurisnm"
+                    android:layout_below="@+id/textView5"
+                    android:layout_toRightOf="@+id/space5"
+                    android:layout_toEndOf="@+id/space5"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+</ScrollView>
+
+
+
+
+
+
