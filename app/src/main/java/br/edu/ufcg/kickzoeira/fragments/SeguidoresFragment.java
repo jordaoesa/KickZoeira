@@ -13,16 +13,16 @@ import br.edu.ufcg.kickzoeira.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
+ * {@link SeguidoresFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ProfileFragment#newInstance} factory method to
+ * Use the {@link SeguidoresFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class SeguidoresFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ProfileFragment() {
+    public SeguidoresFragment() {
         // Required empty public constructor
     }
 
@@ -30,11 +30,11 @@ public class ProfileFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment ProfileFragment.
+     * @return A new instance of fragment SeguidoresFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
+    public static SeguidoresFragment newInstance() {
+        SeguidoresFragment fragment = new SeguidoresFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+        return inflater.inflate(R.layout.fragment_seguidores, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -81,7 +81,7 @@ public class ProfileFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
