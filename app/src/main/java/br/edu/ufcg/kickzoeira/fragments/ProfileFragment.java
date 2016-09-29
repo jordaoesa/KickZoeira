@@ -1,5 +1,6 @@
 package br.edu.ufcg.kickzoeira.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -44,6 +46,8 @@ public class ProfileFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private PieChart pie_chart;
+    private RadarChart radar_chart;
+    private Activity main_act;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -83,8 +87,10 @@ public class ProfileFragment extends Fragment {
         // TESTE
 
         this.pie_chart = (PieChart) rootView.findViewById(R.id.pie_chart);
+        this.radar_chart = (RadarChart) rootView.findViewById(R.id.radar_chart);
+        this.main_act = (KickZoeiraMainActivity)getActivity();
 
-        PerfilStatistic perfil_statistic = new PerfilStatistic(this.pie_chart);
+        PerfilStatistic perfil_statistic = new PerfilStatistic(this.main_act,this.pie_chart, this.radar_chart);
 
         return rootView;
     }

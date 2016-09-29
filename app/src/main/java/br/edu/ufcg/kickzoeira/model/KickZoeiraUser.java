@@ -91,16 +91,16 @@ public class KickZoeiraUser {
     }
 
     public void addSeguidor(String userId){
-
+        this.seguidores.add(userId);
     }
     public void removeSeguidor(String userId){
-
+        this.seguidores.remove(userId);
     }
     public void addSeguindo(String userId){
-
+        this.seguindo.add(userId);
     }
     public void removeSeguind(String userId){
-
+        this.seguindo.remove(userId);
     }
 
 }
