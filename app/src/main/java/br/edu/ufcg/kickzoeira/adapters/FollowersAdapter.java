@@ -43,14 +43,14 @@ public class FollowersAdapter extends ArrayAdapter {
         if(row == null){
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutId, parent, false);
-//            holder = new ViewHolder(row, position);
+            holder = new ViewHolder(row, position);
             row.setTag(holder);
         }else{
-//            holder = (ViewHolder) row.getTag();
+            holder = (ViewHolder) row.getTag();
         }
 
         KickZoeiraUser user = users.get(position);
-//        holder.userName.setText(user.getEmail());
+        holder.userName.setText(user.getEmail());
 //        retrieveProfilePicture(user.getObjectId(), holder.userImage, holder.progressBar);
         return row;
 
@@ -77,35 +77,35 @@ public class FollowersAdapter extends ArrayAdapter {
     public class ViewHolder{
         public CircleImageView userImage;
         public TextView userName;
-        public ProgressBar progressBar;
-        public CheckBox checkBox;
+//        public ProgressBar progressBar;
+//        public CheckBox checkBox;
         public int position;
 
         public ViewHolder(View view, int pos){
             position = pos;
             userImage = (CircleImageView) view.findViewById(R.id.profile_image);
             userName = (TextView) view.findViewById(R.id.tv_name_user_grid_adapter);
-            progressBar = (ProgressBar) view.findViewById(R.id.pb_profile_picture);
-            checkBox = (CheckBox) view.findViewById(R.id.checkBox);
-            checkBox.setClickable(false);
-            checkBox.setEnabled(false);
+//            progressBar = (ProgressBar) view.findViewById(R.id.pb_profile_picture);
+//            checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+//            checkBox.setClickable(false);
+//            checkBox.setEnabled(false);
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(checkBox.isChecked()) {
-                        for(KickZoeiraUser usr : checkedUsers){
-                            if(usr.getId().equals(users.get(position).getId())){
-                                checkedUsers.remove(usr);
-                            }
-                        }
-                        checkBox.setChecked(false);
-                    }else{
-                        checkedUsers.add(users.get(position));
-                        checkBox.setChecked(true);
-                    }
-                }
-            });
+//            view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if(checkBox.isChecked()) {
+//                        for(KickZoeiraUser usr : checkedUsers){
+//                            if(usr.getId().equals(users.get(position).getId())){
+//                                checkedUsers.remove(usr);
+//                            }
+//                        }
+//                        checkBox.setChecked(false);
+//                    }else{
+//                        checkedUsers.add(users.get(position));
+//                        checkBox.setChecked(true);
+//                    }
+//                }
+//            });
         }
 
     }
