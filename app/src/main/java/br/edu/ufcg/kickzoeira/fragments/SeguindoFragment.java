@@ -92,6 +92,8 @@ public class SeguindoFragment extends Fragment {
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguindo Zoeiros");
 
+        ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
+
         return rootView;
     }
 

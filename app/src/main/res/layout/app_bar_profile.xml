@@ -72,6 +72,19 @@
         </FrameLayout>
     </android.support.v4.widget.NestedScrollView>
 
+    <android.support.design.widget.FloatingActionButton
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fab_fb_share"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_facebook"
+        app:fabSize="normal"
+        app:backgroundTint="@color/com_facebook_blue"
+        app:layout_anchor="@id/appbar"
+        app:layout_anchorGravity="bottom|right|end"
+        android:visibility="gone"/>
+
     <!--<include layout="@layout/content_kick_zoeira_main" />-->
 
 </android.support.design.widget.CoordinatorLayout>

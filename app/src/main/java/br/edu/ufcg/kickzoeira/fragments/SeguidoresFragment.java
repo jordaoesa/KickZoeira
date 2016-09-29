@@ -73,7 +73,9 @@ public class SeguidoresFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_seguidores, container, false);
 
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
-//        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguidores Zoeiros");
+        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguidores Zoeiros");
+
+        ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
 
 //        final String userId = getUid();
 

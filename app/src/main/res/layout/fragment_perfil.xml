@@ -49,20 +49,35 @@
 
             </LinearLayout>
 
-            <TextView
-                android:text="Nível de Deficiência"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:id="@+id/fb_share_deficiencia"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="30dp"
-                android:textAlignment="center"
-                android:id="@+id/text_pie_title" />
+                android:layout_height="wrap_content">
 
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pie_chart"
-                android:layout_margin="30dp"
-                android:layout_width="match_parent"
-                android:layout_height="350dp" />
+                <TextView
+                    android:text="Nível de Deficiência"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textSize="30dp"
+                    android:textAlignment="center"
+                    android:id="@+id/text_pie_title" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pie_chart"
+                    android:layout_margin="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp" />
+            </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:id="@+id/fb_share_humilhacao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:text="Nível de Humilhação"
@@ -78,6 +93,7 @@
                 android:layout_margin="30dp"
                 android:layout_height="350dp" />
 
+        </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

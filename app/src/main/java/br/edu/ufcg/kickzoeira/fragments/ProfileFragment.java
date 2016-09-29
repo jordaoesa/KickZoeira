@@ -2,6 +2,7 @@ package br.edu.ufcg.kickzoeira.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -91,6 +95,33 @@ public class ProfileFragment extends Fragment {
         this.main_act = (KickZoeiraMainActivity)getActivity();
 
         PerfilStatistic perfil_statistic = new PerfilStatistic(this.main_act,this.pie_chart, this.radar_chart);
+
+        ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.VISIBLE);
+        ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View fbShareDeficiencia = rootView.findViewById(R.id.fb_share_deficiencia);
+                fbShareDeficiencia.setBackgroundColor(Color.WHITE);
+                View fbShareHumilhacao = rootView.findViewById(R.id.fb_share_humilhacao);
+                fbShareHumilhacao.setBackgroundColor(Color.WHITE);
+                ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
+
+                fbShareDeficiencia.setDrawingCacheEnabled(true);
+                Bitmap image = fbShareDeficiencia.getDrawingCache();
+
+                fbShareHumilhacao.setDrawingCacheEnabled(true);
+                Bitmap image2 = fbShareHumilhacao.getDrawingCache();
+
+                SharePhoto photo = new SharePhoto.Builder().setBitmap(image).build();
+                SharePhoto photo2 = new SharePhoto.Builder().setBitmap(image2).build();
+                ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.VISIBLE);
+
+                SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).addPhoto(photo2).build();
+                ShareDialog.show(getActivity(), content);
+                fbShareDeficiencia.setBackgroundColor(Color.TRANSPARENT);
+                fbShareHumilhacao.setBackgroundColor(Color.TRANSPARENT);
+            }
+        });
 
         return rootView;
     }
