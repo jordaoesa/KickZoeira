@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -65,14 +66,14 @@ public class SeguindoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_seguindo, container, false);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        String tableName = "kickzoeirauser";
+        String currUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(tableName).child(currUserId);
         mDatabaseListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                KickZoeiraUser me = dataSnapshot.getValue(KickZoeiraUser.class);
-                for(String userId : me.getSeguindo()){
-                    
-                }
+                System.out.println("######################## " + dataSnapshot.getValue());
             }
 
             @Override
