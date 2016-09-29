@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.GridView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -23,9 +24,18 @@ import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
+import br.edu.ufcg.kickzoeira.adapters.FollowersAdapter;
+import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 import br.edu.ufcg.kickzoeira.model.PerfilStatistic;
 
 /**
@@ -47,6 +57,9 @@ public class ProfileFragment extends Fragment {
     private Activity main_act;
     private Button btn_evaluate;
     private Dialog dialog;
+
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -89,74 +102,93 @@ public class ProfileFragment extends Fragment {
         this.radar_chart = (RadarChart) rootView.findViewById(R.id.radar_chart);
         this.main_act = (KickZoeiraMainActivity)getActivity();
 
-        final PerfilStatistic perfil_statistic = new PerfilStatistic(this.main_act,this.pie_chart, this.radar_chart);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
 
-        this.btn_evaluate = (Button) rootView.findViewById(R.id.button_evaluate);
-        this.btn_evaluate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog = new Dialog(main_act , android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-                dialog.setContentView(R.layout.evaluation_activity);
-                dialog.setTitle("Zoação");
-                dialog.show();
+        FirebaseUser fire_user = mAuth.getCurrentUser();
 
-                Button btn_confirm_zoacao = (Button) dialog.findViewById(R.id.button_confirm_zoar);
-                btn_confirm_zoacao.setOnClickListener(new View.OnClickListener() {
+
+        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
                     @Override
-                    public void onClick(View view) {
-                        CheckBox caceteiro = (CheckBox) dialog.findViewById(R.id.checkBox_caceteiro);
-                        CheckBox brigao = (CheckBox) dialog.findViewById(R.id.checkBox_brigao);
-                        CheckBox reclamao = (CheckBox) dialog.findViewById(R.id.checkBox_reclamao);
-                        CheckBox fominha = (CheckBox) dialog.findViewById(R.id.checkBox_fominha);
-                        CheckBox enrolao = (CheckBox) dialog.findViewById(R.id.checkBox_enrolao);
-                        CheckBox preguica = (CheckBox) dialog.findViewById(R.id.checkBox_bixo_preguica);
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
 
-                        Log.d("avaliacao","AVALIACAO PIE FRAGMENT");
-                        Log.d("avaliacao",String.valueOf(caceteiro.getText()));
-                        Log.d("avaliacao",String.valueOf(brigao.getText()));
-                        Log.d("avaliacao",String.valueOf(reclamao.getText()));
-                        Log.d("avaliacao",String.valueOf(fominha.getText()));
-                        Log.d("avaliacao",String.valueOf(enrolao.getText()));
-                        Log.d("avaliacao",String.valueOf(preguica.getText()));
+                        final PerfilStatistic perfil_statistic = new PerfilStatistic(main_act,pie_chart, radar_chart, user);
 
-                        RatingBar posicionamento = (RatingBar) dialog.findViewById(R.id.ratingBar_posicionamento);
-                        RatingBar toque = (RatingBar) dialog.findViewById(R.id.ratingBar_toque);
-                        RatingBar dominio = (RatingBar) dialog.findViewById(R.id.ratingBar_dominio);
-                        RatingBar drible = (RatingBar) dialog.findViewById(R.id.ratingBar_drible);
-                        RatingBar defesa = (RatingBar) dialog.findViewById(R.id.ratingBar_defesa);
-                        RatingBar ataque = (RatingBar) dialog.findViewById(R.id.ratingBar_ataque);
+                        btn_evaluate = (Button) rootView.findViewById(R.id.button_evaluate);
+                        btn_evaluate.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog = new Dialog(main_act , android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                                dialog.setContentView(R.layout.evaluation_activity);
+                                dialog.setTitle("Zoação");
+                                dialog.show();
 
-                        perfil_statistic.getStatistic_pie_chart().addAvaliacao(
-                                caceteiro.isChecked(),
-                                brigao.isChecked(),
-                                reclamao.isChecked(),
-                                fominha.isChecked(),
-                                enrolao.isChecked(),
-                                preguica.isChecked()
-                        );
-                        perfil_statistic.getStatistic_radar_chart().addAvaliacao(
-                                (int)posicionamento.getRating(),
-                                (int)toque.getRating(),
-                                (int)dominio.getRating(),
-                                (int)drible.getRating(),
-                                (int)defesa.getRating(),
-                                (int)ataque.getRating()
-                        );
+                                Button btn_confirm_zoacao = (Button) dialog.findViewById(R.id.button_confirm_zoar);
+                                btn_confirm_zoacao.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        CheckBox caceteiro = (CheckBox) dialog.findViewById(R.id.checkBox_caceteiro);
+                                        CheckBox brigao = (CheckBox) dialog.findViewById(R.id.checkBox_brigao);
+                                        CheckBox reclamao = (CheckBox) dialog.findViewById(R.id.checkBox_reclamao);
+                                        CheckBox fominha = (CheckBox) dialog.findViewById(R.id.checkBox_fominha);
+                                        CheckBox enrolao = (CheckBox) dialog.findViewById(R.id.checkBox_enrolao);
+                                        CheckBox preguica = (CheckBox) dialog.findViewById(R.id.checkBox_bixo_preguica);
 
-                        dialog.dismiss();
+                                        RatingBar posicionamento = (RatingBar) dialog.findViewById(R.id.ratingBar_posicionamento);
+                                        RatingBar toque = (RatingBar) dialog.findViewById(R.id.ratingBar_toque);
+                                        RatingBar dominio = (RatingBar) dialog.findViewById(R.id.ratingBar_dominio);
+                                        RatingBar drible = (RatingBar) dialog.findViewById(R.id.ratingBar_drible);
+                                        RatingBar defesa = (RatingBar) dialog.findViewById(R.id.ratingBar_defesa);
+                                        RatingBar ataque = (RatingBar) dialog.findViewById(R.id.ratingBar_ataque);
+
+                                        perfil_statistic.getStatistic_pie_chart().addAvaliacao(
+                                                caceteiro.isChecked(),
+                                                brigao.isChecked(),
+                                                reclamao.isChecked(),
+                                                fominha.isChecked(),
+                                                enrolao.isChecked(),
+                                                preguica.isChecked()
+                                        );
+                                        perfil_statistic.getStatistic_radar_chart().addAvaliacao(
+                                                (int)posicionamento.getRating(),
+                                                (int)toque.getRating(),
+                                                (int)dominio.getRating(),
+                                                (int)drible.getRating(),
+                                                (int)defesa.getRating(),
+                                                (int)ataque.getRating()
+                                        );
+
+                                        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(user.getId()).setValue(user);
+
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                TextView cancelar = (TextView) dialog.findViewById(R.id.text_cancelar_zoacao);
+                                cancelar.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                            }
+                        });
+
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+//                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                        // ...
                     }
                 });
 
-                TextView cancelar = (TextView) dialog.findViewById(R.id.text_cancelar_zoacao);
-                cancelar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
 
-            }
-        });
+        KickZoeiraUser user = new KickZoeiraUser();
+
 
 
 

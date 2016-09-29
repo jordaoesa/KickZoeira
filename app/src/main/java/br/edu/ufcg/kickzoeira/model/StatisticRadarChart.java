@@ -14,12 +14,15 @@ import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by YURISNMELO on 9/28/2016.
  */
 
 public class StatisticRadarChart {
+
+    private KickZoeiraUser user;
 
     private int posicionamento = 0;
     private int toque = 0;
@@ -35,8 +38,21 @@ public class StatisticRadarChart {
 
     public RadarChart radar_chart;
 
-    public StatisticRadarChart(RadarChart radarchart){
+    public StatisticRadarChart(RadarChart radarchart, KickZoeiraUser user){
         this.radar_chart = radarchart;
+        this.user = user;
+
+        List<Integer> votes_count  = user.getPie_data();
+        this.posicionamento = votes_count.get(0);
+        this.toque = votes_count.get(1);
+        this.dominio = votes_count.get(2);
+        this.drible = votes_count.get(3);
+        this.defesa = votes_count.get(4);
+        this.ataque = votes_count.get(5);
+        this.total_avaliations = votes_count.get(6);
+
+
+
         this.update_data();
 
         this.addData();
@@ -50,18 +66,20 @@ public class StatisticRadarChart {
         this.drible+=dr;
         this.defesa+=de;
         this.ataque+=a;
-
         this.total_avaliations++;
 
-        Log.d("avaliacao","AVALIACAO RADAR");
-        Log.d("avaliacao",String.valueOf(this.posicionamento));
-        Log.d("avaliacao",String.valueOf(this.toque));
-        Log.d("avaliacao",String.valueOf(this.dominio));
-        Log.d("avaliacao",String.valueOf(this.drible));
-        Log.d("avaliacao",String.valueOf(this.defesa));
-        Log.d("avaliacao",String.valueOf(this.ataque));
-
         this.update_data();
+
+        List<Integer> votes_count  = new ArrayList<>();
+        votes_count.add(this.posicionamento);
+        votes_count.add(this.toque);
+        votes_count.add(this.dominio);
+        votes_count.add(this.drible);
+        votes_count.add(this.defesa);
+        votes_count.add(this.ataque);
+        votes_count.add(this.total_avaliations);
+
+        user.setRadar_data(votes_count);
 
     }
 

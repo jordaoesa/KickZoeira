@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 /**
@@ -20,6 +21,9 @@ public class KickZoeiraUser {
     private List<String> seguindo;
     private List<String> seguidores;
 
+    private List<Integer> pie_data = new ArrayList<>();
+    private List<Integer> radar_data = new ArrayList<>();
+
     public KickZoeiraUser(String id, String email, String apelido, Uri photoUrl){
         this.id=id;
         this.email = email;
@@ -30,6 +34,25 @@ public class KickZoeiraUser {
     public KickZoeiraUser(){
         seguindo = new ArrayList<>();
         seguidores = new ArrayList<>();
+
+
+
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(1);
+
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(1);
+
     }
 
     public KickZoeiraUser(FirebaseUser user){
@@ -40,6 +63,23 @@ public class KickZoeiraUser {
         this.email = user.getEmail();
         this.apelido = user.getDisplayName();
         this.photoUrl = user.getPhotoUrl();
+
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(1);
+
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(0);
+        this.radar_data.add(1);
+
     }
 
     public String getId() {
@@ -90,6 +130,16 @@ public class KickZoeiraUser {
         this.seguidores = seguidores;
     }
 
+
+    public List<Integer> getPie_data(){return this.pie_data;}
+
+    public void setPie_data(List<Integer> new_pie_data){this.pie_data = new_pie_data;}
+
+    public List<Integer> getRadar_data(){return this.radar_data;}
+
+    public void setRadar_data(List<Integer> new_radar_data){this.radar_data = new_radar_data;}
+
+
     public void addSeguidor(String userId){
         this.seguidores.add(userId);
     }
@@ -102,5 +152,8 @@ public class KickZoeiraUser {
     public void removeSeguind(String userId){
         this.seguindo.remove(userId);
     }
+
+
+
 
 }

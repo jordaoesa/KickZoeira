@@ -2,6 +2,7 @@ package br.edu.ufcg.kickzoeira.model;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -28,9 +29,10 @@ public class PerfilStatistic{
     public StatisticPieChart statistic_pie_chart;
     public StatisticRadarChart statistic_radar_chart;
 
-    public PerfilStatistic(final Activity mainAct, PieChart piechart, RadarChart radarchart){
-        this.statistic_pie_chart = new StatisticPieChart(mainAct, piechart);
-        this.statistic_radar_chart = new StatisticRadarChart(radarchart);
+    public PerfilStatistic(final Activity mainAct, PieChart piechart, RadarChart radarchart, KickZoeiraUser user){
+        this.statistic_pie_chart = new StatisticPieChart(mainAct, piechart, user);
+        this.statistic_radar_chart = new StatisticRadarChart(radarchart, user);
+        System.out.println(user.getEmail());
     }
 
     public StatisticPieChart getStatistic_pie_chart(){

@@ -18,6 +18,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufcg.kickzoeira.KickZoeiraApplication;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
@@ -27,6 +28,8 @@ import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
  */
 
 public class StatisticPieChart {
+
+    private KickZoeiraUser user;
 
     private int caceteiro = 0;
     private int brigao = 0;
@@ -42,8 +45,20 @@ public class StatisticPieChart {
 
     private PieChart pie_chart;
 
-    public StatisticPieChart(final Activity mainAct, PieChart piechart){
+    public StatisticPieChart(final Activity mainAct, PieChart piechart, KickZoeiraUser user){
         this.pie_chart = piechart;
+        this.user = user;
+
+        List<Integer> votes_count  = user.getPie_data();
+        this.caceteiro = votes_count.get(0);
+        this.brigao = votes_count.get(1);
+        this.reclamao = votes_count.get(2);
+        this.fominha = votes_count.get(3);
+        this.enrolao = votes_count.get(4);
+        this.morto = votes_count.get(5);
+        this.total_avaliations = votes_count.get(6);
+
+
         this.update_y_data();
 
         this.pie_chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -83,14 +98,18 @@ public class StatisticPieChart {
         if(e) this.enrolao++;
         if(m) this.morto++;
         this.total_avaliations++;
-        Log.d("avaliacao","AVALIACAO PIE");
-        Log.d("avaliacao",String.valueOf(this.caceteiro));
-        Log.d("avaliacao",String.valueOf(this.brigao));
-        Log.d("avaliacao",String.valueOf(this.reclamao));
-        Log.d("avaliacao",String.valueOf(this.fominha));
-        Log.d("avaliacao",String.valueOf(this.enrolao));
-        Log.d("avaliacao",String.valueOf(this.morto));
         this.update_y_data();
+
+        List<Integer> votes_count  = new ArrayList<>();
+        votes_count.add(this.caceteiro);
+        votes_count.add(this.brigao);
+        votes_count.add(this.reclamao);
+        votes_count.add(this.fominha);
+        votes_count.add(this.enrolao);
+        votes_count.add(this.morto);
+        votes_count.add(this.total_avaliations);
+
+        user.setPie_data(votes_count);
     }
 
     private void update_y_data(){
@@ -102,6 +121,8 @@ public class StatisticPieChart {
         this.y_data[5] = this.morto*100/this.total_avaliations;
         this.addData();
     }
+
+
 
     private void addData(){
 
