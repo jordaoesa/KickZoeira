@@ -34,6 +34,9 @@ public class LoginActivity extends AppCompatActivity {
         edtEmail = (EditText) findViewById(R.id.editText);
         edtPass = (EditText) findViewById(R.id.editText2);
 
+        edtEmail.setText("jose@mail.com");
+        edtPass.setText("jose123");
+
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {

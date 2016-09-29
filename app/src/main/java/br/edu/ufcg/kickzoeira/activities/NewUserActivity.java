@@ -14,14 +14,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import br.edu.ufcg.kickzoeira.R;
+import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 public class NewUserActivity extends AppCompatActivity {
 
     private final String TAG = "NEW_USER";
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private FirebaseDatabase mDatabase;
 
     private EditText edtEmail;
     private EditText edtPass;
@@ -33,6 +37,8 @@ public class NewUserActivity extends AppCompatActivity {
 
         edtEmail = (EditText) findViewById(R.id.editText3);
         edtPass = (EditText) findViewById(R.id.editText4);
+
+        mDatabase = FirebaseDatabase.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -69,6 +75,9 @@ public class NewUserActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(NewUserActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }else{
+                            KickZoeiraUser newUser = new KickZoeiraUser(task.getResult().getUser());
+                            mDatabase.getReference().setValue(newUser);
+
                             Toast.makeText(NewUserActivity.this, "criado com sucesso", Toast.LENGTH_SHORT).show();
                             finish();
                         }
