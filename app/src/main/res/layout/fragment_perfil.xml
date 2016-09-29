@@ -1,25 +1,85 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="br.edu.ufcg.kickzoeira.fragments.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Perfil Fragment" />
+            android:layout_height="wrap_content">
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pie_chart"
-            android:layout_width="match_parent"
-            android:layout_height="484dp" />
-    </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="150dp">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/pic_profile"
+                    android:layout_margin="5dp"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_profile_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_margin="5dp"
+                        android:hint="Apelido" />
+
+                    <TextView
+                        android:id="@+id/text_profile_description"
+                        android:hint="Depoimento"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:text="Nível de Deficiência"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="30dp"
+                android:textAlignment="center"
+                android:id="@+id/text_pie_title" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart"
+                android:layout_margin="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="350dp" />
+
+            <TextView
+                android:text="Nível de Humilhação"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:id="@+id/text_radar_title"
+                android:textAlignment="center"/>
+
+            <com.github.mikephil.charting.charts.RadarChart
+                android:id="@+id/radar_chart"
+                android:layout_width="match_parent"
+                android:layout_margin="30dp"
+                android:layout_height="350dp" />
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </FrameLayout>
