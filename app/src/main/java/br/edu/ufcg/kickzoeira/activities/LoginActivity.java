@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import br.edu.ufcg.kickzoeira.R;
+import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     //private EditText edtEmail;
     private AutoCompleteTextView edtEmail;
     private EditText edtPass;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         edtPass = (EditText) findViewById(R.id.editText2);
 
         mAuth = FirebaseAuth.getInstance();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -130,20 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }else{
 
-
-
-                            Toast.makeText(LoginActivity.this, "success", Toast.LENGTH_SHORT).show();
-                            Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
-                            startActivity(it);
-                        }
                             // If sign in fails, display a message to the user. If sign in succeeds
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
@@ -161,6 +152,8 @@ public class LoginActivity extends AppCompatActivity {
                                                 if (!task.isSuccessful()) {
                                                     Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                                 }else{
+                                                    KickZoeiraUser newUser = new KickZoeiraUser(task.getResult().getUser());
+                                                    mDatabase.child("kickzoeirauser").child(task.getResult().getUser().getUid()).setValue(newUser);
                                                     Toast.makeText(LoginActivity.this, "criado com sucesso", Toast.LENGTH_SHORT).show();
                                                     Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
                                                     startActivity(it);
