@@ -53,6 +53,14 @@ public class StatisticRadarChart {
 
         this.total_avaliations++;
 
+        Log.d("avaliacao","AVALIACAO RADAR");
+        Log.d("avaliacao",String.valueOf(this.posicionamento));
+        Log.d("avaliacao",String.valueOf(this.toque));
+        Log.d("avaliacao",String.valueOf(this.dominio));
+        Log.d("avaliacao",String.valueOf(this.drible));
+        Log.d("avaliacao",String.valueOf(this.defesa));
+        Log.d("avaliacao",String.valueOf(this.ataque));
+
         this.update_data();
 
     }
@@ -64,6 +72,7 @@ public class StatisticRadarChart {
         this.values_data[3] = this.drible/this.total_avaliations;
         this.values_data[4] = this.defesa/this.total_avaliations;
         this.values_data[5] = this.ataque/this.total_avaliations;
+        this.addData();
     }
 
     private void addData(){
