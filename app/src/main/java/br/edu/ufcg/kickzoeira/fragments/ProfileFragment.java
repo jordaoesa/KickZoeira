@@ -1,19 +1,30 @@
 package br.edu.ufcg.kickzoeira.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -37,6 +48,7 @@ import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
 import br.edu.ufcg.kickzoeira.adapters.FollowersAdapter;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 import br.edu.ufcg.kickzoeira.model.PerfilStatistic;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +59,9 @@ import br.edu.ufcg.kickzoeira.model.PerfilStatistic;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
+
+    private final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    private final int PIC_CODE = 101;
 
     private View rootView;
 
@@ -60,6 +75,10 @@ public class ProfileFragment extends Fragment {
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+
+    private TextView apelido;
+
+    private CircleImageView ivProfilePicture;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -102,6 +121,21 @@ public class ProfileFragment extends Fragment {
         this.radar_chart = (RadarChart) rootView.findViewById(R.id.radar_chart);
         this.main_act = (KickZoeiraMainActivity)getActivity();
 
+
+
+
+        ivProfilePicture = (CircleImageView) rootView.findViewById(R.id.pic_profile);
+        ivProfilePicture.setOnClickListener(onClick);
+        apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
+        apelido.setOnClickListener(onClick);
+
+
+
+
+
+
+
+        final PerfilStatistic perfil_statistic = new PerfilStatistic(this.main_act,this.pie_chart, this.radar_chart);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
@@ -223,6 +257,118 @@ public class ProfileFragment extends Fragment {
 
         return rootView;
     }
+
+    ///////////////////////////
+
+    private void updateProfilePicture() {
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.main_act, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+        }else {
+            Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (it.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivityForResult(it, PIC_CODE);
+            }
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent it = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (it.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(it, PIC_CODE);
+                    }
+                } else {
+                    Snackbar.make(main_act.findViewById(android.R.id.content), "Vá para configurações e altere as permissões para usar a CAMERA!", Snackbar.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PIC_CODE) {
+            if (resultCode == getActivity().RESULT_OK) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                ivProfilePicture.setImageBitmap(imageBitmap);
+                //saveProfilePicture(imageBitmap);
+            }
+        }
+
+//    getActivity().recreate();
+
+    }
+
+
+    private View.OnClickListener onClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == ivProfilePicture.getId()) {
+                updateProfilePicture();
+            }
+            else if(v.getId() == apelido.getId()) {
+                updateApelido();
+            }
+
+        }
+    };
+    //////////////////////////
+
+
+
+    private void updateApelido(){
+
+//        apelido.setVisibility(View.GONE);
+//
+//        EditText editor = (EditText) rootView.findViewById(R.id.editor_name);
+//
+//        editor.setVisibility(View.VISIBLE);
+//
+//        String n = editor.getText().toString();
+//
+//        apelido.setText(n);
+//
+//        System.out.println(apelido.getText());
+        final String texto ;
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Atualize seu Apelido?");
+
+// Set up the input
+        final EditText input = new EditText(getContext());
+
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String texto = input.getText().toString();
+                apelido.setText(texto);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+
+    }
+
 
 
 
