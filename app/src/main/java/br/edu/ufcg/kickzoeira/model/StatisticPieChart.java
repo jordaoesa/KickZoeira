@@ -83,7 +83,13 @@ public class StatisticPieChart {
         if(e) this.enrolao++;
         if(m) this.morto++;
         this.total_avaliations++;
-
+        Log.d("avaliacao","AVALIACAO PIE");
+        Log.d("avaliacao",String.valueOf(this.caceteiro));
+        Log.d("avaliacao",String.valueOf(this.brigao));
+        Log.d("avaliacao",String.valueOf(this.reclamao));
+        Log.d("avaliacao",String.valueOf(this.fominha));
+        Log.d("avaliacao",String.valueOf(this.enrolao));
+        Log.d("avaliacao",String.valueOf(this.morto));
         this.update_y_data();
     }
 
@@ -94,6 +100,7 @@ public class StatisticPieChart {
         this.y_data[3] = this.fominha*100/this.total_avaliations;
         this.y_data[4] = this.enrolao*100/this.total_avaliations;
         this.y_data[5] = this.morto*100/this.total_avaliations;
+        this.addData();
     }
 
     private void addData(){

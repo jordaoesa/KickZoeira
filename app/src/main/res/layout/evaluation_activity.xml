@@ -57,21 +57,21 @@
                     android:textColor="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/checkBox4_fominha" />
+                    android:id="@+id/checkBox_fominha" />
 
                 <CheckBox
                     android:text="Enrolão"
                     android:textColor="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/checkBox5_enrolao" />
+                    android:id="@+id/checkBox_enrolao" />
 
                 <CheckBox
                     android:text="Bixo Preguiça"
                     android:textColor="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/checkBox6_bixo_preguica" />
+                    android:id="@+id/checkBox_bixo_preguica" />
             </LinearLayout>
 
             <TextView
