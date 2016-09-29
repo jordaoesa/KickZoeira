@@ -20,6 +20,13 @@ public class KickZoeiraUser {
     private List<String> seguindo;
     private List<String> seguidores;
 
+    public KickZoeiraUser(String id, String email, String apelido, Uri photoUrl){
+        this.id=id;
+        this.email = email;
+        this.apelido = apelido;
+        this.photoUrl = photoUrl;
+    }
+
     public KickZoeiraUser(){
         seguindo = new ArrayList<>();
         seguidores = new ArrayList<>();

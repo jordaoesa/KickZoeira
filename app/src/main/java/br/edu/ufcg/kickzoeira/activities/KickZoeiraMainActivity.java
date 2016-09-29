@@ -52,6 +52,8 @@ public class KickZoeiraMainActivity extends AppCompatActivity
 
     private View headerView;
 
+    public FloatingActionButton fabFacebookShare;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         collapsingToolbar.setContentScrimColor(Color.parseColor("#66000000"));
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
+        fabFacebookShare = (FloatingActionButton) findViewById(R.id.fab_fb_share);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

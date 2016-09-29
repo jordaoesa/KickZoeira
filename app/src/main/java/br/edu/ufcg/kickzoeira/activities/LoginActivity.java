@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("");
 
         edtEmail = (AutoCompleteTextView) findViewById(R.id.editText);
         edtPass = (EditText) findViewById(R.id.editText2);
@@ -186,6 +187,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 6;
     }
 }

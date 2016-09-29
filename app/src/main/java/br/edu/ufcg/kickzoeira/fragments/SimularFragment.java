@@ -57,6 +57,8 @@ public class SimularFragment extends Fragment {
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Simular Zoeira");
 
+        ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
+
         return rootView;
     }
 
