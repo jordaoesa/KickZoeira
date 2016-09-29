@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("");
 
         edtEmail = (AutoCompleteTextView) findViewById(R.id.editText);
         edtPass = (EditText) findViewById(R.id.editText2);
