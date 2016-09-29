@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -64,9 +65,9 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         imageViewLogoTop = (ImageView) findViewById(R.id.backdrop);
         imageViewLogoTop.setImageResource(R.mipmap.estadio);
 
-        //getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
         collapsingToolbar.setStatusBarScrimColor(Color.parseColor("#00000000"));
         collapsingToolbar.setContentScrimColor(Color.parseColor("#66000000"));
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
