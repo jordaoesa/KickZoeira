@@ -4,9 +4,14 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.AxisValueFormatter;
 
 import java.util.ArrayList;
 
@@ -64,7 +69,7 @@ public class StatisticRadarChart {
     private void addData(){
         ArrayList<RadarEntry> entries = new ArrayList<>();
         for (int i = 0; i < this.values_data.length; i++) {
-            entries.add(new RadarEntry(this.values_data[i]));
+            entries.add(new RadarEntry(this.values_data[i],this.values_data[i]));
         }
 
         RadarDataSet data_set = new RadarDataSet(entries, "Eficácia");
@@ -81,6 +86,7 @@ public class StatisticRadarChart {
             Log.d("labels",labels2.get(i));
         }
 
+
         RadarData data = new RadarData();
         data.addDataSet(data_set);
         data.setLabels(labels2);
@@ -89,9 +95,43 @@ public class StatisticRadarChart {
 
         this.radar_chart.setDescription("");
 
+
         this.radar_chart.setWebColor(Color.GRAY);
         this.radar_chart.setDrawingCacheBackgroundColor(Color.RED);
         this.radar_chart.setWebColorInner(Color.RED);
+
+
+        XAxis xAxis = this.radar_chart.getXAxis();
+        xAxis.setTextSize(9f);
+        xAxis.setYOffset(0f);
+        xAxis.setXOffset(0f);
+
+        xAxis.setValueFormatter(new AxisValueFormatter() {
+            private String[] mActivities = new String[]{"Posicionamento", "Toque", "Domínio", "Drible", "Defesa", "Ataque"};
+
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return mActivities[(int) value % mActivities.length];
+            }
+
+            @Override
+            public int getDecimalDigits() {
+                return 0;
+            }
+        });
+
+
+
+
+        Legend l = this.radar_chart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(5f);
+        l.setTextColor(Color.BLACK);
+
 
         this.radar_chart.invalidate();
 
