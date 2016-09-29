@@ -1,6 +1,7 @@
 package br.edu.ufcg.kickzoeira.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -9,6 +10,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -48,6 +52,8 @@ public class ProfileFragment extends Fragment {
     private PieChart pie_chart;
     private RadarChart radar_chart;
     private Activity main_act;
+    private Button btn_evaluate;
+    private Dialog dialog;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -89,8 +95,66 @@ public class ProfileFragment extends Fragment {
         this.pie_chart = (PieChart) rootView.findViewById(R.id.pie_chart);
         this.radar_chart = (RadarChart) rootView.findViewById(R.id.radar_chart);
         this.main_act = (KickZoeiraMainActivity)getActivity();
+        this.btn_evaluate = (Button) rootView.findViewById(R.id.button_evaluate);
 
-        PerfilStatistic perfil_statistic = new PerfilStatistic(this.main_act,this.pie_chart, this.radar_chart);
+        this.dialog = new Dialog(this.main_act , android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        this.dialog.setContentView(R.layout.custom_dialog);
+        this.dialog.setTitle("Zoação");
+
+        final PerfilStatistic perfil_statistic = new PerfilStatistic(this.main_act,this.pie_chart, this.radar_chart);
+
+        this.btn_evaluate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.show();
+                Button btn_confirm_zoacao = (Button) dialog.findViewById(R.id.button_confirm_zoar);
+                btn_confirm_zoacao.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean caceteiro = dialog.findViewById(R.id.checkBox_caceteiro).isEnabled();
+                        boolean brigao = dialog.findViewById(R.id.checkBox_caceteiro).isEnabled();
+                        boolean reclamao = dialog.findViewById(R.id.checkBox_caceteiro).isEnabled();
+                        boolean fominha = dialog.findViewById(R.id.checkBox_caceteiro).isEnabled();
+                        boolean enrolao = dialog.findViewById(R.id.checkBox_caceteiro).isEnabled();
+                        boolean preguica = dialog.findViewById(R.id.checkBox_caceteiro).isEnabled();
+
+                        RatingBar posicionamento = (RatingBar) dialog.findViewById(R.id.ratingBar_posicionamento);
+                        RatingBar toque = (RatingBar) dialog.findViewById(R.id.ratingBar_posicionamento);
+                        RatingBar dominio = (RatingBar) dialog.findViewById(R.id.ratingBar_posicionamento);
+                        RatingBar drible = (RatingBar) dialog.findViewById(R.id.ratingBar_posicionamento);
+                        RatingBar defesa = (RatingBar) dialog.findViewById(R.id.ratingBar_posicionamento);
+                        RatingBar ataque = (RatingBar) dialog.findViewById(R.id.ratingBar_posicionamento);
+
+                        perfil_statistic.getStatistic_pie_chart().addAvaliacao(
+                                caceteiro,brigao,reclamao,fominha,enrolao,preguica
+                        );
+                        perfil_statistic.getStatistic_radar_chart().addAvaliacao(
+                                (int)posicionamento.getRating(),
+                                (int)toque.getRating(),
+                                (int)dominio.getRating(),
+                                (int)drible.getRating(),
+                                (int)defesa.getRating(),
+                                (int)ataque.getRating()
+                        );
+
+                        dialog.dismiss();
+                    }
+                });
+
+                TextView cancelar = (TextView) dialog.findViewById(R.id.text_cancelar_zoacao);
+
+                cancelar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+        });
+
+
+
 
         return rootView;
     }

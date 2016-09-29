@@ -21,14 +21,14 @@ import java.util.ArrayList;
 
 public class StatisticRadarChart {
 
-    private int posicionamento = 50;
-    private int toque = 40;
-    private int dominio = 40;
-    private int drible = 30;
-    private int defesa = 50;
-    private int ataque = 33;
+    private int posicionamento = 0;
+    private int toque = 0;
+    private int dominio = 0;
+    private int drible = 0;
+    private int defesa = 0;
+    private int ataque = 0;
 
-    private int total_avaliations =10;
+    private int total_avaliations =1;
 
     private float[] values_data = new float[6];
     private final String[] labels = {"Posicionamento", "Toque", "Domínio", "Drible", "Defesa", "Ataque"};

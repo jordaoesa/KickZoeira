@@ -2,6 +2,7 @@ package br.edu.ufcg.kickzoeira.model;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,14 +28,14 @@ import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
 
 public class StatisticPieChart {
 
-    private int caceteiro = 17;
-    private int brigao = 25;
-    private int reclamao = 10;
-    private int fominha = 40;
-    private int enrolao = 31;
-    private int morto = 55;
+    private int caceteiro = 0;
+    private int brigao = 0;
+    private int reclamao = 0;
+    private int fominha = 0;
+    private int enrolao = 0;
+    private int morto = 0;
 
-    private int total_avaliations =100;
+    private int total_avaliations =1;
 
     private float[] y_data = new float[6];
     private final String[] v_data = {"Caceteiro", "Brigão", "Reclamão", "Fominha", "Enrolão", "Morto"};
@@ -51,9 +52,12 @@ public class StatisticPieChart {
             public void onValueSelected(Entry e, Highlight h) {
                 if(e==null)return;
                 PieEntry e2 = (PieEntry) e;
-                Log.d("onvalueselected", e.getClass().toString());
                 Toast.makeText(mainAct, e2.getLabel()+ " = " + String.valueOf(e.getY()) + "%",
                         Toast.LENGTH_SHORT).show();
+
+
+//                Snackbar.make(mainAct.findViewById(android.R.id.content), e2.getLabel()+ " = " + String.valueOf(e.getY()) + "%", Snackbar.LENGTH_LONG)
+//                        .show();
             }
 
             @Override
