@@ -252,7 +252,7 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-    getActivity().recreate();
+//    getActivity().recreate();
 
     }
 
