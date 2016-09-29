@@ -37,16 +37,17 @@ tools:context="br.edu.ufcg.kickzoeira.fragments.SobreFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="100dp"
         android:orientation="vertical"
         android:layout_gravity="center_vertical"
         android:gravity="center"
-        >
+        android:weightSum="1">
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Sobre/versao/icone..."
-            android:gravity="center"/>
+            android:layout_height="90dp"
+            android:text="Versão\n1.0\n\n \t\tO 'Kick Zoeira' é o aplicativo feito para você fazer pirraça daquele seu amigo perna de pau da pelada de fim de semana."
+            android:gravity="center"
+            android:layout_weight="0.29" />
 
     </LinearLayout>
 
@@ -110,7 +111,7 @@ tools:context="br.edu.ufcg.kickzoeira.fragments.SobreFragment">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Arthur Senha"
+                android:text="Arthur Sena"
                 android:id="@+id/textView1"
                 android:layout_below="@+id/view"
                 android:layout_centerHorizontal="true"
