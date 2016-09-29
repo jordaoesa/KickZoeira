@@ -2,14 +2,29 @@ package br.edu.ufcg.kickzoeira.fragments;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
+import br.edu.ufcg.kickzoeira.adapters.FollowersAdapter;
+import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,8 +37,11 @@ import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
 public class SeguidoresFragment extends Fragment {
 
     private View rootView;
-
+    private GridView gridView;
+    private FollowersAdapter arrayAdapter;
+    private List<KickZoeiraUser> users;
     private OnFragmentInteractionListener mListener;
+    private FirebaseDatabase mDatabase;
 
     public SeguidoresFragment() {
         // Required empty public constructor
@@ -55,7 +73,47 @@ public class SeguidoresFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_seguidores, container, false);
 
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
-        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguidores Zoeiros");
+//        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguidores Zoeiros");
+
+//        final String userId = getUid();
+
+//        context = this;
+//        eventId = getIntent().getStringExtra("event_id");
+//        eventUsers = new ArrayList<BackendlessUser>();
+//        groupUsers = new ArrayList<BackendlessUser>();
+        users = new ArrayList<KickZoeiraUser>();
+
+
+        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
+                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                        System.out.println(user.getEmail());
+//                        System.out.println(user.getSeguidores());
+//                        Toast.makeText(getActivity().getApplicationContext(), user.getSeguidores().get(0), Toast.LENGTH_SHORT).show();
+
+
+                        for (String info : user.getSeguidores()){
+                            String[] temp = info.split("|");
+                            users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
+                        }
+
+                        gridView = (GridView) getView().findViewById(R.id.gridView);
+                        arrayAdapter = new FollowersAdapter(getContext(), R.layout.grid_view_followers_select, users);
+//                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBB");
+//                        System.out.println(users.get(0).getEmail());
+                        gridView.setAdapter(arrayAdapter);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+//                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                        // ...
+                    }
+                });
 
         return rootView;
     }
@@ -98,4 +156,8 @@ public class SeguidoresFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+
+
 }
