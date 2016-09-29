@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:id="@+id/custom_dialog"
+    android:background="@color/colorAccent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:text="Zoação"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:layout_margin="20dp"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_zoacao" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/layout_zoeira">
+
+                <CheckBox
+                    android:text="Caceteiro"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkBox_caceteiro" />
+
+                <CheckBox
+                    android:text="Brigão"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkBox_brigao" />
+
+                <CheckBox
+                    android:text="Reclamão"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkBox_reclamao" />
+
+                <CheckBox
+                    android:text="Fominha"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkBox4_fominha" />
+
+                <CheckBox
+                    android:text="Enrolão"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkBox5_enrolao" />
+
+                <CheckBox
+                    android:text="Bixo Preguiça"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkBox6_bixo_preguica" />
+            </LinearLayout>
+
+            <TextView
+                android:text="Elogios"
+                android:textSize="20dp"
+                android:textColor="@color/white"
+                android:layout_margin="20dp"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_elogios" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/layout_elogios">
+
+            </LinearLayout>
+
+            <TextView
+                android:text="Posicionamento"
+                android:textColor="@color/white"
+                android:padding="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/text_posicionamento"
+                android:layout_weight="1" />
+
+            <RatingBar
+                android:stepSize="1"
+                android:rating="0"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/ratingBar_posicionamento"
+                android:numStars="5" />
+
+            <TextView
+                android:text="Toque"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:layout_height="50dp"
+                android:id="@+id/text_toque"
+                android:layout_weight="1" />
+
+            <RatingBar
+                android:numStars="5"
+                android:stepSize="1"
+                android:rating="0"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/ratingBar_toque" />
+
+            <TextView
+                android:text="Dominio"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:id="@+id/text_dominio"
+                android:layout_weight="1" />
+
+            <RatingBar
+                android:numStars="5"
+                android:stepSize="1"
+                android:rating="0"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/ratingBar_dominio" />
+
+            <TextView
+                android:text="Drible"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:layout_height="50dp"
+                android:id="@+id/text_drible"
+                android:layout_weight="1" />
+
+            <RatingBar
+                android:numStars="5"
+                android:stepSize="1"
+                android:rating="0"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/ratingBar_drible" />
+
+            <TextView
+                android:text="Defesa"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:layout_height="50dp"
+                android:id="@+id/text_defesa"
+                android:layout_weight="1" />
+
+            <RatingBar
+                android:numStars="5"
+                android:stepSize="1"
+                android:rating="0"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/ratingBar_defesa" />
+
+            <TextView
+                android:text="Ataque"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:layout_height="50dp"
+                android:id="@+id/text_ataque"
+                android:layout_weight="1" />
+
+            <RatingBar
+                android:numStars="5"
+                android:stepSize="1"
+                android:rating="0"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/ratingBar_ataque" />
+
+            <Button
+                android:text="Zoar"
+                style="?android:textAppearanceSmall"
+                android:layout_marginTop="20dp"
+                android:layout_margin="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_confirm_zoar"
+                android:textStyle="bold"
+                android:theme="@style/MyRaisedButton" />
+
+            <TextView
+                android:text="Cancelar"
+                android:textColor="#aaaaaa"
+                android:layout_marginBottom="20dp"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_cancelar_zoacao" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

@@ -33,6 +33,14 @@ public class PerfilStatistic{
         this.statistic_radar_chart = new StatisticRadarChart(radarchart);
     }
 
+    public StatisticPieChart getStatistic_pie_chart(){
+        return this.statistic_pie_chart;
+    }
+
+    public StatisticRadarChart getStatistic_radar_chart(){
+        return this.statistic_radar_chart;
+    }
+
 
 
 
