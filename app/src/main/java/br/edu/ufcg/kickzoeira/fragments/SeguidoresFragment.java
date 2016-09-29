@@ -103,8 +103,7 @@ public class SeguidoresFragment extends Fragment {
 
                         gridView = (GridView) getView().findViewById(R.id.gridView);
                         arrayAdapter = new FollowersAdapter(getContext(), R.layout.grid_view_followers_select, users);
-//                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBB");
-//                        System.out.println(users.get(0).getEmail());
+
                         gridView.setAdapter(arrayAdapter);
                     }
 
