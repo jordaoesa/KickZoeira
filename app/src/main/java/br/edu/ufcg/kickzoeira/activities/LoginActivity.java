@@ -154,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 }else{
                                                     KickZoeiraUser newUser = new KickZoeiraUser(task.getResult().getUser());
                                                     mDatabase.child("kickzoeirauser").child(task.getResult().getUser().getUid()).setValue(newUser);
-                                                    Toast.makeText(LoginActivity.this, "criado com sucesso", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(LoginActivity.this, "Criado com sucesso.", Toast.LENGTH_SHORT).show();
                                                     Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
                                                     startActivity(it);
                                                 }
@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
 //                                Log.w(TAG, "signInWithEmail:failed", task.getException());
 //                                Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(LoginActivity.this, "success", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Logado com successo.", Toast.LENGTH_SHORT).show();
                                 Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
                                 startActivity(it);
                             }
@@ -179,13 +179,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void handleSingUp(View view){
-        Intent it = new Intent(getApplicationContext(), NewUserActivity.class);
-        startActivity(it);
-    }
-
-
-
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
@@ -193,7 +186,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        System.out.println("Pass nao eh valido");
         return password.length() > 4;
     }
 }

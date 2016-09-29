@@ -28,7 +28,6 @@
         <activity
             android:name=".activities.KickZoeiraMainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.NewUserActivity" />
 
     </application>
 
