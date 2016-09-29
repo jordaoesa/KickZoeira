@@ -73,7 +73,13 @@ public class SeguindoFragment extends Fragment {
         mDatabaseListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("######################## " + dataSnapshot.getValue());
+                KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
+
+                for(String uid : user.getSeguindo()){
+                    System.out.println(uid);
+                }
+
+
             }
 
             @Override
