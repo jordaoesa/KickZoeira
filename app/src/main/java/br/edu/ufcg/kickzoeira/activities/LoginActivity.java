@@ -14,6 +14,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import br.edu.ufcg.kickzoeira.R;
 
@@ -34,8 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         edtEmail = (EditText) findViewById(R.id.editText);
         edtPass = (EditText) findViewById(R.id.editText2);
 
-        edtEmail.setText("jose@mail.com");
-        edtPass.setText("jose123");
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -87,6 +91,10 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }else{
+
+                            DatabaseReference dr = FirebaseDatabase.getInstance().getReference("kickzoeirauser").child(task.getResult().getUser().getUid());
+
+
                             Toast.makeText(LoginActivity.this, "success", Toast.LENGTH_SHORT).show();
                             Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
                             startActivity(it);
