@@ -8,8 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
+
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
+import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +33,9 @@ public class SeguindoFragment extends Fragment {
     private View rootView;
 
     private OnFragmentInteractionListener mListener;
+
+    private DatabaseReference mDatabase;
+    private ValueEventListener mDatabaseListener;
 
     public SeguindoFragment() {
         // Required empty public constructor
@@ -53,6 +65,22 @@ public class SeguindoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_seguindo, container, false);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabaseListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                KickZoeiraUser me = dataSnapshot.getValue(KickZoeiraUser.class);
+                for(String userId : me.getSeguindo()){
+                    
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        mDatabase.addValueEventListener(mDatabaseListener);
 
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguindo Zoeiros");
