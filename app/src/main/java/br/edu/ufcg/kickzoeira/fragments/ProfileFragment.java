@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,12 +16,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -58,6 +62,8 @@ public class ProfileFragment extends Fragment {
     private Activity main_act;
     private Button btn_evaluate;
     private Dialog dialog;
+
+    private TextView apelido;
 
     private CircleImageView ivProfilePicture;
 
@@ -102,8 +108,19 @@ public class ProfileFragment extends Fragment {
         this.radar_chart = (RadarChart) rootView.findViewById(R.id.radar_chart);
         this.main_act = (KickZoeiraMainActivity)getActivity();
 
+
+
+
         ivProfilePicture = (CircleImageView) rootView.findViewById(R.id.pic_profile);
         ivProfilePicture.setOnClickListener(onClick);
+        apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
+        apelido.setOnClickListener(onClick);
+
+
+
+
+
+
 
         final PerfilStatistic perfil_statistic = new PerfilStatistic(this.main_act,this.pie_chart, this.radar_chart);
 
@@ -263,13 +280,61 @@ public class ProfileFragment extends Fragment {
             if (v.getId() == ivProfilePicture.getId()) {
                 updateProfilePicture();
             }
+            else if(v.getId() == apelido.getId()) {
+                updateApelido();
+            }
+
         }
     };
     //////////////////////////
 
 
 
+    private void updateApelido(){
 
+//        apelido.setVisibility(View.GONE);
+//
+//        EditText editor = (EditText) rootView.findViewById(R.id.editor_name);
+//
+//        editor.setVisibility(View.VISIBLE);
+//
+//        String n = editor.getText().toString();
+//
+//        apelido.setText(n);
+//
+//        System.out.println(apelido.getText());
+        final String texto ;
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Atualize seu Apelido?");
+
+// Set up the input
+        final EditText input = new EditText(getContext());
+
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String texto = input.getText().toString();
+                apelido.setText(texto);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+
+    }
 
 
 

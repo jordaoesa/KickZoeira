@@ -45,7 +45,7 @@ tools:context="br.edu.ufcg.kickzoeira.fragments.SobreFragment">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="90dp"
-            android:text="Versão\n1.0\n\n \t\tO 'Kick Zoeira' é o aplicativo feito para você fazer pirraça daquele seu amigo perna de pau da pelada de fim de semana."
+            android:text="Versão 1.0\n \t\tO 'Kick Zoeira' é o aplicativo feito para você fazer pirraça daquele seu amigo perna de pau da pelada de fim de semana."
             android:gravity="center"
             android:layout_weight="0.29" />
 
@@ -61,6 +61,7 @@ tools:context="br.edu.ufcg.kickzoeira.fragments.SobreFragment">
         android:gravity="center"
         android:id="@+id/desenvolvedores_linear_layout"
         android:background="@color/colorPrimaryDark">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
