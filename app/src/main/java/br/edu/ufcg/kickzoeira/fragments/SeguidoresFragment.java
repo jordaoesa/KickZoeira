@@ -92,21 +92,20 @@ public class SeguidoresFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user value
                         final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
-                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                        System.out.println(user.getEmail());
+                        //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                        //System.out.println(user.getEmail());
 //                        System.out.println(user.getSeguidores());
 //                        Toast.makeText(getActivity().getApplicationContext(), user.getSeguidores().get(0), Toast.LENGTH_SHORT).show();
 
 
                         for (String info : user.getSeguidores()){
-                            String[] temp = info.split("|");
+                            String[] temp = info.split("\\|");
                             users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
                         }
 
                         gridView = (GridView) getView().findViewById(R.id.gridView);
                         arrayAdapter = new FollowersAdapter(getContext(), R.layout.grid_view_followers_select, users);
-//                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBB");
-//                        System.out.println(users.get(0).getEmail());
+
                         gridView.setAdapter(arrayAdapter);
                     }
 

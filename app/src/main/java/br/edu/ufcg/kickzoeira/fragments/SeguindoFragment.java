@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -15,10 +16,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
+import br.edu.ufcg.kickzoeira.adapters.FollowersAdapter;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 /**
@@ -34,7 +37,9 @@ public class SeguindoFragment extends Fragment {
     private View rootView;
 
     private OnFragmentInteractionListener mListener;
-
+    private GridView gridView;
+    private FollowersAdapter arrayAdapter;
+    private List<KickZoeiraUser> users;
     private DatabaseReference mDatabase;
     private ValueEventListener mDatabaseListener;
 
@@ -64,30 +69,59 @@ public class SeguindoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_seguindo, container, false);
+        rootView = inflater.inflate(R.layout.fragment_seguidores, container, false);
+        users = new ArrayList<KickZoeiraUser>();
 
-        String tableName = "kickzoeirauser";
-        String currUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child(tableName).child(currUserId);
-        mDatabaseListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
+                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                        System.out.println(user.getEmail());
+//                        System.out.println(user.getSeguidores());
+//                        Toast.makeText(getActivity().getApplicationContext(), user.getSeguidores().get(0), Toast.LENGTH_SHORT).show();
 
-                for(String uid : user.getSeguindo()){
-                    System.out.println(uid);
-                }
 
+                        for (String info : user.getSeguindo()){
+                            String[] temp = info.split("\\|");
+                            users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
+                        }
 
-            }
+                        gridView = (GridView) getView().findViewById(R.id.gridView);
+                        arrayAdapter = new FollowersAdapter(getContext(), R.layout.grid_view_followers_select, users);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                        gridView.setAdapter(arrayAdapter);
+                    }
 
-            }
-        };
-        mDatabase.addValueEventListener(mDatabaseListener);
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+//                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                        // ...
+                    }
+                });
+//        mDatabaseListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                KickZoeiraUser me = dataSnapshot.getValue(KickZoeiraUser.class);
+//                for(String userId : me.getSeguindo()){
+//                    String[] temp = userId.split("|");
+//                    users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
+//                }
+//                gridView = (GridView) getView().findViewById(R.id.gridView);
+//                arrayAdapter = new FollowersAdapter(getContext(), R.layout.grid_view_followers_select, users);
+//                gridView.setAdapter(arrayAdapter);
+//                System.out.print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        };
+//        mDatabase.addValueEventListener(mDatabaseListener);
 
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguindo Zoeiros");
