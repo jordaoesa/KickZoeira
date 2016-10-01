@@ -186,9 +186,11 @@ public class KickZoeiraMainActivity extends AppCompatActivity
             fragmentClass = SeguindoFragment.class;
         } else if (id == R.id.nav_seguidores) {
             fragmentClass = SeguidoresFragment.class;
-        } else if (id == R.id.nav_simular) {
-            fragmentClass = SimularFragment.class;
-        } else if (id == R.id.nav_sobre) {
+        }
+//        else if (id == R.id.nav_simular) {
+//            fragmentClass = SimularFragment.class;
+//        }
+        else if (id == R.id.nav_sobre) {
             fragmentClass = SobreFragment.class;
         } else if (id == R.id.nav_sugestoes) {
 

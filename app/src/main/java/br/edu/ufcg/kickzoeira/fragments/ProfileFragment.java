@@ -37,6 +37,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -122,11 +123,13 @@ public class ProfileFragment extends Fragment {
         this.main_act = (KickZoeiraMainActivity)getActivity();
 
 
-
+        String aplidoStr = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 
         ivProfilePicture = (CircleImageView) rootView.findViewById(R.id.pic_profile);
         ivProfilePicture.setOnClickListener(onClick);
         apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
+
+        apelido.setText(aplidoStr != null ? aplidoStr : "Apelido");
         apelido.setOnClickListener(onClick);
 
 
@@ -318,37 +321,24 @@ public class ProfileFragment extends Fragment {
 
 
     private void updateApelido(){
-
-//        apelido.setVisibility(View.GONE);
-//
-//        EditText editor = (EditText) rootView.findViewById(R.id.editor_name);
-//
-//        editor.setVisibility(View.VISIBLE);
-//
-//        String n = editor.getText().toString();
-//
-//        apelido.setText(n);
-//
-//        System.out.println(apelido.getText());
-        final String texto ;
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Atualize seu Apelido?");
 
-// Set up the input
         final EditText input = new EditText(getContext());
 
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         builder.setView(input);
 
-// Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String texto = input.getText().toString();
                 apelido.setText(texto);
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder().setDisplayName(texto).build();
+                user.updateProfile(changeRequest);
+
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -357,10 +347,7 @@ public class ProfileFragment extends Fragment {
                 dialog.cancel();
             }
         });
-
         builder.show();
-
-
     }
 
 
