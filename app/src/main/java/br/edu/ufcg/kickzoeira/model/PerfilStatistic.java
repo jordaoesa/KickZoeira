@@ -32,7 +32,6 @@ public class PerfilStatistic{
     public PerfilStatistic(final Activity mainAct, PieChart piechart, RadarChart radarchart, KickZoeiraUser user){
         this.statistic_pie_chart = new StatisticPieChart(mainAct, piechart, user);
         this.statistic_radar_chart = new StatisticRadarChart(radarchart, user);
-        System.out.println(user.getEmail());
     }
 
     public StatisticPieChart getStatistic_pie_chart(){

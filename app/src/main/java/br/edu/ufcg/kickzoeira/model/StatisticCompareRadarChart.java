@@ -20,10 +20,9 @@ import java.util.List;
 /**
  * Created by YURISNMELO on 9/28/2016.
  */
-
-public class StatisticRadarChart {
-
-    private KickZoeiraUser user;
+public class StatisticCompareRadarChart {
+    private KickZoeiraUser me;
+    private KickZoeiraUser other;
 
     private int posicionamento = 0;
     private int toque = 0;
@@ -32,18 +31,28 @@ public class StatisticRadarChart {
     private int defesa = 0;
     private int ataque = 0;
 
+    private int posicionamento2 = 0;
+    private int toque2 = 0;
+    private int dominio2 = 0;
+    private int drible2 = 0;
+    private int defesa2 = 0;
+    private int ataque2 = 0;
+
     private int total_avaliations =1;
+    private int total_avaliations2 =1;
 
     private float[] values_data = new float[6];
+    private float[] values_data2 = new float[6];
     private final String[] labels = {"Posicionamento", "Toque", "Domínio", "Drible", "Defesa", "Ataque"};
 
     public RadarChart radar_chart;
 
-    public StatisticRadarChart(RadarChart radarchart, KickZoeiraUser user){
+    public StatisticCompareRadarChart(RadarChart radarchart, KickZoeiraUser me, KickZoeiraUser other){
         this.radar_chart = radarchart;
-        this.user = user;
+        this.me = me;
+        this.other = other;
 
-        List<Integer> votes_count  = user.getRadar_data();
+        List<Integer> votes_count  = me.getRadar_data();
         this.posicionamento = votes_count.get(0);
         this.toque = votes_count.get(1);
         this.dominio = votes_count.get(2);
@@ -52,8 +61,17 @@ public class StatisticRadarChart {
         this.ataque = votes_count.get(5);
         this.total_avaliations = votes_count.get(6);
 
+        List<Integer> votes_count2 = other.getRadar_data();
+        this.posicionamento = votes_count2.get(0);
+        this.toque = votes_count2.get(1);
+        this.dominio = votes_count2.get(2);
+        this.drible = votes_count2.get(3);
+        this.defesa = votes_count2.get(4);
+        this.ataque = votes_count2.get(5);
+        this.total_avaliations = votes_count2.get(6);
 
-        System.out.println("posicionamento>>>>>>>>  "+ this.posicionamento);
+
+
         this.update_data();
 
         this.addData();
@@ -80,52 +98,64 @@ public class StatisticRadarChart {
         votes_count.add(this.ataque);
         votes_count.add(this.total_avaliations);
 
-        System.out.println("----------------");
-        for (int i = 0; i < votes_count.size(); i++) {
-            System.out.println(votes_count.get(i));
-        }
-        System.out.println("----------------");
-
-
-        user.setRadar_data(votes_count);
+        me.setRadar_data(votes_count);
 
     }
 
     private void update_data(){
-        this.values_data[0] = ((float)this.posicionamento*100)/(this.total_avaliations*5);
-        this.values_data[1] = ((float)this.toque*100)/(this.total_avaliations*5);
-        this.values_data[2] = ((float)this.dominio*100)/(this.total_avaliations*5);
-        this.values_data[3] = ((float)this.drible*100)/(this.total_avaliations*5);
-        this.values_data[4] = ((float)this.defesa*100)/(this.total_avaliations*5);
-        this.values_data[5] = ((float)this.ataque*100)/(this.total_avaliations*5);
+        this.values_data[0] = this.posicionamento/this.total_avaliations;
+        this.values_data[1] = this.toque/this.total_avaliations;
+        this.values_data[2] = this.dominio/this.total_avaliations;
+        this.values_data[3] = this.drible/this.total_avaliations;
+        this.values_data[4] = this.defesa/this.total_avaliations;
+        this.values_data[5] = this.ataque/this.total_avaliations;
+
+        this.values_data2[0] = this.posicionamento2/this.total_avaliations2;
+        this.values_data2[1] = this.toque2/this.total_avaliations2;
+        this.values_data2[2] = this.dominio2/this.total_avaliations2;
+        this.values_data2[3] = this.drible2/this.total_avaliations2;
+        this.values_data2[4] = this.defesa2/this.total_avaliations2;
+        this.values_data2[5] = this.ataque2/this.total_avaliations2;
+
         this.addData();
     }
 
     private void addData(){
         ArrayList<RadarEntry> entries = new ArrayList<>();
+        ArrayList<RadarEntry> entries2 = new ArrayList<>();
+
         for (int i = 0; i < this.values_data.length; i++) {
-            entries.add(new RadarEntry(this.values_data[i]));
+            entries.add(new RadarEntry(this.values_data[i],this.values_data[i]));
+            entries2.add(new RadarEntry(this.values_data2[i],this.values_data2[i]));
         }
 
-        RadarDataSet data_set = new RadarDataSet(entries, "Eficácia");
+        RadarDataSet data_set = new RadarDataSet(entries, "Minha Eficácia");
+        RadarDataSet data_set2 = new RadarDataSet(entries2, "Eficácia do Zoado");
 
         data_set.setColor(Color.GRAY);
-        data_set.setFillColor(Color.BLUE);
+        data_set.setFillColor(Color.CYAN);
         data_set.setDrawFilled(true);
 
+        data_set2.setColor(Color.GRAY);
+        data_set2.setFillColor(Color.RED);
+        data_set2.setDrawFilled(true);
+
+        ArrayList<String> labels = new ArrayList<>();
         ArrayList<String> labels2 = new ArrayList<>();
 
         for (int i = 0; i < this.labels.length; i++) {
+            labels.add(this.labels[i]);
             labels2.add(this.labels[i]);
-            Log.d("labels",labels2.get(i));
         }
 
 
         RadarData data = new RadarData();
 
         data.addDataSet(data_set);
+        data.addDataSet(data_set2);
         data.setLabels(labels2);
         data.setValueTextSize(9f);
+
 
         this.radar_chart.setData(data);
         this.radar_chart.setDescription("");
@@ -157,9 +187,10 @@ public class StatisticRadarChart {
 
             @Override
             public int getDecimalDigits() {
-                return 2;
+                return 0;
             }
         });
+
 
 
 
@@ -192,3 +223,4 @@ public class StatisticRadarChart {
 
 
 }
+
