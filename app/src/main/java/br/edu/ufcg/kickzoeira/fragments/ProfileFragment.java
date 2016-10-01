@@ -7,11 +7,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -35,6 +38,8 @@ import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -43,6 +48,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
@@ -127,6 +137,8 @@ public class ProfileFragment extends Fragment {
 
         ivProfilePicture = (CircleImageView) rootView.findViewById(R.id.pic_profile);
         ivProfilePicture.setOnClickListener(onClick);
+        retrieveProfilePicture();
+
         apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
 
         apelido.setText(aplidoStr != null ? aplidoStr : "Apelido");
@@ -218,12 +230,6 @@ public class ProfileFragment extends Fragment {
                 });
 
 
-        KickZoeiraUser user = new KickZoeiraUser();
-
-
-
-
-
 
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.VISIBLE);
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setOnClickListener(new View.OnClickListener() {
@@ -255,7 +261,6 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
-    ///////////////////////////
 
     private void updateProfilePicture() {
         int permissionCheck = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CAMERA);
@@ -268,6 +273,8 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
+
+
 
 
     @Override
@@ -295,14 +302,59 @@ public class ProfileFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 ivProfilePicture.setImageBitmap(imageBitmap);
-                //saveProfilePicture(imageBitmap);
+                saveProfilePicture(imageBitmap);
             }
         }
-
-//    getActivity().recreate();
-
     }
 
+    private void saveProfilePicture(Bitmap bitmap) {
+        String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
+        path = path.replace("{id}", FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        storageRef.putBytes(data);
+
+//        UploadTask uploadTask = storageRef.putBytes(data);
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//            }
+//        });
+    }
+
+    private void retrieveProfilePicture() {
+        String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
+        path = path.replace("{id}", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
+
+        islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                ivProfilePicture.setImageBitmap(bitmap);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
+    }
 
     private View.OnClickListener onClick = new View.OnClickListener() {
         @Override
@@ -316,9 +368,6 @@ public class ProfileFragment extends Fragment {
 
         }
     };
-    //////////////////////////
-
-
 
     private void updateApelido(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
