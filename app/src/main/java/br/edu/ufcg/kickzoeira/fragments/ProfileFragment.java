@@ -130,12 +130,6 @@ public class ProfileFragment extends Fragment {
         apelido.setOnClickListener(onClick);
 
 
-
-
-
-
-
-        final PerfilStatistic perfil_statistic = new PerfilStatistic(this.main_act,this.pie_chart, this.radar_chart);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
