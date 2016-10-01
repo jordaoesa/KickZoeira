@@ -1,16 +1,22 @@
 package br.edu.ufcg.kickzoeira.activities;
 
+import android.app.LoaderManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String TAG = "LOGIN";
     private FirebaseAuth mAuth;
@@ -33,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     //private EditText edtEmail;
     private AutoCompleteTextView edtEmail;
     private EditText edtPass;
+    private View mProgressView;
     private DatabaseReference mDatabase;
 
     @Override
@@ -43,6 +50,17 @@ public class LoginActivity extends AppCompatActivity {
 
         edtEmail = (AutoCompleteTextView) findViewById(R.id.editText);
         edtPass = (EditText) findViewById(R.id.editText2);
+
+        edtPass.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    faz_login();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -62,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 // ...
             }
         };
+        mProgressView = findViewById(R.id.login_progress);
     }
 
     @Override
@@ -79,6 +98,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void handleLogin(View view) {
+        faz_login();
+    }
+
+    private void faz_login(){
 
 
 //        if (mAuth != null) {
@@ -224,5 +247,20 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 6;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
