@@ -109,8 +109,10 @@ public class StatisticRadarChart {
 
         RadarDataSet data_set = new RadarDataSet(entries, "Eficácia");
 
-        data_set.setColor(Color.GRAY);
-        data_set.setFillColor(Color.BLUE);
+        data_set.setColor(Color.rgb(0,77,64));
+        data_set.setValueTextColor(Color.BLACK);
+        data_set.setFillColor(Color.rgb(100,255,218));
+        data_set.setFillAlpha(150);
         data_set.setDrawFilled(true);
 
         ArrayList<String> labels2 = new ArrayList<>();
@@ -131,9 +133,9 @@ public class StatisticRadarChart {
         this.radar_chart.setDescription("");
 //        this.radar_chart.setBackgroundColor(Color.rgb(60, 65, 82));
         this.radar_chart.setWebLineWidth(1f);
-        this.radar_chart.setWebColor(Color.LTGRAY);
+        this.radar_chart.setWebColor(Color.rgb(0,77,64));
         this.radar_chart.setWebLineWidthInner(1f);
-        this.radar_chart.setWebColorInner(Color.LTGRAY);
+        this.radar_chart.setWebColorInner(Color.rgb(0,77,64));
         this.radar_chart.setWebAlpha(100);
 
         this.radar_chart.animateXY(

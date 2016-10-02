@@ -18,17 +18,18 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="150dp"
+                android:layout_margin="20dp">
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:id="@+id/pic_profile"
-                    android:layout_margin="5dp"
+                    android:layout_marginRight="20dp"
                     app:civ_border_color="#FFFFFF"
-                    app:civ_border_width="9dp"
+                    app:civ_border_width="2dp"
                     android:src="@drawable/ic_person_outline"/>
 
 
@@ -46,14 +47,16 @@
                     <TextView
                         android:id="@+id/text_profile_name"
                         android:layout_width="match_parent"
+                        android:textSize="20dp"
                         android:layout_height="50dp"
                         android:layout_margin="5dp"
+                        android:paddingTop="15dp"
                         android:hint="Apelido"
                         />
 
                     <TextView
                         android:id="@+id/text_profile_description"
-                        android:hint="Depoimento"
+                        android:hint="Descrição"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"/>
@@ -75,6 +78,7 @@
                     android:layout_marginTop="20dp"
                     android:textSize="30dp"
                     android:textAlignment="center"
+                    android:textColor="@color/textColorBlack"
                     android:id="@+id/text_pie_title" />
 
                 <com.github.mikephil.charting.charts.PieChart
@@ -97,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
                 android:id="@+id/text_radar_title"
+                android:textColor="@color/textColorBlack"
                 android:textAlignment="center"/>
 
             <com.github.mikephil.charting.charts.RadarChart
@@ -116,7 +121,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/button_evaluate"
                 android:textStyle="bold"
-                android:theme="@style/MyRaisedButton"/>
+                android:textColor="@color/textColorWhite"
+                android:theme="@style/MyRaisedButton"
+                android:layout_margin="30dp"/>
         </LinearLayout>
     </ScrollView>
 

@@ -140,10 +140,13 @@ public class StatisticPieChart {
 
         PieDataSet dataSet = new PieDataSet(yVals1, "Deficiência");
 
+
         dataSet.setSliceSpace(3);
-        dataSet.setSelectionShift(5);
+        dataSet.setSelectionShift(10);
+        dataSet.setValueTextColor(Color.BLACK);
 
         ArrayList<Integer> colors = new ArrayList<>();
+        ArrayList<Integer> colors2 = new ArrayList<>();
 
         for (int c : ColorTemplate.VORDIPLOM_COLORS) {
             colors.add(c);
@@ -162,14 +165,22 @@ public class StatisticPieChart {
         }
 
         colors.add(ColorTemplate.getHoloBlue());
-        dataSet.setColors(colors);
+        colors2.add(Color.rgb(29,233,182));
+        colors2.add(Color.rgb(0,229,255));
+        colors2.add(Color.rgb(255,61,0));
+        colors2.add(Color.rgb(101,31,255));
+        colors2.add(Color.rgb(255,64,129));
+        colors2.add(Color.rgb(96,125,139));
+        dataSet.setColors(colors2);
 
 
         PieData data = new PieData(dataSet);
 
+
         data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.GRAY);
+        data.setValueTextSize(15f);
+        data.setValueTextColor(Color.BLACK);
+
 
         this.pie_chart.setDescription("");
 

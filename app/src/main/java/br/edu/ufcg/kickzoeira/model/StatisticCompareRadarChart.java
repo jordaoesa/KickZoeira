@@ -132,12 +132,17 @@ public class StatisticCompareRadarChart {
         RadarDataSet data_set = new RadarDataSet(entries, "Minha Eficácia");
         RadarDataSet data_set2 = new RadarDataSet(entries2, "Eficácia do Zoado");
 
-        data_set.setColor(Color.GRAY);
-        data_set.setFillColor(Color.CYAN);
+        data_set.setColor(Color.rgb(0,77,64));
+        data_set.setValueTextColor(Color.BLACK);
+        data_set.setFillColor(Color.rgb(100,255,218));
+        data_set.setFillAlpha(150);
         data_set.setDrawFilled(true);
 
-        data_set2.setColor(Color.GRAY);
-        data_set2.setFillColor(Color.RED);
+
+        data_set2.setColor(Color.rgb(0,77,64));
+        data_set2.setValueTextColor(Color.BLACK);
+        data_set2.setFillColor(Color.rgb(229,57,53));
+        data_set2.setFillAlpha(150);
         data_set2.setDrawFilled(true);
 
         ArrayList<String> labels = new ArrayList<>();
@@ -161,9 +166,9 @@ public class StatisticCompareRadarChart {
         this.radar_chart.setDescription("");
 //        this.radar_chart.setBackgroundColor(Color.rgb(60, 65, 82));
         this.radar_chart.setWebLineWidth(1f);
-        this.radar_chart.setWebColor(Color.LTGRAY);
+        this.radar_chart.setWebColor(Color.rgb(0,77,64));
         this.radar_chart.setWebLineWidthInner(1f);
-        this.radar_chart.setWebColorInner(Color.LTGRAY);
+        this.radar_chart.setWebColorInner(Color.rgb(0,77,64));
         this.radar_chart.setWebAlpha(100);
 
         this.radar_chart.animateXY(

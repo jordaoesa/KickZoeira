@@ -12,6 +12,7 @@ tools:context="br.edu.ufcg.kickzoeira.fragments.SobreFragment">
     android:paddingTop="10dp"
     android:scrollbars="vertical"
     android:isScrollContainer="true"
+    android:layout_margin="0dp"
     >
 
     <LinearLayout
