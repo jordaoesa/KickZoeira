@@ -143,6 +143,7 @@ public class ProfileFragment extends Fragment {
 
         System.out.println("#############################################################    onCreateView()");
         progress_bar_apelido.setVisibility(View.VISIBLE);
+        apelido.setVisibility(View.GONE);
 
 
 
@@ -153,7 +154,7 @@ public class ProfileFragment extends Fragment {
                 final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
 
                 String apelido_texto = user.getApelido();
-                apelido.setVisibility(View.GONE);
+
 
 
                 apelido.setText(user.getApelido() != null ? apelido_texto : "Apelido");
