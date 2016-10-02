@@ -30,18 +30,16 @@ import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 public class SeguindoAdapter extends RecyclerView.Adapter<SeguindoAdapter.UserHolder> {
 
-    private Context context;
     private List<KickZoeiraUser> users;
 
-    public SeguindoAdapter(List<KickZoeiraUser> users, Context context){
-        this.context = context;
+    public SeguindoAdapter(List<KickZoeiraUser> users){
         this.users = users;
     }
 
     @Override
     public UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_user, parent, false);
-        return new UserHolder(v, context);
+        return new UserHolder(v);
     }
 
     @Override
@@ -91,7 +89,7 @@ public class SeguindoAdapter extends RecyclerView.Adapter<SeguindoAdapter.UserHo
         public TextView tvEmail;
         public KickZoeiraUser user;
 
-        public UserHolder(final View itemView, final Context context) {
+        public UserHolder(final View itemView) {
             super(itemView);
             ivUser = (ImageView) itemView.findViewById(R.id.profile_image);
             tvApelido = (TextView) itemView.findViewById(R.id.tv_apelido);

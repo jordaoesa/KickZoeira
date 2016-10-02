@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,13 +49,14 @@ import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.fragments.ProfileFragment;
 import br.edu.ufcg.kickzoeira.fragments.SeguidoresFragment;
 import br.edu.ufcg.kickzoeira.fragments.SeguindoFragment;
+import br.edu.ufcg.kickzoeira.fragments.SeguirFragment;
 import br.edu.ufcg.kickzoeira.fragments.SimularFragment;
 import br.edu.ufcg.kickzoeira.fragments.SobreFragment;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class KickZoeiraMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, SeguindoFragment.OnFragmentInteractionListener, SeguidoresFragment.OnFragmentInteractionListener, SimularFragment.OnFragmentInteractionListener, SobreFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, SeguindoFragment.OnFragmentInteractionListener, SeguidoresFragment.OnFragmentInteractionListener, SimularFragment.OnFragmentInteractionListener, SobreFragment.OnFragmentInteractionListener, SeguirFragment.OnFragmentInteractionListener {
 
     public CollapsingToolbarLayout collapsingToolbar;
     public AppBarLayout appBarLayout;
@@ -65,6 +67,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     private static View headerView;
 
     public FloatingActionButton fabFacebookShare;
+    public FloatingActionButton fabSacanear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         fabFacebookShare = (FloatingActionButton) findViewById(R.id.fab_fb_share);
+        fabSacanear = (FloatingActionButton) findViewById(R.id.fab_sacanear);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -203,21 +207,18 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.profile, menu);
+        //getMenuInflater().inflate(R.menu.profile, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.search_item) {
+            Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_LONG).show();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -240,11 +241,15 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         } else if (id == R.id.nav_seguidores) {
             ProfileFragment.isOnlyShow = true;
             fragmentClass = SeguidoresFragment.class;
+        } else if (id == R.id.nav_seguir) {
+            ProfileFragment.isOnlyShow = true;
+            fragmentClass = SeguirFragment.class;
         }
 //        else if (id == R.id.nav_simular) {
 //            fragmentClass = SimularFragment.class;
 //        }
         else if (id == R.id.nav_sobre) {
+            ProfileFragment.isOnlyShow = false;
             fragmentClass = SobreFragment.class;
         } else if (id == R.id.nav_sugestoes) {
             ProfileFragment.isOnlyShow = false;
@@ -255,6 +260,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
             startActivity(Intent.createChooser(emailIntent, "Enviar email..."));
 
         } else if (id == R.id.nav_sair) {
+            ProfileFragment.isOnlyShow = false;
             finish();
             return true;
         }

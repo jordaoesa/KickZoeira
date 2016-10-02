@@ -1,7 +1,5 @@
 package br.edu.ufcg.kickzoeira.adapters;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -11,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,37 +18,35 @@ import com.google.firebase.storage.StorageReference;
 import java.util.List;
 
 import br.edu.ufcg.kickzoeira.R;
-import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
-import br.edu.ufcg.kickzoeira.fragments.ProfileFragment;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 /**
- * Created by jordaoesa on 10/1/16.
+ * Created by jordaoesa on 10/2/16.
  */
 
-public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.UserHolder> {
+public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder> {
 
     private List<KickZoeiraUser> users;
 
-    public SeguidoresAdapter(List<KickZoeiraUser> users){
+    public SeguirAdapter(List<KickZoeiraUser> users) {
         this.users = users;
     }
 
     @Override
-    public SeguidoresAdapter.UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SeguirAdapter.UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_user, parent, false);
-        return new SeguidoresAdapter.UserHolder(v);
+        return new SeguirAdapter.UserHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(SeguidoresAdapter.UserHolder holder, int position) {
+    public void onBindViewHolder(SeguirAdapter.UserHolder holder, int position) {
         KickZoeiraUser user = users.get(position);
         holder.tvApelido.setText(user.getApelido());
         holder.tvEmail.setText(user.getEmail());
         holder.user = user;
-        if(user.getPhotoUrl() == null){
+        if (user.getPhotoUrl() == null) {
             retrieveProfilePicture(holder.ivUser, user);
-        }else{
+        } else {
             holder.ivUser.setImageURI(user.getPhotoUrl());
         }
     }
@@ -83,7 +78,7 @@ public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.Us
         return users.size();
     }
 
-    public static class UserHolder extends RecyclerView.ViewHolder{
+    public static class UserHolder extends RecyclerView.ViewHolder {
 
         public ImageView ivUser;
         public TextView tvApelido;
@@ -99,9 +94,9 @@ public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.Us
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ProfileFragment fragment = ProfileFragment.newInstance(user);
-                    KickZoeiraMainActivity activity = (KickZoeiraMainActivity)itemView.getContext();
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentView, fragment).addToBackStack(null).commit();
+//                    ProfileFragment fragment = ProfileFragment.newInstance(user);
+//                    KickZoeiraMainActivity activity = (KickZoeiraMainActivity)itemView.getContext();
+//                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentView, fragment).addToBackStack(null).commit();
                 }
             });
         }

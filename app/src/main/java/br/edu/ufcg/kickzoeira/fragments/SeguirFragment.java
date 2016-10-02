@@ -22,35 +22,40 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
-import br.edu.ufcg.kickzoeira.adapters.SeguidoresAdapter;
+import br.edu.ufcg.kickzoeira.adapters.SeguirAdapter;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SeguidoresFragment.OnFragmentInteractionListener} interface
+ * {@link SeguirFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SeguidoresFragment#newInstance} factory method to
+ * Use the {@link SeguirFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SeguidoresFragment extends Fragment {
-
-    private RecyclerView recyclerView;
-    private SeguidoresAdapter arrayAdapter;
-    private StaggeredGridLayoutManager layoutManager;
+public class SeguirFragment extends Fragment {
 
     private View rootView;
+
+    private RecyclerView recyclerView;
+    private SeguirAdapter arrayAdapter;
+    private StaggeredGridLayoutManager layoutManager;
+
     private List<KickZoeiraUser> users;
+    private DatabaseReference mDatabase;
+
     private OnFragmentInteractionListener mListener;
 
-    public SeguidoresFragment() {
+    public SeguirFragment() {
         // Required empty public constructor
     }
 
@@ -58,11 +63,11 @@ public class SeguidoresFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment SeguidoresFragment.
+     * @return A new instance of fragment SeguirFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SeguidoresFragment newInstance() {
-        SeguidoresFragment fragment = new SeguidoresFragment();
+    public static SeguirFragment newInstance() {
+        SeguirFragment fragment = new SeguirFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -93,86 +98,64 @@ public class SeguidoresFragment extends Fragment {
                 ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
             }
         });
-
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
-                        List<KickZoeiraUser> availableUsers = new ArrayList<KickZoeiraUser>();
-                        for (String info : user.getSeguidores()){
-                            String[] temp = info.split("\\|");
-                            availableUsers.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
-                        }
-
-                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                            @Override
-                            public boolean onQueryTextSubmit(String query) {
-                                //TODO
-                                return false;
-                            }
-                            @Override
-                            public boolean onQueryTextChange(String newText) {
-                                List<KickZoeiraUser> usersToShow = new ArrayList<KickZoeiraUser>();
-                                for(KickZoeiraUser usr : users){
-                                    if(usr.getEmail().contains(newText)){
-                                        usersToShow.add(usr);
-                                    }
-                                }
-                                arrayAdapter = new SeguidoresAdapter(usersToShow);
-                                recyclerView.setAdapter(arrayAdapter);
-                                return true;
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("FIREBASE_WARNING", "getUser:onCancelled", databaseError.toException());
-                        // ...
-                    }
-                });
-
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        if (getArguments() != null) {
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_seguidores, container, false);
+        rootView = inflater.inflate(R.layout.fragment_seguir, container, false);
+
         users = new ArrayList<KickZoeiraUser>();
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.seguidores_recycler_view);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.seguir_recycler_view);
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
-        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguidores Zoeiros");
-
-        ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
-        ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
-
-        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("kickzoeirauser").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
 
-                        for (String info : user.getSeguidores()){
-                            String[] temp = info.split("\\|");
-                            users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
-                        }
+                        GenericTypeIndicator<HashMap<String, KickZoeiraUser>> list = new GenericTypeIndicator<HashMap<String, KickZoeiraUser>>() {};
+                        final HashMap<String, KickZoeiraUser> map = dataSnapshot.getValue(list);
 
-                        arrayAdapter = new SeguidoresAdapter(users);
-                        recyclerView.setAdapter(arrayAdapter);
+                        mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                List<String> followingEmails = new ArrayList<String>();
+                                KickZoeiraUser currUser = dataSnapshot.getValue(KickZoeiraUser.class);
+                                for (String info : currUser.getSeguindo()){
+                                    String[] temp = info.split("\\|");
+                                    followingEmails.add(temp[1]);
+                                }
+
+                                List<KickZoeiraUser> allUsers = new ArrayList<KickZoeiraUser>();
+                                for(String key : map.keySet()){
+                                    if(!map.get(key).getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()) && !followingEmails.contains(map.get(key).getEmail())){
+                                        allUsers.add(map.get(key));
+                                    }
+                                }
+
+                                arrayAdapter = new SeguirAdapter(allUsers);
+                                recyclerView.setAdapter(arrayAdapter);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
 
                     }
 
@@ -183,8 +166,19 @@ public class SeguidoresFragment extends Fragment {
                     }
                 });
 
+        ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
+        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguindo Zoeiros");
+
+        ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
+        ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
+
         return rootView;
     }
+
+//    private boolean isNotInFollowing(String email) {
+//
+//        return true;
+//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -215,7 +209,7 @@ public class SeguidoresFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -224,8 +218,4 @@ public class SeguidoresFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
-
-
 }
