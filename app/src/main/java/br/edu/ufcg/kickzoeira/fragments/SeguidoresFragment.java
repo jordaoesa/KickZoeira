@@ -94,7 +94,7 @@ public class SeguidoresFragment extends Fragment {
                             users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
                         }
 
-                        arrayAdapter = new SeguidoresAdapter(users, getContext());
+                        arrayAdapter = new SeguidoresAdapter(users);
                         recyclerView.setAdapter(arrayAdapter);
 
                     }
