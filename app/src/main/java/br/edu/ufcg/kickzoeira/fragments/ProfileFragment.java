@@ -161,7 +161,6 @@ public class ProfileFragment extends Fragment {
         this.main_act = (KickZoeiraMainActivity)getActivity();
 
 
-        String aplidoStr = currentUser.getApelido();
 
         apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
         progress_bar_apelido = (ProgressBar)  rootView.findViewById(R.id.login_progress_apelido);
@@ -199,7 +198,6 @@ public class ProfileFragment extends Fragment {
         retrieveProfilePicture();
 
 
-        apelido.setText(aplidoStr != null ? aplidoStr : "Apelido");
         if(observableUser == null) apelido.setOnClickListener(onClick);
 
         progressDialog = new ProgressDialog(getActivity());
