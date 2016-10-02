@@ -18,17 +18,18 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="150dp"
+                android:layout_margin="20dp">
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:id="@+id/pic_profile"
-                    android:layout_margin="5dp"
+                    android:layout_marginRight="20dp"
                     app:civ_border_color="#FFFFFF"
-                    app:civ_border_width="9dp"
+                    app:civ_border_width="2dp"
                     android:src="@drawable/ic_person_outline"/>
 
 
@@ -42,18 +43,44 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/text_profile_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_margin="5dp"
-                        android:hint="Apelido"
-                        />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/text_profile_name"
+                                android:layout_width="97dp"
+                                android:textSize="20dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="5dp"
+                                android:paddingTop="15dp"
+                                android:hint="Apelido"
+                                android:layout_weight="1" />
+
+                            <ProgressBar
+                                android:id="@+id/login_progress_apelido"
+                                style="@style/Widget.AppCompat.ProgressBar"
+                                android:layout_width="97dp"
+                                android:layout_height="50dp"
+                                android:layout_margin="5dp"
+                                android:layout_marginBottom="5dp"
+                                />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
 
                     <TextView
                         android:id="@+id/text_profile_description"
-                        android:hint="Depoimento"
+                        android:hint="Descrição"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"/>
@@ -75,6 +102,7 @@
                     android:layout_marginTop="20dp"
                     android:textSize="30dp"
                     android:textAlignment="center"
+                    android:textColor="@color/textColorBlack"
                     android:id="@+id/text_pie_title" />
 
                 <com.github.mikephil.charting.charts.PieChart
@@ -84,28 +112,32 @@
                     android:layout_height="350dp" />
             </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:id="@+id/fb_share_humilhacao"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="Nível de Humilhação"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:id="@+id/fb_share_humilhacao"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="30dp"
-                android:id="@+id/text_radar_title"
-                android:textAlignment="center"/>
+                android:layout_height="wrap_content">
 
-            <com.github.mikephil.charting.charts.RadarChart
-                android:id="@+id/radar_chart"
-                android:layout_width="match_parent"
-                android:layout_margin="30dp"
-                android:layout_height="350dp" />
+                <TextView
+                    android:text="Nível de Humilhação"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"
+                    android:id="@+id/text_radar_title"
+                    android:textColor="@color/textColorBlack"
+                    android:textAlignment="center"/>
 
-        </LinearLayout>
+                <com.github.mikephil.charting.charts.RadarChart
+                    android:id="@+id/radar_chart"
+                    android:layout_width="match_parent"
+                    android:layout_margin="30dp"
+                    android:layout_height="350dp" />
+
+
+
+
+            </LinearLayout>
             <Button
                 android:text="Sacanear"
                 style="?android:textAppearanceSmall"

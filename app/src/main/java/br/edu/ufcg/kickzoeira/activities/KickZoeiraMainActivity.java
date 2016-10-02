@@ -130,6 +130,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         TextView tvUserEmail = (TextView) headerView.findViewById(R.id.tvUserEmail);
 
         profileImage.setImageURI(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl());
+        System.out.println("nome:"+ FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         tvUserName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName() == null ? "Default Name" : FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         tvUserEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 

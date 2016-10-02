@@ -3,6 +3,7 @@ package br.edu.ufcg.kickzoeira.fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -35,8 +37,10 @@ import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -78,6 +82,8 @@ public class ProfileFragment extends Fragment {
     private Activity main_act;
     private Button btn_evaluate;
     private Dialog dialog;
+    private ProgressDialog progressDialog;
+    private ProgressBar progress_bar_apelido;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -147,6 +153,7 @@ public class ProfileFragment extends Fragment {
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Perfil Zoeira");
 
+
         // TESTE
 
         this.pie_chart = (PieChart) rootView.findViewById(R.id.pie_chart);
@@ -156,14 +163,46 @@ public class ProfileFragment extends Fragment {
 
         String aplidoStr = currentUser.getApelido();
 
+        apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
+        progress_bar_apelido = (ProgressBar)  rootView.findViewById(R.id.login_progress_apelido);
+
+
+        System.out.println("#############################################################    onCreateView()");
+        progress_bar_apelido.setVisibility(View.VISIBLE);
+
+
+
+
+        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(currentUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
+
+                String apelido_texto = user.getApelido();
+                apelido.setVisibility(View.GONE);
+
+
+                apelido.setText(user.getApelido() != null ? apelido_texto : "Apelido");
+
+                progress_bar_apelido.setVisibility(View.GONE);
+                apelido.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         ivProfilePicture = (CircleImageView) rootView.findViewById(R.id.pic_profile);
         if(observableUser == null) ivProfilePicture.setOnClickListener(onClick);
         retrieveProfilePicture();
 
-        apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
 
         apelido.setText(aplidoStr != null ? aplidoStr : "Apelido");
         if(observableUser == null) apelido.setOnClickListener(onClick);
+
+        progressDialog = new ProgressDialog(getActivity());
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -180,7 +219,7 @@ public class ProfileFragment extends Fragment {
                         btn_evaluate.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                dialog = new Dialog(main_act , android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                                dialog = new Dialog(main_act );
                                 dialog.setContentView(R.layout.evaluation_activity);
                                 dialog.setTitle("Zoação");
                                 dialog.show();
@@ -398,12 +437,34 @@ public class ProfileFragment extends Fragment {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String texto = input.getText().toString();
-                apelido.setText(texto);
-
+                String apelido_user = input.getText().toString();
+                apelido.setText(apelido_user);
+                progressDialog.show();
+                progressDialog.setCancelable(false);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder().setDisplayName(texto).build();
-                user.updateProfile(changeRequest);
+                UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder().setDisplayName(apelido_user).build();
+
+                KickZoeiraUser user_kick = new KickZoeiraUser(user);
+                user_kick.setApelido(apelido_user);
+                mDatabase.child("kickzoeirauser").child(user_kick.getId()).setValue(user_kick).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        progressDialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        progressDialog.dismiss();
+                    }
+                });
+
+
+
 
             }
         });

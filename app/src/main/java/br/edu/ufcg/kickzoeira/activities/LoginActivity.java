@@ -1,10 +1,12 @@
 package br.edu.ufcg.kickzoeira.activities;
 
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,10 +30,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
-public class LoginActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String TAG = "LOGIN";
     private FirebaseAuth mAuth;
@@ -40,7 +44,10 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
     private AutoCompleteTextView edtEmail;
     private EditText edtPass;
     private View mProgressView;
+    private View mLoginFormView;
     private DatabaseReference mDatabase;
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,17 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
         setTitle("");
 
         edtEmail = (AutoCompleteTextView) findViewById(R.id.editText);
+
+        edtEmail.setOnEditorActionListener(new AutoCompleteTextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int id, KeyEvent event) {
+                if (id == R.id.next || id == EditorInfo.IME_NULL) {
+                    edtPass.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
         edtPass = (EditText) findViewById(R.id.editText2);
 
         edtPass.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -80,13 +98,18 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
                 // ...
             }
         };
+
+        mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        progressDialog = new ProgressDialog(LoginActivity.this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
     }
 
     @Override
@@ -101,7 +124,7 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
         faz_login();
     }
 
-    private void faz_login(){
+    private void faz_login() {
 
 
 //        if (mAuth != null) {
@@ -148,6 +171,9 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
             focusView.requestFocus();
         } else {
 
+            progressDialog.setMessage("Logando User");
+            progressDialog.show();
+            progressDialog.setCancelable(false);
 
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -159,12 +185,14 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
                             if (!task.isSuccessful()) {
-
+                                progressDialog.dismiss();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Deseja cadastrar usuário?")
+                                builder.setMessage("Usuário não cadastrado.\nDeseja cadastrar usuário?")
                                         .setCancelable(false)
                                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
+                                                progressDialog.show();
+                                                progressDialog.setCancelable(false);
 
                                                 mAuth.createUserWithEmailAndPassword(email, password)
                                                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -176,8 +204,10 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
                                                                 // the auth state listener will be notified and logic to handle the
                                                                 // signed in user can be handled in the listener.
                                                                 if (!task.isSuccessful()) {
+                                                                    progressDialog.dismiss();
                                                                     Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                                                 } else {
+
 
                                                                     KickZoeiraUser newUser = new KickZoeiraUser(task.getResult().getUser());
                                                                     mDatabase.child("kickzoeirauser").child(task.getResult().getUser().getUid()).setValue(newUser);
@@ -185,6 +215,7 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
                                                                     Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
                                                                     startActivity(it);
 
+                                                                    progressDialog.dismiss();
                                                                 }
 
                                                                 // ...
@@ -196,6 +227,7 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
                                         .setNegativeButton("NÃO", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+                                                progressDialog.dismiss();
                                                 Toast.makeText(LoginActivity.this, "Usuário nao criado.", Toast.LENGTH_SHORT).show();
                                             }
                                         });
@@ -205,6 +237,8 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
                                 //                                Log.w(TAG, "signInWithEmail:failed", task.getException());
                                 //                                Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             } else {
+
+                                progressDialog.dismiss();
                                 Toast.makeText(LoginActivity.this, "Logado com successo.", Toast.LENGTH_SHORT).show();
                                 Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
                                 startActivity(it);
@@ -216,28 +250,6 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
 
     }
 
-
-//    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-//    builder.setMessage("Deseja cadastrar usuário?")
-//            .setCancelable(false)
-//    .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
-//        public void onClick(DialogInterface dialog, int id) {
-//            System.out.println("ME DEEEEEEEEEE PAPAI");
-//            KickZoeiraUser newUser = new KickZoeiraUser(task.getResult().getUser());
-//            mDatabase.child("kickzoeirauser").child(task.getResult().getUser().getUid()).setValue(newUser);
-//            Toast.makeText(LoginActivity.this, "Criado com sucesso.", Toast.LENGTH_SHORT).show();
-//            Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
-//            startActivity(it);
-//        }
-//    })
-//            .setNegativeButton("NÃO", new DialogInterface.OnClickListener(){
-//        @Override
-//        public void onClick(DialogInterface dialog, int which) {
-//            Toast.makeText(LoginActivity.this, "Usuário nao criado.", Toast.LENGTH_SHORT).show();
-//        }
-//    });
-//    AlertDialog alert = builder.create();
-//    alert.show();
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -263,4 +275,8 @@ public class LoginActivity extends AppCompatActivity  implements LoaderManager.L
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+
+
+
 }
