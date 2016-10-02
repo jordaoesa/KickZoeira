@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent" android:id="@+id/custom_dialog"
-    android:background="@color/colorAccent">
+    android:background="#80CBC4">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -15,7 +16,7 @@
 
             <TextView
                 android:text="Zoação"
-                android:textColor="@color/white"
+                android:textColor="@color/textColorBlack"
                 android:textSize="20dp"
                 android:layout_margin="20dp"
                 android:textAlignment="center"
@@ -33,42 +34,42 @@
 
                 <CheckBox
                     android:text="Caceteiro"
-                    android:textColor="@color/white"
+                    android:textColor="@color/textColorBlack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/checkBox_caceteiro" />
 
                 <CheckBox
                     android:text="Brigão"
-                    android:textColor="@color/white"
+                    android:textColor="@color/textColorBlack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/checkBox_brigao" />
 
                 <CheckBox
                     android:text="Reclamão"
-                    android:textColor="@color/white"
+                    android:textColor="@color/textColorBlack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/checkBox_reclamao" />
 
                 <CheckBox
                     android:text="Fominha"
-                    android:textColor="@color/white"
+                    android:textColor="@color/textColorBlack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/checkBox_fominha" />
 
                 <CheckBox
                     android:text="Enrolão"
-                    android:textColor="@color/white"
+                    android:textColor="@color/textColorBlack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/checkBox_enrolao" />
 
                 <CheckBox
                     android:text="Bixo Preguiça"
-                    android:textColor="@color/white"
+                    android:textColor="@color/textColorBlack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/checkBox_bixo_preguica" />
@@ -77,7 +78,7 @@
             <TextView
                 android:text="Elogios"
                 android:textSize="20dp"
-                android:textColor="@color/white"
+                android:textColor="@color/textColorBlack"
                 android:layout_margin="20dp"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
@@ -96,7 +97,7 @@
 
             <TextView
                 android:text="Posicionamento"
-                android:textColor="@color/white"
+                android:textColor="@color/textColorBlack"
                 android:padding="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -105,15 +106,17 @@
 
             <RatingBar
                 android:stepSize="1"
+
                 android:rating="0"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:id="@+id/ratingBar_posicionamento"
+
                 android:numStars="5" />
 
             <TextView
                 android:text="Toque"
-                android:textColor="@color/white"
+                android:textColor="@color/textColorBlack"
                 android:layout_width="match_parent"
                 android:padding="15dp"
                 android:layout_height="50dp"
@@ -125,12 +128,12 @@
                 android:stepSize="1"
                 android:rating="0"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:id="@+id/ratingBar_toque" />
 
             <TextView
                 android:text="Dominio"
-                android:textColor="@color/white"
+                android:textColor="@color/textColorBlack"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:padding="15dp"
@@ -142,12 +145,12 @@
                 android:stepSize="1"
                 android:rating="0"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:id="@+id/ratingBar_dominio" />
 
             <TextView
                 android:text="Drible"
-                android:textColor="@color/white"
+                android:textColor="@color/textColorBlack"
                 android:layout_width="match_parent"
                 android:padding="15dp"
                 android:layout_height="50dp"
@@ -159,12 +162,12 @@
                 android:stepSize="1"
                 android:rating="0"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:id="@+id/ratingBar_drible" />
 
             <TextView
                 android:text="Defesa"
-                android:textColor="@color/white"
+                android:textColor="@color/textColorBlack"
                 android:layout_width="match_parent"
                 android:padding="15dp"
                 android:layout_height="50dp"
@@ -176,12 +179,12 @@
                 android:stepSize="1"
                 android:rating="0"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:id="@+id/ratingBar_defesa" />
 
             <TextView
                 android:text="Ataque"
-                android:textColor="@color/white"
+                android:textColor="@color/textColorBlack"
                 android:layout_width="match_parent"
                 android:padding="15dp"
                 android:layout_height="50dp"
@@ -193,12 +196,13 @@
                 android:stepSize="1"
                 android:rating="0"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:id="@+id/ratingBar_ataque" />
 
             <Button
                 android:text="Zoar"
                 style="?android:textAppearanceSmall"
+                android:textColor="@color/textColorWhite"
                 android:layout_marginTop="20dp"
                 android:layout_margin="30dp"
                 android:layout_width="match_parent"
@@ -209,7 +213,7 @@
 
             <TextView
                 android:text="Cancelar"
-                android:textColor="#aaaaaa"
+                android:textColor="@color/textColorWhite"
                 android:layout_marginBottom="20dp"
                 android:textAlignment="center"
                 android:layout_width="match_parent"

@@ -187,7 +187,7 @@ public class ProfileFragment extends Fragment {
                         btn_evaluate.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                dialog = new Dialog(main_act , android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                                dialog = new Dialog(main_act );
                                 dialog.setContentView(R.layout.evaluation_activity);
                                 dialog.setTitle("Zoação");
                                 dialog.show();
