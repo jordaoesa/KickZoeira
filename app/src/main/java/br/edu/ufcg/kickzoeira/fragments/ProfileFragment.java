@@ -51,6 +51,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 
@@ -161,7 +162,6 @@ public class ProfileFragment extends Fragment {
         this.main_act = (KickZoeiraMainActivity)getActivity();
 
 
-        String aplidoStr = currentUser.getApelido();
         apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
         apelido.setVisibility(View.GONE);
         progress_bar_apelido = (ProgressBar)  rootView.findViewById(R.id.login_progress_apelido);
@@ -364,7 +364,12 @@ public class ProfileFragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        storageRef.putBytes(data);
+        storageRef.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                KickZoeiraMainActivity.setupHeader();
+            }
+        });
 
 //        UploadTask uploadTask = storageRef.putBytes(data);
 //        uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -428,31 +433,45 @@ public class ProfileFragment extends Fragment {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String apelido_user = input.getText().toString();
+                final String apelido_user = input.getText().toString();
                 apelido.setText(apelido_user);
                 progressDialog.show();
                 progressDialog.setCancelable(false);
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder().setDisplayName(apelido_user).build();
 
-                KickZoeiraUser user_kick = new KickZoeiraUser(user);
-                user_kick.setApelido(apelido_user);
-                mDatabase.child("kickzoeirauser").child(user_kick.getId()).setValue(user_kick).addOnCompleteListener(new OnCompleteListener() {
+                //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                //KickZoeiraUser user_kick = new KickZoeiraUser(user);
+
+                FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(currentUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task task) {
-                        progressDialog.dismiss();
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        KickZoeiraUser user_kick = (KickZoeiraUser) dataSnapshot.getValue(KickZoeiraUser.class);
+                        user_kick.setApelido(apelido_user);
+                        mDatabase.child("kickzoeirauser").child(user_kick.getId()).setValue(user_kick).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                KickZoeiraMainActivity.setupHeader();
+                                progressDialog.dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                progressDialog.dismiss();
+                            }
+                        });
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                    }
-                }).addOnSuccessListener(new OnSuccessListener() {
-                    @Override
-                    public void onSuccess(Object o) {
-                        progressDialog.dismiss();
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
                 });
+
+
 
 
 
