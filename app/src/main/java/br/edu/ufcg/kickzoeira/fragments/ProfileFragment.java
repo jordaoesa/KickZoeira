@@ -3,6 +3,7 @@ package br.edu.ufcg.kickzoeira.fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,8 +39,10 @@ import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -83,6 +86,7 @@ public class ProfileFragment extends Fragment {
     private Activity main_act;
     private Button btn_evaluate;
     private Dialog dialog;
+    private ProgressDialog progressDialog;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -126,6 +130,7 @@ public class ProfileFragment extends Fragment {
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Perfil Zoeira");
 
+
         // TESTE
 
         this.pie_chart = (PieChart) rootView.findViewById(R.id.pie_chart);
@@ -133,16 +138,33 @@ public class ProfileFragment extends Fragment {
         this.main_act = (KickZoeiraMainActivity)getActivity();
 
 
-        String aplidoStr = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+       // String aplidoStr = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+
+        apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
+
+        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
+                apelido.setText(user.getApelido() != null ? user.getApelido() : "Apelido");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         ivProfilePicture = (CircleImageView) rootView.findViewById(R.id.pic_profile);
         ivProfilePicture.setOnClickListener(onClick);
         retrieveProfilePicture();
 
-        apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
 
-        apelido.setText(aplidoStr != null ? aplidoStr : "Apelido");
+
+
         apelido.setOnClickListener(onClick);
+
+        progressDialog = new ProgressDialog(getActivity());
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -381,12 +403,34 @@ public class ProfileFragment extends Fragment {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String texto = input.getText().toString();
-                apelido.setText(texto);
-
+                String apelido_user = input.getText().toString();
+                apelido.setText(apelido_user);
+                progressDialog.show();
+                progressDialog.setCancelable(false);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder().setDisplayName(texto).build();
-                user.updateProfile(changeRequest);
+                UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder().setDisplayName(apelido_user).build();
+
+                KickZoeiraUser user_kick = new KickZoeiraUser(user);
+                user_kick.setApelido(apelido_user);
+                mDatabase.child("kickzoeirauser").child(user_kick.getId()).setValue(user_kick).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        progressDialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        progressDialog.dismiss();
+                    }
+                });
+
+
+
 
             }
         });
