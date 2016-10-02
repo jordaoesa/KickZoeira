@@ -105,6 +105,10 @@
                 android:layout_margin="30dp"
                 android:layout_height="350dp" />
 
+
+
+
+        </LinearLayout>
             <Button
                 android:text="Sacanear"
                 style="?android:textAppearanceSmall"
@@ -113,9 +117,6 @@
                 android:id="@+id/button_evaluate"
                 android:textStyle="bold"
                 android:theme="@style/MyRaisedButton"/>
-
-
-        </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
