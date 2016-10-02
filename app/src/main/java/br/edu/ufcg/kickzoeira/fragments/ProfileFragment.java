@@ -92,6 +92,10 @@ public class ProfileFragment extends Fragment {
 
     private CircleImageView ivProfilePicture;
 
+    private KickZoeiraUser currentUser;
+    public static KickZoeiraUser observableUser = null;
+    public static boolean isOnlyShow = false;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -104,6 +108,14 @@ public class ProfileFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance() {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ProfileFragment newInstance(KickZoeiraUser user) {
+        observableUser = user;
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -123,6 +135,20 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_perfil, container, false);
+        btn_evaluate = (Button) rootView.findViewById(R.id.button_evaluate);
+
+        if(isOnlyShow) {
+            currentUser = observableUser;
+            btn_evaluate.setVisibility(View.GONE);
+        }
+        else if (observableUser != null){
+            currentUser = observableUser;
+            btn_evaluate.setVisibility(View.VISIBLE);
+        }
+        else{
+            currentUser = new KickZoeiraUser(FirebaseAuth.getInstance().getCurrentUser());
+            btn_evaluate.setVisibility(View.GONE);
+        }
 
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Perfil Zoeira");
@@ -135,7 +161,7 @@ public class ProfileFragment extends Fragment {
         this.main_act = (KickZoeiraMainActivity)getActivity();
 
 
-       // String aplidoStr = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        String aplidoStr = currentUser.getApelido();
 
         apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
         progress_bar_apelido = (ProgressBar)  rootView.findViewById(R.id.login_progress_apelido);
@@ -148,7 +174,7 @@ public class ProfileFragment extends Fragment {
 
 
 
-        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(currentUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
@@ -170,13 +196,12 @@ public class ProfileFragment extends Fragment {
         });
 
         ivProfilePicture = (CircleImageView) rootView.findViewById(R.id.pic_profile);
-        ivProfilePicture.setOnClickListener(onClick);
+        if(observableUser == null) ivProfilePicture.setOnClickListener(onClick);
         retrieveProfilePicture();
 
 
-
-
-        apelido.setOnClickListener(onClick);
+        apelido.setText(aplidoStr != null ? aplidoStr : "Apelido");
+        if(observableUser == null) apelido.setOnClickListener(onClick);
 
         progressDialog = new ProgressDialog(getActivity());
 
@@ -184,10 +209,7 @@ public class ProfileFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
-        FirebaseUser fire_user = mAuth.getCurrentUser();
-
-
-        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
+        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(currentUser.getId()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -195,7 +217,6 @@ public class ProfileFragment extends Fragment {
 
                         final PerfilStatistic perfil_statistic = new PerfilStatistic(main_act,pie_chart, radar_chart, user);
 
-                        btn_evaluate = (Button) rootView.findViewById(R.id.button_evaluate);
                         btn_evaluate.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -345,7 +366,7 @@ public class ProfileFragment extends Fragment {
 
     private void saveProfilePicture(Bitmap bitmap) {
         String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
-        path = path.replace("{id}", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        path = path.replace("{id}", currentUser.getId());
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
 
@@ -372,7 +393,7 @@ public class ProfileFragment extends Fragment {
 
     private void retrieveProfilePicture() {
         String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
-        path = path.replace("{id}", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        path = path.replace("{id}", currentUser.getId());
         StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
 
         islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {

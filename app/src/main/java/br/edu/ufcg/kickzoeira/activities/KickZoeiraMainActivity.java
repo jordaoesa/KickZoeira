@@ -181,11 +181,15 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         Class fragmentClass = ProfileFragment.class;
 
         if (id == R.id.nav_perfil) {
+            ProfileFragment.isOnlyShow = false;
+            ProfileFragment.observableUser = null;
             fragmentClass = ProfileFragment.class;
             //collapsingToolbar.setTitle(item.getTitle());
         } else if (id == R.id.nav_seguindo) {
+            ProfileFragment.isOnlyShow = false;
             fragmentClass = SeguindoFragment.class;
         } else if (id == R.id.nav_seguidores) {
+            ProfileFragment.isOnlyShow = true;
             fragmentClass = SeguidoresFragment.class;
         }
 //        else if (id == R.id.nav_simular) {

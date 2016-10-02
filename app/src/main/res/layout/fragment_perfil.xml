@@ -145,9 +145,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/button_evaluate"
                 android:textStyle="bold"
-                android:textColor="@color/textColorWhite"
                 android:theme="@style/MyRaisedButton"
-                android:layout_margin="30dp"/>
+                android:visibility="gone"/>
         </LinearLayout>
     </ScrollView>
 
