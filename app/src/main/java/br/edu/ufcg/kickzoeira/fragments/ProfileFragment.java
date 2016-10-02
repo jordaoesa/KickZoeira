@@ -142,6 +142,8 @@ public class ProfileFragment extends Fragment {
 
         apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
 
+
+
         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
