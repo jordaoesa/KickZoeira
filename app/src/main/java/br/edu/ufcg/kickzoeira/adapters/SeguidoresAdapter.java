@@ -1,6 +1,7 @@
 package br.edu.ufcg.kickzoeira.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -20,6 +21,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.List;
 
 import br.edu.ufcg.kickzoeira.R;
+import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
+import br.edu.ufcg.kickzoeira.fragments.ProfileFragment;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 /**
@@ -38,7 +41,7 @@ public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.Us
 
     @Override
     public SeguidoresAdapter.UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_view_followers_select, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_user, parent, false);
         return new SeguidoresAdapter.UserHolder(v, context);
     }
 
@@ -47,6 +50,7 @@ public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.Us
         KickZoeiraUser user = users.get(position);
         holder.tvApelido.setText(user.getApelido());
         holder.tvEmail.setText(user.getEmail());
+        holder.user = user;
         if(user.getPhotoUrl() == null){
             retrieveProfilePicture(holder.ivUser, user);
         }else{
@@ -86,6 +90,7 @@ public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.Us
         public ImageView ivUser;
         public TextView tvApelido;
         public TextView tvEmail;
+        public KickZoeiraUser user;
 
         public UserHolder(final View itemView, final Context context) {
             super(itemView);
@@ -96,7 +101,9 @@ public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.Us
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "ai", Toast.LENGTH_LONG).show();
+                    ProfileFragment fragment = ProfileFragment.newInstance(user);
+                    KickZoeiraMainActivity activity = (KickZoeiraMainActivity)itemView.getContext();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentView, fragment).addToBackStack(null).commit();
                 }
             });
         }
