@@ -43,13 +43,32 @@
                     android:layout_height="match_parent">
 
 
-                    <TextView
-                        android:id="@+id/text_profile_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_margin="5dp"
-                        android:hint="Apelido"
-                        />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <ProgressBar
+                            android:id="@+id/login_progress"
+                            style="?android:attr/progressBarStyleLarge"
+                            android:layout_width="34dp"
+                            android:layout_height="27dp"
+                            android:layout_marginBottom="8dp"
+                            />
+
+
+                        <TextView
+                            android:id="@+id/text_profile_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_margin="5dp"
+                            android:hint="Apelido"
+                            />
+
+
+                    </FrameLayout>
+
 
                     <TextView
                         android:id="@+id/text_profile_description"

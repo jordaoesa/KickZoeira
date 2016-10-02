@@ -36,6 +36,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
     testCompile 'junit:junit:4.12'
+    compile 'com.google.android.gms:play-services-appindexing:9.6.1'
 }
 
 
