@@ -247,7 +247,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         else if (id == R.id.nav_sobre) {
             fragmentClass = SobreFragment.class;
         } else if (id == R.id.nav_sugestoes) {
-
+            ProfileFragment.isOnlyShow = false;
             SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss a");
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "kickaboutapp@gmail.com", null));
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Kick Zoeira - Feedback / Sugestão - "+ dt1.format(new Date(System.currentTimeMillis())));
