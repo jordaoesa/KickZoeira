@@ -191,6 +191,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
             progressDialog.setMessage("Logando User");
             progressDialog.show();
+            progressDialog.setCancelable(false);
 
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -204,11 +205,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                             if (!task.isSuccessful()) {
                                 progressDialog.dismiss();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Deseja cadastrar usuário?")
+                                builder.setMessage("Usuário não cadastrado.\nDeseja cadastrar usuário?")
                                         .setCancelable(false)
                                         .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 progressDialog.show();
+                                                progressDialog.setCancelable(false);
 
                                                 mAuth.createUserWithEmailAndPassword(email, password)
                                                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
