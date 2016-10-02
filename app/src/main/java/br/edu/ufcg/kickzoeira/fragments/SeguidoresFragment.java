@@ -2,15 +2,13 @@ package br.edu.ufcg.kickzoeira.fragments;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +21,7 @@ import java.util.List;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
-import br.edu.ufcg.kickzoeira.adapters.FollowersAdapter;
+import br.edu.ufcg.kickzoeira.adapters.SeguidoresAdapter;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 /**
@@ -36,12 +34,13 @@ import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
  */
 public class SeguidoresFragment extends Fragment {
 
+    private RecyclerView recyclerView;
+    private SeguidoresAdapter arrayAdapter;
+    private StaggeredGridLayoutManager layoutManager;
+
     private View rootView;
-    private GridView gridView;
-    private FollowersAdapter arrayAdapter;
     private List<KickZoeiraUser> users;
     private OnFragmentInteractionListener mListener;
-    private FirebaseDatabase mDatabase;
 
     public SeguidoresFragment() {
         // Required empty public constructor
@@ -71,20 +70,16 @@ public class SeguidoresFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_seguidores, container, false);
+        users = new ArrayList<KickZoeiraUser>();
+
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.seguidores_recycler_view);
+        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
 
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguidores Zoeiros");
 
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
-
-//        final String userId = getUid();
-
-//        context = this;
-//        eventId = getIntent().getStringExtra("event_id");
-//        eventUsers = new ArrayList<BackendlessUser>();
-//        groupUsers = new ArrayList<BackendlessUser>();
-        users = new ArrayList<KickZoeiraUser>();
-
 
         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -92,10 +87,6 @@ public class SeguidoresFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user value
                         final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
-                        //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                        //System.out.println(user.getEmail());
-//                        System.out.println(user.getSeguidores());
-//                        Toast.makeText(getActivity().getApplicationContext(), user.getSeguidores().get(0), Toast.LENGTH_SHORT).show();
 
 
                         for (String info : user.getSeguidores()){
@@ -103,10 +94,9 @@ public class SeguidoresFragment extends Fragment {
                             users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
                         }
 
-                        gridView = (GridView) getView().findViewById(R.id.gridView);
-                        arrayAdapter = new FollowersAdapter(getContext(), R.layout.grid_view_followers_select, users);
+                        arrayAdapter = new SeguidoresAdapter(users, getContext());
+                        recyclerView.setAdapter(arrayAdapter);
 
-                        gridView.setAdapter(arrayAdapter);
                     }
 
                     @Override

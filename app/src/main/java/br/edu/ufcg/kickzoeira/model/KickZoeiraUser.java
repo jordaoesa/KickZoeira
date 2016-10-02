@@ -61,7 +61,7 @@ public class KickZoeiraUser {
 
         this.id = user.getUid();
         this.email = user.getEmail();
-        this.apelido = user.getDisplayName();
+        this.apelido = user.getDisplayName() != null ? user.getDisplayName() : "Apelido";
         this.photoUrl = user.getPhotoUrl();
 
         this.pie_data.add(0);

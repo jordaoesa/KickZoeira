@@ -85,7 +85,7 @@ public class FollowersAdapter extends ArrayAdapter {
         public ViewHolder(View view, int pos){
             position = pos;
             userImage = (CircleImageView) view.findViewById(R.id.profile_image);
-            userName = (TextView) view.findViewById(R.id.tv_name_user_grid_adapter);
+            //userName = (TextView) view.findViewById(R.id.tv_name_user_grid_adapter);
 //            progressBar = (ProgressBar) view.findViewById(R.id.pb_profile_picture);
 //            checkBox = (CheckBox) view.findViewById(R.id.checkBox);
 //            checkBox.setClickable(false);
