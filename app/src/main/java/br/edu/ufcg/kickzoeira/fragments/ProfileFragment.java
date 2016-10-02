@@ -162,27 +162,17 @@ public class ProfileFragment extends Fragment {
 
 
         String aplidoStr = currentUser.getApelido();
-
         apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
-        progress_bar_apelido = (ProgressBar)  rootView.findViewById(R.id.login_progress_apelido);
-
-
-        System.out.println("#############################################################    onCreateView()");
-        progress_bar_apelido.setVisibility(View.VISIBLE);
         apelido.setVisibility(View.GONE);
-
-
+        progress_bar_apelido = (ProgressBar)  rootView.findViewById(R.id.login_progress_apelido);
+        progress_bar_apelido.setVisibility(View.VISIBLE);
 
 
         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(currentUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
-
                 String apelido_texto = user.getApelido();
-
-
-
                 apelido.setText(user.getApelido() != null ? apelido_texto : "Apelido");
 
                 progress_bar_apelido.setVisibility(View.GONE);
@@ -200,7 +190,7 @@ public class ProfileFragment extends Fragment {
         retrieveProfilePicture();
 
 
-        apelido.setText(aplidoStr != null ? aplidoStr : "Apelido");
+//        apelido.setText(aplidoStr != null ? aplidoStr : "Apelido");
         if(observableUser == null) apelido.setOnClickListener(onClick);
 
         progressDialog = new ProgressDialog(getActivity());
