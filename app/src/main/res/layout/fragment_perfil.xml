@@ -45,27 +45,32 @@
 
 
                     <FrameLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
 
-                        <ProgressBar
-                            android:id="@+id/login_progress_apelido"
-                            style="?android:attr/progressBarStyleLarge"
-                            android:layout_width="34dp"
-                            android:layout_height="27dp"
-                            android:layout_marginBottom="8dp"
-                            android:visibility="gone"
-                            />
-
-
-                        <TextView
-                            android:id="@+id/text_profile_name"
+                        <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_margin="5dp"
-                            android:hint="Apelido"
-                            />
+                            android:layout_height="match_parent">
+
+                            <ProgressBar
+                                android:id="@+id/login_progress_apelido"
+                                style="?android:attr/progressBarStyleLarge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="8dp"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:id="@+id/text_profile_name"
+                                android:layout_width="148dp"
+                                android:layout_height="52dp"
+                                android:layout_margin="5dp"
+                                android:hint="Apelido" />
+
+                        </LinearLayout>
 
 
                     </FrameLayout>

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,14 +21,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -53,13 +51,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
-import br.edu.ufcg.kickzoeira.adapters.FollowersAdapter;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 import br.edu.ufcg.kickzoeira.model.PerfilStatistic;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -87,6 +83,7 @@ public class ProfileFragment extends Fragment {
     private Button btn_evaluate;
     private Dialog dialog;
     private ProgressDialog progressDialog;
+    private ProgressBar progress_bar_apelido;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -141,14 +138,17 @@ public class ProfileFragment extends Fragment {
        // String aplidoStr = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 
         apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
-
-
+        progress_bar_apelido = (ProgressBar)  rootView.findViewById(R.id.login_progress_apelido);
+        progress_bar_apelido.setVisibility(View.VISIBLE);
+        progress_bar_apelido.showContextMenu();
 
         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
                 apelido.setText(user.getApelido() != null ? user.getApelido() : "Apelido");
+
+                progress_bar_apelido.setVisibility(View.GONE);
             }
 
             @Override
