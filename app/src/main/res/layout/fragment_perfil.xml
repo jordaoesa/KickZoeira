@@ -151,7 +151,8 @@
                 android:id="@+id/button_evaluate"
                 android:textStyle="bold"
                 android:theme="@style/MyRaisedButton"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:layout_marginBottom="30dp"/>
         </LinearLayout>
     </ScrollView>
 
