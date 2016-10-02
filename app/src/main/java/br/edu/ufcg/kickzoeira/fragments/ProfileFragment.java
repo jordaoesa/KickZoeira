@@ -51,6 +51,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 
@@ -371,7 +372,12 @@ public class ProfileFragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        storageRef.putBytes(data);
+        storageRef.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                KickZoeiraMainActivity.setupHeader();
+            }
+        });
 
 //        UploadTask uploadTask = storageRef.putBytes(data);
 //        uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -440,13 +446,13 @@ public class ProfileFragment extends Fragment {
                 progressDialog.show();
                 progressDialog.setCancelable(false);
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder().setDisplayName(apelido_user).build();
 
                 KickZoeiraUser user_kick = new KickZoeiraUser(user);
                 user_kick.setApelido(apelido_user);
                 mDatabase.child("kickzoeirauser").child(user_kick.getId()).setValue(user_kick).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
+                        KickZoeiraMainActivity.setupHeader();
                         progressDialog.dismiss();
                     }
                 }).addOnFailureListener(new OnFailureListener() {

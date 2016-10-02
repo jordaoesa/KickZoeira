@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -28,8 +29,17 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,6 +50,8 @@ import br.edu.ufcg.kickzoeira.fragments.SeguidoresFragment;
 import br.edu.ufcg.kickzoeira.fragments.SeguindoFragment;
 import br.edu.ufcg.kickzoeira.fragments.SimularFragment;
 import br.edu.ufcg.kickzoeira.fragments.SobreFragment;
+import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class KickZoeiraMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, SeguindoFragment.OnFragmentInteractionListener, SeguidoresFragment.OnFragmentInteractionListener, SimularFragment.OnFragmentInteractionListener, SobreFragment.OnFragmentInteractionListener {
@@ -50,7 +62,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     public Toolbar toolbar;
     public ActionBarDrawerToggle actionBarDrawerToggle;
 
-    private View headerView;
+    private static View headerView;
 
     public FloatingActionButton fabFacebookShare;
 
@@ -124,20 +136,57 @@ public class KickZoeiraMainActivity extends AppCompatActivity
                 blueBucket / pixelCount);
     }
 
-    private void setupHeader(){
-        ImageView profileImage = (ImageView) headerView.findViewById(R.id.imageView);
-        TextView tvUserName = (TextView) headerView.findViewById(R.id.tvUserName);
-        TextView tvUserEmail = (TextView) headerView.findViewById(R.id.tvUserEmail);
+    public static void setupHeader(){
+        final CircleImageView profileImage = (CircleImageView) headerView.findViewById(R.id.imageView);
+        final TextView tvUserName = (TextView) headerView.findViewById(R.id.tvUserName);
+        final TextView tvUserEmail = (TextView) headerView.findViewById(R.id.tvUserEmail);
 
-        profileImage.setImageURI(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl());
-        System.out.println("nome:"+ FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        tvUserName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName() == null ? "Default Name" : FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        tvUserEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        final FirebaseUser usr = FirebaseAuth.getInstance().getCurrentUser();
+
+        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(usr.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                KickZoeiraUser user = (KickZoeiraUser) dataSnapshot.getValue(KickZoeiraUser.class);
+
+                retrieveProfilePicture(user, profileImage);
+                tvUserName.setText(user.getApelido() != null ? user.getApelido() : "Apelido");
+                tvUserEmail.setText(user.getEmail());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         //FIXME: this is the way to add name and photoURI
 //        UserProfileChangeRequest builder = new UserProfileChangeRequest.Builder().setDisplayName("J @ M").build();
 //        FirebaseAuth.getInstance().getCurrentUser().updateProfile(builder);
 
+
+    }
+
+    private static void retrieveProfilePicture(KickZoeiraUser user, final CircleImageView iv) {
+        String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
+        path = path.replace("{id}", user.getId());
+        StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
+
+        islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                iv.setImageBitmap(bitmap);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
 
     }
 
