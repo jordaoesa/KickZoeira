@@ -158,6 +158,7 @@ public class SeguidoresFragment extends Fragment {
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguidores Zoeiros");
 
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
+        ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
 
         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
                 new ValueEventListener() {

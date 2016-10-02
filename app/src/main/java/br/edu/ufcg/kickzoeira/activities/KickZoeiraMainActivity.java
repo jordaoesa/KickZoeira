@@ -66,6 +66,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     private static View headerView;
 
     public FloatingActionButton fabFacebookShare;
+    public FloatingActionButton fabSacanear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         fabFacebookShare = (FloatingActionButton) findViewById(R.id.fab_fb_share);
+        fabSacanear = (FloatingActionButton) findViewById(R.id.fab_sacanear);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

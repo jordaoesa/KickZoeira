@@ -60,6 +60,7 @@ public class SobreFragment extends Fragment {
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Sobre Zoeira");
 
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
+        ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
 
         return rootView;
     }

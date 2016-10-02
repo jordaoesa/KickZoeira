@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
     private PieChart pie_chart;
     private RadarChart radar_chart;
     private Activity main_act;
-    private Button btn_evaluate;
+//    private Button btn_evaluate;
     private Dialog dialog;
     private ProgressDialog progressDialog;
     private ProgressBar progress_bar_apelido;
@@ -142,19 +142,22 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_perfil, container, false);
-        btn_evaluate = (Button) rootView.findViewById(R.id.button_evaluate);
+//        btn_evaluate = (Button) rootView.findViewById(R.id.button_evaluate);
 
         if(isOnlyShow) {
             currentUser = observableUser;
-            btn_evaluate.setVisibility(View.GONE);
+//            btn_evaluate.setVisibility(View.GONE);
+            ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
         }
         else if (observableUser != null){
             currentUser = observableUser;
-            btn_evaluate.setVisibility(View.VISIBLE);
+//            btn_evaluate.setVisibility(View.VISIBLE);
+            ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.VISIBLE);
         }
         else{
             currentUser = new KickZoeiraUser(FirebaseAuth.getInstance().getCurrentUser());
-            btn_evaluate.setVisibility(View.GONE);
+//            btn_evaluate.setVisibility(View.GONE);
+            ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
         }
 
         if(currentUser == null){
@@ -217,7 +220,7 @@ public class ProfileFragment extends Fragment {
 
                         final PerfilStatistic perfil_statistic = new PerfilStatistic(main_act,pie_chart, radar_chart, user);
 
-                        btn_evaluate.setOnClickListener(new View.OnClickListener() {
+                        ((KickZoeiraMainActivity)getActivity()).fabSacanear.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog = new Dialog(main_act );
