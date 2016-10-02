@@ -157,6 +157,10 @@ public class ProfileFragment extends Fragment {
             btn_evaluate.setVisibility(View.GONE);
         }
 
+        if(currentUser == null){
+            currentUser = new KickZoeiraUser(FirebaseAuth.getInstance().getCurrentUser());
+        }
+
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Perfil Zoeira");
 

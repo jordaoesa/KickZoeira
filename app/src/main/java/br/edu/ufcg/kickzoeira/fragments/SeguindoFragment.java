@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,7 +77,7 @@ public class SeguindoFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.profile, menu);
-        MenuItem item = menu.findItem(R.id.search_item);
+        final MenuItem item = menu.findItem(R.id.search_item);
         final SearchView searchView = new SearchView(((KickZoeiraMainActivity) getActivity()).getSupportActionBar().getThemedContext());
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
         MenuItemCompat.setActionView(item, searchView);
@@ -85,6 +86,15 @@ public class SeguindoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(false);
+            }
+        });
+        ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.onActionViewCollapsed();
+                item.collapseActionView();
+                ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
             }
         });
 
@@ -99,8 +109,6 @@ public class SeguindoFragment extends Fragment {
                             String[] temp = info.split("\\|");
                             availableUsers.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
                         }
-
-
 
                         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             @Override
