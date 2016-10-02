@@ -100,8 +100,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:textSize="30dp"
+                        android:textColor="@color/textColorWhite"
+                        android:background="@color/colorPrimary"
                         android:textAlignment="center"
-                        android:textColor="@color/textColorBlack"
                         android:id="@+id/text_pie_title" />
 
                     <com.github.mikephil.charting.charts.PieChart
@@ -131,8 +132,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="30dp"
+                        android:layout_marginTop="20dp"
                         android:id="@+id/text_radar_title"
-                        android:textColor="@color/textColorBlack"
+                        android:textColor="@color/textColorWhite"
+                        android:background="@color/colorPrimary"
                         android:textAlignment="center"/>
 
                     <com.github.mikephil.charting.charts.RadarChart
@@ -151,8 +154,14 @@
                 android:id="@+id/button_evaluate"
                 android:textStyle="bold"
                 android:theme="@style/MyRaisedButton"
+                android:textColor="@color/textColorWhite"
                 android:visibility="gone"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorPrimaryDark"/>
+
         </LinearLayout>
     </ScrollView>
 

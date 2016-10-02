@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -37,6 +38,7 @@ public class StatisticPieChart {
     private int fominha = 0;
     private int enrolao = 0;
     private int morto = 0;
+    private Activity mainAct;
 
     private int total_avaliations =1;
 
@@ -48,6 +50,7 @@ public class StatisticPieChart {
     public StatisticPieChart(final Activity mainAct, PieChart piechart, KickZoeiraUser user){
         this.pie_chart = piechart;
         this.user = user;
+        this.mainAct  = mainAct;
 
         List<Integer> votes_count  = user.getPie_data();
         this.caceteiro = votes_count.get(0);
@@ -85,8 +88,8 @@ public class StatisticPieChart {
 
         Legend l = this.pie_chart.getLegend();
         l.setPosition(Legend.LegendPosition.ABOVE_CHART_CENTER);
-        l.setXEntrySpace(7);
-        l.setYEntrySpace(5);
+        l.setXEntrySpace(0);
+        l.setYEntrySpace(0);
 
     }
 
@@ -138,7 +141,7 @@ public class StatisticPieChart {
             vVals.add(this.v_data[i]);
         }
 
-        PieDataSet dataSet = new PieDataSet(yVals1, "Deficiência");
+        PieDataSet dataSet = new PieDataSet(yVals1, "");
 
 
         dataSet.setSliceSpace(3);
@@ -180,17 +183,60 @@ public class StatisticPieChart {
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(15f);
         data.setValueTextColor(Color.BLACK);
-
-
         this.pie_chart.setDescription("");
-
         this.pie_chart.setData(data);
-
         this.pie_chart.highlightValues(null);
 
+
+
+
+        this.pie_chart.setData(data);
+        this.pie_chart.setDragDecelerationFrictionCoef(0.95f);
+
+
+        this.pie_chart.setDrawHoleEnabled(true);
+        this.pie_chart.setHoleColor(Color.WHITE);
+
+        this.pie_chart.setTransparentCircleColor(Color.WHITE);
+        this.pie_chart.setTransparentCircleAlpha(110);
+
+        this.pie_chart.setHoleRadius(58f);
+        this.pie_chart.setTransparentCircleRadius(61f);
+
+        this.pie_chart.setDrawCenterText(true);
+
+        this.pie_chart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        this.pie_chart.setRotationEnabled(true);
+        this.pie_chart.setHighlightPerTapEnabled(true);
+
+        // mChart.setUnit(" €");
+        // mChart.setDrawUnitsInChart(true);
+
+        this.pie_chart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+
+
+        Legend l = this.pie_chart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);
+
+        // entry label styling
+        this.pie_chart.setEntryLabelColor(Color.WHITE);
+        this.pie_chart.setEntryLabelTextSize(12f);
+
+
+
+
+
+
+
+
+
         this.pie_chart.invalidate();
-
-
-
     }
 }
