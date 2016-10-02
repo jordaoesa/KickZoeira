@@ -49,13 +49,14 @@ import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.fragments.ProfileFragment;
 import br.edu.ufcg.kickzoeira.fragments.SeguidoresFragment;
 import br.edu.ufcg.kickzoeira.fragments.SeguindoFragment;
+import br.edu.ufcg.kickzoeira.fragments.SeguirFragment;
 import br.edu.ufcg.kickzoeira.fragments.SimularFragment;
 import br.edu.ufcg.kickzoeira.fragments.SobreFragment;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class KickZoeiraMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, SeguindoFragment.OnFragmentInteractionListener, SeguidoresFragment.OnFragmentInteractionListener, SimularFragment.OnFragmentInteractionListener, SobreFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, SeguindoFragment.OnFragmentInteractionListener, SeguidoresFragment.OnFragmentInteractionListener, SimularFragment.OnFragmentInteractionListener, SobreFragment.OnFragmentInteractionListener, SeguirFragment.OnFragmentInteractionListener {
 
     public CollapsingToolbarLayout collapsingToolbar;
     public AppBarLayout appBarLayout;
@@ -240,6 +241,9 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         } else if (id == R.id.nav_seguidores) {
             ProfileFragment.isOnlyShow = true;
             fragmentClass = SeguidoresFragment.class;
+        } else if (id == R.id.nav_seguir) {
+            ProfileFragment.isOnlyShow = true;
+            fragmentClass = SeguirFragment.class;
         }
 //        else if (id == R.id.nav_simular) {
 //            fragmentClass = SimularFragment.class;
