@@ -139,16 +139,27 @@ public class ProfileFragment extends Fragment {
 
         apelido = (TextView) rootView.findViewById(R.id.text_profile_name);
         progress_bar_apelido = (ProgressBar)  rootView.findViewById(R.id.login_progress_apelido);
+
+
+        System.out.println("#############################################################    onCreateView()");
         progress_bar_apelido.setVisibility(View.VISIBLE);
-        progress_bar_apelido.showContextMenu();
+
+
+
 
         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
-                apelido.setText(user.getApelido() != null ? user.getApelido() : "Apelido");
+
+                String apelido_texto = user.getApelido();
+                apelido.setVisibility(View.GONE);
+
+
+                apelido.setText(user.getApelido() != null ? apelido_texto : "Apelido");
 
                 progress_bar_apelido.setVisibility(View.GONE);
+                apelido.setVisibility(View.VISIBLE);
             }
 
             @Override
