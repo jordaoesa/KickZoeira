@@ -1,17 +1,26 @@
 package br.edu.ufcg.kickzoeira.adapters;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -26,16 +35,20 @@ import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 
 public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder> {
 
+    private Context context;
+    private KickZoeiraUser currentUser;
     private List<KickZoeiraUser> users;
 
-    public SeguirAdapter(List<KickZoeiraUser> users) {
+    public SeguirAdapter(List<KickZoeiraUser> users, Context context, KickZoeiraUser currentUser) {
         this.users = users;
+        this.context = context;
+        this.currentUser = currentUser;
     }
 
     @Override
     public SeguirAdapter.UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_user, parent, false);
-        return new SeguirAdapter.UserHolder(v);
+        return new SeguirAdapter.UserHolder(v, context, currentUser);
     }
 
     @Override
@@ -85,7 +98,7 @@ public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder
         public TextView tvEmail;
         public KickZoeiraUser user;
 
-        public UserHolder(final View itemView) {
+        public UserHolder(final View itemView, final Context context, final KickZoeiraUser currentUser) {
             super(itemView);
             ivUser = (ImageView) itemView.findViewById(R.id.profile_image);
             tvApelido = (TextView) itemView.findViewById(R.id.tv_apelido);
@@ -94,9 +107,33 @@ public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    ProfileFragment fragment = ProfileFragment.newInstance(user);
-//                    KickZoeiraMainActivity activity = (KickZoeiraMainActivity)itemView.getContext();
-//                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentView, fragment).addToBackStack(null).commit();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Deseja seguir '" + user.getEmail() + "'?");
+
+                    builder.setPositiveButton("seguir", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            System.out.println("seguindo: " + currentUser.getSeguindo().size());
+                            currentUser.addSeguindo(user.getId() + "|" + user.getEmail() + "|" + user.getApelido());
+                            System.out.println("seguindo: " + currentUser.getSeguindo().size());
+
+                            FirebaseDatabase.getInstance().getReference("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(context, "user adicionado", Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                        }
+                    });
+                    builder.setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    builder.show();
                 }
             });
         }

@@ -146,7 +146,7 @@ public class SeguirFragment extends Fragment {
                                     }
                                 }
 
-                                arrayAdapter = new SeguirAdapter(allUsers);
+                                arrayAdapter = new SeguirAdapter(allUsers, getContext(), currUser);
                                 recyclerView.setAdapter(arrayAdapter);
                             }
 
@@ -174,11 +174,6 @@ public class SeguirFragment extends Fragment {
 
         return rootView;
     }
-
-//    private boolean isNotInFollowing(String email) {
-//
-//        return true;
-//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
