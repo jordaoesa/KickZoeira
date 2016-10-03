@@ -193,6 +193,14 @@ public class SeguindoFragment extends Fragment {
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
         ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
 
+        ((KickZoeiraMainActivity)getContext()).actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        ((KickZoeiraMainActivity)getActivity()).actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main_act.onBackPressed();
+            }
+        });
+
         return rootView;
     }
 

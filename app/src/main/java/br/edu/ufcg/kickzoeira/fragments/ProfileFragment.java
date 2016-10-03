@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -59,6 +60,8 @@ import java.io.ByteArrayOutputStream;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
+import br.edu.ufcg.kickzoeira.adapters.SeguidoresAdapter;
+import br.edu.ufcg.kickzoeira.adapters.SeguindoAdapter;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 import br.edu.ufcg.kickzoeira.model.PerfilStatistic;
 import br.edu.ufcg.kickzoeira.utilities.GlobalStorage;
@@ -87,6 +90,8 @@ public class ProfileFragment extends Fragment {
     private Dialog dialog;
     private ProgressDialog progressDialog;
     private ProgressBar progress_bar_apelido;
+    private Button seguindo;
+    private Button seguidores;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -163,6 +168,7 @@ public class ProfileFragment extends Fragment {
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Perfil Zoeira");
 
+        if(observableUser == null) ((KickZoeiraMainActivity)getContext()).actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
 
         // TESTE
 
@@ -175,6 +181,29 @@ public class ProfileFragment extends Fragment {
         apelido.setVisibility(View.GONE);
         progress_bar_apelido = (ProgressBar)  rootView.findViewById(R.id.login_progress_apelido);
         progress_bar_apelido.setVisibility(View.VISIBLE);
+
+        seguindo = (Button) rootView.findViewById(R.id.btn_seguindo);
+        seguidores = (Button) rootView.findViewById(R.id.btn_seguidores);
+
+        final ProfileFragment frag = this;
+        seguindo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileFragment.isOnlyShow = false;
+                SeguindoFragment fragment = SeguindoFragment.newInstance();
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentView, fragment).addToBackStack(null).commit();
+            }
+        });
+        seguidores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileFragment.isOnlyShow = false;
+                SeguidoresFragment fragment = SeguidoresFragment.newInstance();
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentView, fragment).addToBackStack(null).commit();
+            }
+        });
 
 
         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(currentUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -198,6 +227,13 @@ public class ProfileFragment extends Fragment {
         if(observableUser == null) ivProfilePicture.setOnClickListener(onClick);
         retrieveProfilePicture();
 
+        if(observableUser == null){
+            seguindo.setEnabled(true);
+            seguidores.setEnabled(true);
+        }else{
+            seguindo.setEnabled(false);
+            seguidores.setEnabled(false);
+        }
 
         if(observableUser == null) apelido.setOnClickListener(onClick);
 
@@ -415,7 +451,7 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
-                    GlobalStorage.profilePictures.put(currentUser.getId(), BitmapFactory.decodeResource(getResources(), R.drawable.ic_person_outline));
+                    GlobalStorage.profilePictures.put(currentUser.getId(), BitmapFactory.decodeResource(main_act.getResources(), R.drawable.ic_person_outline));
                 }
             });
         }

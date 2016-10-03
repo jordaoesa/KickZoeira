@@ -78,6 +78,8 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_kick_zoeira_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
@@ -213,6 +215,8 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+        ProfileFragment.observableUser = null;
+        ProfileFragment.isOnlyShow = false;
     }
 
     @Override
@@ -246,13 +250,15 @@ public class KickZoeiraMainActivity extends AppCompatActivity
             ProfileFragment.observableUser = null;
             fragmentClass = ProfileFragment.class;
             //collapsingToolbar.setTitle(item.getTitle());
-        } else if (id == R.id.nav_seguindo) {
-            ProfileFragment.isOnlyShow = false;
-            fragmentClass = SeguindoFragment.class;
-        } else if (id == R.id.nav_seguidores) {
-            ProfileFragment.isOnlyShow = true;
-            fragmentClass = SeguidoresFragment.class;
-        } else if (id == R.id.nav_seguir) {
+        }
+//        else if (id == R.id.nav_seguindo) {
+//            ProfileFragment.isOnlyShow = false;
+//            fragmentClass = SeguindoFragment.class;
+//        } else if (id == R.id.nav_seguidores) {
+//            ProfileFragment.isOnlyShow = true;
+//            fragmentClass = SeguidoresFragment.class;
+//        }
+        else if (id == R.id.nav_seguir) {
             ProfileFragment.isOnlyShow = true;
             fragmentClass = SeguirFragment.class;
         }
