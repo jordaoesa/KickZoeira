@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -148,6 +149,59 @@ public class SeguirFragment extends Fragment {
 
                                 arrayAdapter = new SeguirAdapter(allUsers, getContext(), currUser);
                                 recyclerView.setAdapter(arrayAdapter);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        List<String> followingEmails = new ArrayList<String>();
+                                        KickZoeiraUser currUser = dataSnapshot.getValue(KickZoeiraUser.class);
+                                        for (String info : currUser.getSeguindo()){
+                                            String[] temp = info.split("\\|");
+                                            followingEmails.add(temp[1]);
+                                        }
+
+                                        List<KickZoeiraUser> allUsers = new ArrayList<KickZoeiraUser>();
+                                        for(String key : map.keySet()){
+                                            if(!map.get(key).getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()) && !followingEmails.contains(map.get(key).getEmail())){
+                                                allUsers.add(map.get(key));
+                                            }
+                                        }
+
+                                        arrayAdapter = new SeguirAdapter(allUsers, getContext(), currUser);
+                                        recyclerView.setAdapter(arrayAdapter);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
                             }
 
                             @Override

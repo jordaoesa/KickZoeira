@@ -54,7 +54,7 @@ public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder
     @Override
     public void onBindViewHolder(SeguirAdapter.UserHolder holder, int position) {
         KickZoeiraUser user = users.get(position);
-        holder.tvApelido.setText(user.getApelido());
+        holder.tvApelido.setText(user.getApelido() != null ? user.getApelido() : "Apelido");
         holder.tvEmail.setText(user.getEmail());
         holder.user = user;
         if (user.getPhotoUrl() == null) {
@@ -114,16 +114,16 @@ public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
-                            System.out.println("seguindo: " + currentUser.getSeguindo().size());
-                            currentUser.addSeguindo(user.getId() + "|" + user.getEmail() + "|" + user.getApelido());
-                            System.out.println("seguindo: " + currentUser.getSeguindo().size());
+                            currentUser.addSeguindo(user.getId() + "|" + user.getEmail() + "|" + (user.getApelido() != null ? user.getApelido() : "Apelido"));
 
                             FirebaseDatabase.getInstance().getReference("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(context, "user adicionado", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, "seguindo '" + user.getEmail() + "'.", Toast.LENGTH_LONG).show();
                                 }
                             });
+
+
 
                         }
                     });
