@@ -214,7 +214,7 @@ public class ProfileFragment extends Fragment {
 
                         final PerfilStatistic perfil_statistic = new PerfilStatistic(main_act,pie_chart, radar_chart, user);
 
-                        ((KickZoeiraMainActivity)getActivity()).fabSacanear.setOnClickListener(new View.OnClickListener() {
+                        ((KickZoeiraMainActivity)main_act).fabSacanear.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog = new Dialog(main_act );
