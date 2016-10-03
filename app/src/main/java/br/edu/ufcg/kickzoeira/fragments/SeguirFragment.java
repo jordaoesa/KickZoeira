@@ -99,13 +99,77 @@ public class SeguirFragment extends Fragment {
                 ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
             }
         });
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("kickzoeirauser").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        GenericTypeIndicator<HashMap<String, KickZoeiraUser>> list = new GenericTypeIndicator<HashMap<String, KickZoeiraUser>>() {};
+                        final HashMap<String, KickZoeiraUser> map = dataSnapshot.getValue(list);
+
+                        mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                List<String> followingEmails = new ArrayList<String>();
+                                final KickZoeiraUser currUser = dataSnapshot.getValue(KickZoeiraUser.class);
+                                for (String info : currUser.getSeguindo()){
+                                    String[] temp = info.split("\\|");
+                                    followingEmails.add(temp[1]);
+                                }
+
+                                final List<KickZoeiraUser> allUsers = new ArrayList<KickZoeiraUser>();
+                                for(String key : map.keySet()){
+                                    if(!map.get(key).getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()) && !followingEmails.contains(map.get(key).getEmail())){
+                                        allUsers.add(map.get(key));
+                                    }
+                                }
+
+                                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                                    @Override
+                                    public boolean onQueryTextSubmit(String query) {
+                                        //TODO
+                                        return false;
+                                    }
+                                    @Override
+                                    public boolean onQueryTextChange(String newText) {
+                                        List<KickZoeiraUser> usersToShow = new ArrayList<KickZoeiraUser>();
+                                        for(KickZoeiraUser usr : allUsers){
+                                            if(usr.getEmail().contains(newText)){
+                                                usersToShow.add(usr);
+                                            }
+                                        }
+
+                                        arrayAdapter = new SeguirAdapter(usersToShow, getContext(), currUser);
+                                        recyclerView.setAdapter(arrayAdapter);
+                                        return true;
+                                    }
+                                });
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("FIREBASE_WARNING", "getUser:onCancelled", databaseError.toException());
+                        // ...
+                    }
+                });
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+        setHasOptionsMenu(true);
     }
 
     @Override
