@@ -24,6 +24,7 @@ import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
 import br.edu.ufcg.kickzoeira.fragments.ProfileFragment;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
+import br.edu.ufcg.kickzoeira.utilities.GlobalStorage;
 
 /**
  * Created by jordaoesa on 10/1/16.
@@ -32,9 +33,11 @@ import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.UserHolder> {
 
     private List<KickZoeiraUser> users;
+    private Context context;
 
-    public SeguidoresAdapter(List<KickZoeiraUser> users){
+    public SeguidoresAdapter(List<KickZoeiraUser> users, Context context){
         this.users = users;
+        this.context = context;
     }
 
     @Override
@@ -49,14 +52,14 @@ public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.Us
         holder.tvApelido.setText(user.getApelido());
         holder.tvEmail.setText(user.getEmail());
         holder.user = user;
-        if(user.getPhotoUrl() == null){
-            retrieveProfilePicture(holder.ivUser, user);
+        if(GlobalStorage.profilePictures.get(user.getId()) != null){
+            holder.ivUser.setImageBitmap(GlobalStorage.profilePictures.get(user.getId()));
         }else{
-            holder.ivUser.setImageURI(user.getPhotoUrl());
+            retrieveProfilePicture(holder.ivUser, user);
         }
     }
 
-    private void retrieveProfilePicture(final ImageView iv, KickZoeiraUser user) {
+    private void retrieveProfilePicture(final ImageView iv, final KickZoeiraUser user) {
         String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
         path = path.replace("{id}", user.getId());
         StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
@@ -64,15 +67,16 @@ public class SeguidoresAdapter extends RecyclerView.Adapter<SeguidoresAdapter.Us
         islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 iv.setImageBitmap(bitmap);
+                GlobalStorage.profilePictures.put(user.getId(), bitmap);
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
+                GlobalStorage.profilePictures.put(user.getId(), BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_person_outline));
             }
         });
 

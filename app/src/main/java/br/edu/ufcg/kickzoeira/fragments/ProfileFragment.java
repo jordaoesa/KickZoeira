@@ -61,6 +61,7 @@ import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 import br.edu.ufcg.kickzoeira.model.PerfilStatistic;
+import br.edu.ufcg.kickzoeira.utilities.GlobalStorage;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -398,21 +399,26 @@ public class ProfileFragment extends Fragment {
         path = path.replace("{id}", currentUser.getId());
         StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
 
-        islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
+        if(GlobalStorage.profilePictures.get(currentUser.getId()) != null){
+            ivProfilePicture.setImageBitmap(GlobalStorage.profilePictures.get(currentUser.getId()));
+        }else {
+            islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                ivProfilePicture.setImageBitmap(bitmap);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    ivProfilePicture.setImageBitmap(bitmap);
+                    GlobalStorage.profilePictures.put(currentUser.getId(), bitmap);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    GlobalStorage.profilePictures.put(currentUser.getId(), BitmapFactory.decodeResource(getResources(), R.drawable.ic_person_outline));
+                }
+            });
+        }
     }
 
     private View.OnClickListener onClick = new View.OnClickListener() {

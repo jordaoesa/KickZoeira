@@ -53,6 +53,7 @@ import br.edu.ufcg.kickzoeira.fragments.SeguirFragment;
 import br.edu.ufcg.kickzoeira.fragments.SimularFragment;
 import br.edu.ufcg.kickzoeira.fragments.SobreFragment;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
+import br.edu.ufcg.kickzoeira.utilities.GlobalStorage;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class KickZoeiraMainActivity extends AppCompatActivity
@@ -65,6 +66,8 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     public ActionBarDrawerToggle actionBarDrawerToggle;
 
     private static View headerView;
+
+    private static KickZoeiraMainActivity main_act;
 
     public FloatingActionButton fabFacebookShare;
     public FloatingActionButton fabSacanear;
@@ -89,6 +92,8 @@ public class KickZoeiraMainActivity extends AppCompatActivity
 
         fabFacebookShare = (FloatingActionButton) findViewById(R.id.fab_fb_share);
         fabSacanear = (FloatingActionButton) findViewById(R.id.fab_sacanear);
+
+        main_act = (KickZoeiraMainActivity) this;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -172,25 +177,31 @@ public class KickZoeiraMainActivity extends AppCompatActivity
 
     }
 
-    private static void retrieveProfilePicture(KickZoeiraUser user, final CircleImageView iv) {
+    private static void retrieveProfilePicture(final KickZoeiraUser user, final CircleImageView iv) {
         String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
         path = path.replace("{id}", user.getId());
         StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
 
-        islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
+        if(GlobalStorage.profilePictures.get(user.getId()) != null){
+            iv.setImageBitmap(GlobalStorage.profilePictures.get(user.getId()));
+        }else{
+            islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                iv.setImageBitmap(bitmap);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    iv.setImageBitmap(bitmap);
+                    GlobalStorage.profilePictures.put(user.getId(), bitmap);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    GlobalStorage.profilePictures.put(user.getId(), BitmapFactory.decodeResource(main_act.getApplicationContext().getResources(), R.drawable.ic_person_outline));
+                }
+            });
+        }
 
     }
 

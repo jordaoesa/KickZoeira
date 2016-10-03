@@ -54,6 +54,8 @@ public class SeguindoFragment extends Fragment {
     private List<KickZoeiraUser> users;
     private DatabaseReference mDatabase;
 
+    private static KickZoeiraMainActivity main_act;
+
     public SeguindoFragment() {
         // Required empty public constructor
     }
@@ -98,6 +100,8 @@ public class SeguindoFragment extends Fragment {
             }
         });
 
+        main_act = (KickZoeiraMainActivity) getActivity();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(
                 new ValueEventListener() {
@@ -124,7 +128,7 @@ public class SeguindoFragment extends Fragment {
                                         usersToShow.add(usr);
                                     }
                                 }
-                                arrayAdapter = new SeguindoAdapter(usersToShow);
+                                arrayAdapter = new SeguindoAdapter(usersToShow, main_act.getApplicationContext());
                                 recyclerView.setAdapter(arrayAdapter);
                                 return true;
                             }
@@ -158,6 +162,8 @@ public class SeguindoFragment extends Fragment {
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        main_act = (KickZoeiraMainActivity) getActivity();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -170,7 +176,7 @@ public class SeguindoFragment extends Fragment {
                             String[] temp = info.split("\\|");
                             users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
                         }
-                        arrayAdapter = new SeguindoAdapter(users);
+                        arrayAdapter = new SeguindoAdapter(users, main_act.getApplicationContext());
                         recyclerView.setAdapter(arrayAdapter);
                     }
 

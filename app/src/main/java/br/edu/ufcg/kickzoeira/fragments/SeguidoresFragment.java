@@ -50,6 +50,8 @@ public class SeguidoresFragment extends Fragment {
     private List<KickZoeiraUser> users;
     private OnFragmentInteractionListener mListener;
 
+    private static KickZoeiraMainActivity main_act;
+
     public SeguidoresFragment() {
         // Required empty public constructor
     }
@@ -94,6 +96,9 @@ public class SeguidoresFragment extends Fragment {
             }
         });
 
+
+        main_act = (KickZoeiraMainActivity) getActivity();
+
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(
                 new ValueEventListener() {
@@ -120,7 +125,7 @@ public class SeguidoresFragment extends Fragment {
                                         usersToShow.add(usr);
                                     }
                                 }
-                                arrayAdapter = new SeguidoresAdapter(usersToShow);
+                                arrayAdapter = new SeguidoresAdapter(usersToShow, main_act.getApplicationContext());
                                 recyclerView.setAdapter(arrayAdapter);
                                 return true;
                             }
@@ -154,6 +159,8 @@ public class SeguidoresFragment extends Fragment {
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        main_act = (KickZoeiraMainActivity) getActivity();
+
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguidores Zoeiros");
 
@@ -171,7 +178,7 @@ public class SeguidoresFragment extends Fragment {
                             users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
                         }
 
-                        arrayAdapter = new SeguidoresAdapter(users);
+                        arrayAdapter = new SeguidoresAdapter(users, main_act.getApplicationContext());
                         recyclerView.setAdapter(arrayAdapter);
 
                     }
