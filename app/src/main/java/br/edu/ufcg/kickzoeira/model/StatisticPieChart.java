@@ -229,14 +229,6 @@ public class StatisticPieChart {
         this.pie_chart.setEntryLabelColor(Color.WHITE);
         this.pie_chart.setEntryLabelTextSize(12f);
 
-
-
-
-
-
-
-
-
         this.pie_chart.invalidate();
     }
 }
