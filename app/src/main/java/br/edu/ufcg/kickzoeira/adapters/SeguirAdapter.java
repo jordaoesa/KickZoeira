@@ -58,7 +58,7 @@ public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder
         holder.tvEmail.setText(user.getEmail());
         holder.user = user;
         if (user.getPhotoUrl() == null) {
-            retrieveProfilePicture(holder.ivUser, user);
+            //retrieveProfilePicture(holder.ivUser, user);
         } else {
             holder.ivUser.setImageURI(user.getPhotoUrl());
         }
@@ -119,7 +119,17 @@ public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder
                             FirebaseDatabase.getInstance().getReference("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(context, "seguindo '" + user.getEmail() + "'.", Toast.LENGTH_LONG).show();
+
+                                    user.addSeguidor(currentUser.getId() + "|" + currentUser.getEmail() + "|" + (currentUser.getApelido() != null ? currentUser.getApelido() : "Apelido"));
+
+                                    FirebaseDatabase.getInstance().getReference("kickzoeirauser").child(user.getId()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            Toast.makeText(context, "seguindo '" + user.getEmail() + "'.", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
                                 }
                             });
 

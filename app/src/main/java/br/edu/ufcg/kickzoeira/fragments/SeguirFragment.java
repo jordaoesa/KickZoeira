@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
@@ -101,7 +103,7 @@ public class SeguirFragment extends Fragment {
         });
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("kickzoeirauser").addListenerForSingleValueEvent(
+        mDatabase.child("kickzoeirauser").limitToFirst(20).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -185,7 +187,7 @@ public class SeguirFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("kickzoeirauser").addListenerForSingleValueEvent(
+        mDatabase.child("kickzoeirauser").limitToFirst(20).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -224,7 +226,6 @@ public class SeguirFragment extends Fragment {
                         mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
                             }
 
                             @Override
@@ -260,17 +261,14 @@ public class SeguirFragment extends Fragment {
 
                             @Override
                             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
                             }
 
                             @Override
                             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-
                             }
                         });
 
