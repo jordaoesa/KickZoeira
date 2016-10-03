@@ -43,7 +43,7 @@ public class KickZoeiraUser {
         this.pie_data.add(0);
         this.pie_data.add(0);
         this.pie_data.add(0);
-        this.pie_data.add(1);
+        this.pie_data.add(0);
 
         this.radar_data.add(0);
         this.radar_data.add(0);
@@ -51,7 +51,7 @@ public class KickZoeiraUser {
         this.radar_data.add(0);
         this.radar_data.add(0);
         this.radar_data.add(0);
-        this.radar_data.add(1);
+        this.radar_data.add(0);
 
     }
 
@@ -70,7 +70,7 @@ public class KickZoeiraUser {
         this.pie_data.add(0);
         this.pie_data.add(0);
         this.pie_data.add(0);
-        this.pie_data.add(1);
+        this.pie_data.add(0);
 
         this.radar_data.add(0);
         this.radar_data.add(0);
@@ -78,7 +78,7 @@ public class KickZoeiraUser {
         this.radar_data.add(0);
         this.radar_data.add(0);
         this.radar_data.add(0);
-        this.radar_data.add(1);
+        this.radar_data.add(0);
 
     }
 

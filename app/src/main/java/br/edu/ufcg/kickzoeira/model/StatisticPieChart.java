@@ -116,12 +116,14 @@ public class StatisticPieChart {
     }
 
     private void update_y_data(){
-        this.y_data[0] = this.caceteiro*100/this.total_avaliations;
-        this.y_data[1] = this.brigao*100/this.total_avaliations;
-        this.y_data[2] = this.reclamao*100/this.total_avaliations;
-        this.y_data[3] = this.fominha*100/this.total_avaliations;
-        this.y_data[4] = this.enrolao*100/this.total_avaliations;
-        this.y_data[5] = this.morto*100/this.total_avaliations;
+        int ta=this.total_avaliations;
+        if(ta==0)ta = 1;
+        this.y_data[0] = this.caceteiro*100/ta;
+        this.y_data[1] = this.brigao*100/ta;
+        this.y_data[2] = this.reclamao*100/ta;
+        this.y_data[3] = this.fominha*100/ta;
+        this.y_data[4] = this.enrolao*100/ta;
+        this.y_data[5] = this.morto*100/ta;
         this.addData();
     }
 
@@ -132,7 +134,11 @@ public class StatisticPieChart {
         ArrayList<PieEntry> yVals1 = new ArrayList<>();
 
         for (int i = 0; i < this.y_data.length; i++) {
-            yVals1.add(new PieEntry(this.y_data[i], this.v_data[i]));
+            String text;
+            if(this.y_data[i]<=0) text  = "";
+            else text  = this.v_data[i];
+
+            yVals1.add(new PieEntry(this.y_data[i], text));
         }
 
         ArrayList<String> vVals = new ArrayList<>();
@@ -147,6 +153,7 @@ public class StatisticPieChart {
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(10);
         dataSet.setValueTextColor(Color.BLACK);
+
 
         ArrayList<Integer> colors = new ArrayList<>();
         ArrayList<Integer> colors2 = new ArrayList<>();
@@ -183,6 +190,8 @@ public class StatisticPieChart {
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(15f);
         data.setValueTextColor(Color.BLACK);
+
+
         this.pie_chart.setDescription("");
         this.pie_chart.setData(data);
         this.pie_chart.highlightValues(null);
@@ -216,11 +225,13 @@ public class StatisticPieChart {
         this.pie_chart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
 
 
+
         Legend l = this.pie_chart.getLegend();
+        this.pie_chart.getLegend().setEnabled(false);
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
+        l.setDrawInside(true);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
