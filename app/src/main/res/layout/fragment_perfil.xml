@@ -217,11 +217,54 @@
                         android:textAlignment="center"
                         android:id="@+id/text_pie_title" />
 
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/pie_chart"
-                        android:layout_margin="30dp"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="350dp" />
+                        android:layout_height="wrap_content">
+
+
+                        <RelativeLayout
+                            android:id="@+id/rl_info_user1"
+                            android:orientation="vertical"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:visibility="invisible">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:id="@+id/pic_profile1"
+                                app:civ_border_color="#FFFFFF"
+                                app:civ_border_width="2dp"
+                                android:src="@drawable/ic_person_outline"
+                                android:layout_gravity="center"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginBottom="5dp"/>
+
+
+                            <TextView
+                                android:layout_below="@id/pic_profile1"
+                                android:id="@+id/text_profile_name1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Apelido"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"
+                                android:textSize="10dp"
+                                android:textColor="@color/textColorBlack"/>
+
+                        </RelativeLayout>
+
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pie_chart"
+                            android:layout_margin="30dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="350dp" />
+
+                    </FrameLayout>
+
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -250,29 +293,54 @@
                         android:background="@color/colorPrimary"
                         android:textAlignment="center"/>
 
-                    <com.github.mikephil.charting.charts.RadarChart
-                        android:id="@+id/radar_chart"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_margin="30dp"
-                        android:layout_height="350dp" />
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_info_user2"
+                            android:orientation="vertical"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:visibility="invisible">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:id="@+id/pic_profile2"
+                                app:civ_border_color="#FFFFFF"
+                                app:civ_border_width="2dp"
+                                android:src="@drawable/ic_person_outline"
+                                android:layout_gravity="center"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginBottom="5dp"/>
+
+
+                            <TextView
+                                android:layout_below="@id/pic_profile2"
+                                android:id="@+id/text_profile_name2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Apelido"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"
+                                android:textSize="10dp"
+                                android:textColor="@color/textColorBlack"/>
+
+                        </RelativeLayout>
+
+                        <com.github.mikephil.charting.charts.RadarChart
+                            android:id="@+id/radar_chart"
+                            android:layout_width="match_parent"
+                            android:layout_margin="30dp"
+                            android:layout_height="350dp" />
+
+                    </FrameLayout>
+
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
-
-            <!--<Button-->
-                <!--android:text="Sacanear"-->
-                <!--style="?android:textAppearanceSmall"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/button_evaluate"-->
-                <!--android:textStyle="bold"-->
-                <!--android:theme="@style/MyRaisedButton"-->
-                <!--android:textColor="@color/textColorWhite"-->
-                <!--android:visibility="gone"-->
-                <!--android:layout_marginBottom="40dp"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:background="@color/colorPrimaryDark"/>-->
 
         </LinearLayout>
     </ScrollView>

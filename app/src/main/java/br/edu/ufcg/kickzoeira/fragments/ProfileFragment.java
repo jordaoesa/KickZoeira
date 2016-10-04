@@ -30,8 +30,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -55,6 +57,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 
@@ -343,8 +347,21 @@ public class ProfileFragment extends Fragment {
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                RelativeLayout rl1 = (RelativeLayout) rootView.findViewById(R.id.rl_info_user1);;
+                RelativeLayout rl2 = (RelativeLayout) rootView.findViewById(R.id.rl_info_user2);;
+                rl1.setVisibility(View.VISIBLE);
+                rl2.setVisibility(View.VISIBLE);
+
+                ((ImageView)rootView.findViewById(R.id.pic_profile1)).setImageBitmap(GlobalStorage.profilePictures.get(currentUser.getId()));
+                ((TextView)rootView.findViewById(R.id.text_profile_name1)).setText((currentUser.getApelido() != null ? currentUser.getApelido() : "Zoeiro"));
+
+                ((ImageView)rootView.findViewById(R.id.pic_profile2)).setImageBitmap(GlobalStorage.profilePictures.get(currentUser.getId()));
+                ((TextView)rootView.findViewById(R.id.text_profile_name2)).setText((currentUser.getApelido() != null ? currentUser.getApelido() : "Zoeiro"));
+
+
                 View fbShareDeficiencia = rootView.findViewById(R.id.fb_share_deficiencia);
                 fbShareDeficiencia.setBackgroundColor(Color.WHITE);
+
                 View fbShareHumilhacao = rootView.findViewById(R.id.fb_share_humilhacao);
                 fbShareHumilhacao.setBackgroundColor(Color.WHITE);
                 ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
@@ -361,6 +378,8 @@ public class ProfileFragment extends Fragment {
 
                 SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).addPhoto(photo2).build();
                 ShareDialog.show(getActivity(), content);
+                rl1.setVisibility(View.GONE);
+                rl2.setVisibility(View.GONE);
                 fbShareDeficiencia.setBackgroundColor(Color.TRANSPARENT);
                 fbShareHumilhacao.setBackgroundColor(Color.TRANSPARENT);
             }
