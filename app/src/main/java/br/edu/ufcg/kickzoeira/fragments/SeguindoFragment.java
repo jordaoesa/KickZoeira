@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -194,12 +195,16 @@ public class SeguindoFragment extends Fragment {
         ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
 
         ((KickZoeiraMainActivity)getContext()).actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        ((KickZoeiraMainActivity)getActivity()).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         ((KickZoeiraMainActivity)getActivity()).actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                ((KickZoeiraMainActivity)getContext()).actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+                ((KickZoeiraMainActivity)getActivity()).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 main_act.onBackPressed();
             }
         });
+
 
         return rootView;
     }

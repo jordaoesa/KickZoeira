@@ -64,6 +64,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     public ImageView imageViewLogoTop;
     public Toolbar toolbar;
     public ActionBarDrawerToggle actionBarDrawerToggle;
+    public DrawerLayout drawerLayout;
 
     private static View headerView;
 
@@ -76,15 +77,16 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kick_zoeira_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        actionBarDrawerToggle.syncState();
         imageViewLogoTop = (ImageView) findViewById(R.id.backdrop);
         imageViewLogoTop.setImageResource(R.mipmap.estadio);
 
@@ -96,12 +98,6 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         fabSacanear = (FloatingActionButton) findViewById(R.id.fab_sacanear);
 
         main_act = (KickZoeiraMainActivity) this;
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
