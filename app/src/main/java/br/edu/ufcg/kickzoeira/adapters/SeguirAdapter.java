@@ -55,7 +55,7 @@ public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder
     @Override
     public void onBindViewHolder(SeguirAdapter.UserHolder holder, int position) {
         KickZoeiraUser user = users.get(position);
-        holder.tvApelido.setText(user.getApelido() != null ? user.getApelido() : "Apelido");
+        holder.tvApelido.setText(user.getApelido() != null ? user.getApelido() : "Zoeiro");
         holder.tvEmail.setText(user.getEmail());
         holder.user = user;
 
@@ -117,13 +117,13 @@ public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
-                            currentUser.addSeguindo(user.getId() + "|" + user.getEmail() + "|" + (user.getApelido() != null ? user.getApelido() : "Apelido"));
+                            currentUser.addSeguindo(user.getId() + "|" + user.getEmail() + "|" + (user.getApelido() != null ? user.getApelido() : "Zoeiro"));
 
                             FirebaseDatabase.getInstance().getReference("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
-                                    user.addSeguidor(currentUser.getId() + "|" + currentUser.getEmail() + "|" + (currentUser.getApelido() != null ? currentUser.getApelido() : "Apelido"));
+                                    user.addSeguidor(currentUser.getId() + "|" + currentUser.getEmail() + "|" + (currentUser.getApelido() != null ? currentUser.getApelido() : "Zoeiro"));
 
                                     FirebaseDatabase.getInstance().getReference("kickzoeirauser").child(user.getId()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
