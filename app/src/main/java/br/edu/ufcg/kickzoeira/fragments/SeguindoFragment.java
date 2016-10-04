@@ -231,6 +231,8 @@ public class SeguindoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        main_act.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        main_act.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
     }
 
     /**

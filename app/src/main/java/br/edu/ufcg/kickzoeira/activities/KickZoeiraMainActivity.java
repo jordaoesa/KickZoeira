@@ -66,6 +66,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public DrawerLayout drawerLayout;
 
+
     private static View headerView;
 
     private static KickZoeiraMainActivity main_act;

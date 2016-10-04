@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -167,6 +169,17 @@ public class SeguidoresFragment extends Fragment {
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
         ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
 
+        ((KickZoeiraMainActivity)getContext()).actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        ((KickZoeiraMainActivity)getActivity()).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        ((KickZoeiraMainActivity)getActivity()).actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main_act.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                main_act.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+                main_act.onBackPressed();
+            }
+        });
+
         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -215,6 +228,8 @@ public class SeguidoresFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        main_act.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        main_act.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
     }
 
     /**
@@ -231,8 +246,5 @@ public class SeguidoresFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
-
 
 }
