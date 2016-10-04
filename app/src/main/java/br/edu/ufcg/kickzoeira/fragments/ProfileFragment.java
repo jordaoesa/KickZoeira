@@ -434,7 +434,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void saveProfilePicture(Bitmap bitmap) {
+    private void saveProfilePicture(final Bitmap bitmap) {
         String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
         path = path.replace("{id}", currentUser.getId());
 
@@ -447,6 +447,7 @@ public class ProfileFragment extends Fragment {
         storageRef.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                GlobalStorage.profilePictures.put(currentUser.getId(), bitmap);
                 KickZoeiraMainActivity.setupHeader();
             }
         });
