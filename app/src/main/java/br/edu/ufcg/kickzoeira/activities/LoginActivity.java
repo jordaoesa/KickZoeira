@@ -80,8 +80,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             }
         });
 
-        edtEmail.setText("joao@mail.com");
-        edtPass.setText("joao123");
+        //edtEmail.setText("joao@mail.com");
+        //edtPass.setText("joao123");
 
         mAuth = FirebaseAuth.getInstance();
 
