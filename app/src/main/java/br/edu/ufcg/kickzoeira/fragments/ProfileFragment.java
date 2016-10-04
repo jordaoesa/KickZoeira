@@ -92,6 +92,10 @@ public class ProfileFragment extends Fragment {
     private ProgressBar progress_bar_apelido;
     private Button seguindo;
     private Button seguidores;
+    private TextView tvSeguindo;
+    private TextView tvSeguidores;
+    private ProgressBar progressSeguindo;
+    private ProgressBar progressSeguidores;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -184,6 +188,14 @@ public class ProfileFragment extends Fragment {
 
         seguindo = (Button) rootView.findViewById(R.id.btn_seguindo);
         seguidores = (Button) rootView.findViewById(R.id.btn_seguidores);
+        tvSeguindo = (TextView) rootView.findViewById(R.id.textView1);
+        tvSeguidores = (TextView) rootView.findViewById(R.id.textView2);
+
+        progressSeguindo = (ProgressBar) rootView.findViewById(R.id.progress_seguindo);
+        progressSeguidores = (ProgressBar) rootView.findViewById(R.id.progress_seguidores);
+        progressSeguindo.setVisibility(View.VISIBLE);
+        progressSeguidores.setVisibility(View.VISIBLE);
+
 
         final ProfileFragment frag = this;
         seguindo.setOnClickListener(new View.OnClickListener() {
@@ -213,7 +225,12 @@ public class ProfileFragment extends Fragment {
                 String apelido_texto = user.getApelido();
                 apelido.setText(user.getApelido() != null ? apelido_texto : "Apelido");
 
+                tvSeguindo.setText(user.getSeguindo().size()+"");
+                tvSeguidores.setText(user.getSeguidores().size()+"");
+
                 progress_bar_apelido.setVisibility(View.GONE);
+                progressSeguindo.setVisibility(View.GONE);
+                progressSeguidores.setVisibility(View.GONE);
                 apelido.setVisibility(View.VISIBLE);
             }
 
