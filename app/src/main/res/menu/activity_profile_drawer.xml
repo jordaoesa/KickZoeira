@@ -14,10 +14,10 @@
             android:id="@+id/nav_seguidores"
             android:icon="@drawable/ic_people_outline"
             android:title="Seguidores" />
-        <!--<item-->
-            <!--android:id="@+id/nav_simular"-->
-            <!--android:icon="@drawable/ic_timeline"-->
-            <!--android:title="Simular" />-->
+        <item
+            android:id="@+id/nav_simular"
+            android:icon="@drawable/ic_timeline"
+            android:title="Simular" />
         <item
             android:id="@+id/nav_sobre"
             android:icon="@drawable/ic_info_outline"

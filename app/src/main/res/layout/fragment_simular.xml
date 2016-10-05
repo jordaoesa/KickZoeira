@@ -1,13 +1,44 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="br.edu.ufcg.kickzoeira.fragments.SimularFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Simular Fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Escolha entre seus seguidores, monte seu time e veja a possibilidade de vitoria"
+        android:id="@+id/simulation_title"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:autoText="false" />
 
-</FrameLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time 1"
+        android:id="@+id/time1"
+        android:layout_below="@+id/simulation_title"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="62dp"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time 2"
+        android:id="@+id/time2"
+        android:layout_below="@+id/time1"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Simular"
+        android:id="@+id/gerarProb"
+        android:layout_below="@+id/time2"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>

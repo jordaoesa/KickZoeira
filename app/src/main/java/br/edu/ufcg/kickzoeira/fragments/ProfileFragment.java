@@ -400,7 +400,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void retrieveProfilePicture() {
-        String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
+        String path = "gs://kickzoeira-18931.appspot.com/kickzoeirauser/{id}/profile.png";
         path = path.replace("{id}", currentUser.getId());
         StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
 

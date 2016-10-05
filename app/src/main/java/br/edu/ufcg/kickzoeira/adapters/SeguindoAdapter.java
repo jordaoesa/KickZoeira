@@ -56,7 +56,7 @@ public class SeguindoAdapter extends RecyclerView.Adapter<SeguindoAdapter.UserHo
     }
 
     private void retrieveProfilePicture(final ImageView iv, KickZoeiraUser user) {
-        String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
+        String path = "gs://kickzoeira-18931.appspot.com/kickzoeirauser/{id}/profile.png";
         path = path.replace("{id}", user.getId());
         StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="2dp"
+    android:layout_margin="8dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="150dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_person_outline"
+            card_view:civ_border_color="@color/colorAccent"
+            card_view:civ_border_width="3dp"
+            android:layout_marginTop="12dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Apelido"
+            android:id="@+id/tv_apelido"
+            android:textAlignment="center"
+            android:layout_below="@+id/profile_image"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="13dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="mail@mail.com"
+            android:id="@+id/tv_name"
+            android:textAlignment="center"
+            android:layout_below="@+id/tv_apelido"
+            android:layout_alignParentStart="true" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New CheckBox"
+            android:id="@+id/checkBox"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/profile_image"
+            android:layout_alignBottom="@+id/profile_image" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

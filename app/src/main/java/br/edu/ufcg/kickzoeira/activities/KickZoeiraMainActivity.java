@@ -172,7 +172,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     }
 
     private static void retrieveProfilePicture(KickZoeiraUser user, final CircleImageView iv) {
-        String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
+        String path = "gs://kickzoeira-18931.appspot.com/kickzoeirauser/{id}/profile.png";
         path = path.replace("{id}", user.getId());
         StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
 
@@ -241,9 +241,9 @@ public class KickZoeiraMainActivity extends AppCompatActivity
             ProfileFragment.isOnlyShow = true;
             fragmentClass = SeguidoresFragment.class;
         }
-//        else if (id == R.id.nav_simular) {
-//            fragmentClass = SimularFragment.class;
-//        }
+        else if (id == R.id.nav_simular) {
+            fragmentClass = SimularFragment.class;
+        }
         else if (id == R.id.nav_sobre) {
             ProfileFragment.isOnlyShow = false;
             fragmentClass = SobreFragment.class;
