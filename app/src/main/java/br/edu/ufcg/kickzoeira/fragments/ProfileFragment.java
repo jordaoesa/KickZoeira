@@ -56,6 +56,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
@@ -326,6 +327,11 @@ public class ProfileFragment extends Fragment {
 
                                         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(user.getId()).setValue(user);
 
+                                        for (String seguidores : user.getSeguidores()){
+                                            String id = seguidores.split("\\|")[0];
+                                            atualizaSeguidores(id, user.getRadar_data());
+                                        }
+
                                         dialog.dismiss();
                                     }
                                 });
@@ -442,7 +448,53 @@ public class ProfileFragment extends Fragment {
     }
 
 
+    private void atualizaSeguidores(String id, final List<Integer> habilidades){
 
+        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(id).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        KickZoeiraUser user = dataSnapshot.getValue(KickZoeiraUser.class);
+
+                        List<String> seguindo = user.getSeguindo();
+                        int temp_position = -1;
+
+                        for (int i = 0; i < seguindo.size();i++){
+                            String[] temp = seguindo.get(i).split("\\|");
+
+                            if (temp[0].equals(currentUser.getId())){
+                                    temp_position = i;
+                                    break;
+                            }
+                        }
+
+                        if (temp_position != -1){
+                            String[] antigo = seguindo.get(temp_position).split("\\|");
+                            seguindo.remove(temp_position);
+                            String novo = antigo[0] + "|" + antigo[1] + "|" + antigo[2] + "|" + list2_String(habilidades,"|");;
+                            seguindo.add(novo);
+                            user.setSeguindo(seguindo);
+                            FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(user.getId()).setValue(user);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                }
+        );
+    }
+
+    private String list2_String(List<Integer> lista,String separador){
+        String ans = "";
+
+        for (int i :lista){
+            ans += String.valueOf(i) + separador;
+        }
+        return ans;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

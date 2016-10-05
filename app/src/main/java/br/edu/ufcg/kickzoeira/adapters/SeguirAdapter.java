@@ -116,14 +116,23 @@ public class SeguirAdapter extends RecyclerView.Adapter<SeguirAdapter.UserHolder
                     builder.setPositiveButton("seguir", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            String temp_seguindo = user.getId() + "|" + user.getEmail() + "|" + (user.getApelido() != null ? user.getApelido() : "Zoeiro") + "|";
 
-                            currentUser.addSeguindo(user.getId() + "|" + user.getEmail() + "|" + (user.getApelido() != null ? user.getApelido() : "Zoeiro"));
+                            for (int skills : user.getRadar_data()){
+                                temp_seguindo += skills + "|";
+                            }
+                            currentUser.addSeguindo(temp_seguindo);
 
                             FirebaseDatabase.getInstance().getReference("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    String temp_seguidor = currentUser.getId() + "|" + currentUser.getEmail() + "|" + (currentUser.getApelido() != null ? currentUser.getApelido() : "Zoeiro") + "|";
 
-                                    user.addSeguidor(currentUser.getId() + "|" + currentUser.getEmail() + "|" + (currentUser.getApelido() != null ? currentUser.getApelido() : "Zoeiro"));
+                                    for (int skills : currentUser.getRadar_data()){
+                                        temp_seguidor += skills + "|";
+                                    }
+
+                                    user.addSeguidor(temp_seguidor);
 
                                     FirebaseDatabase.getInstance().getReference("kickzoeirauser").child(user.getId()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

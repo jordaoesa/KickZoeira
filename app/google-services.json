@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "780903136306",
-    "firebase_url": "https://kick-zoeira-6bec2.firebaseio.com",
-    "project_id": "kick-zoeira-6bec2",
-    "storage_bucket": "kick-zoeira-6bec2.appspot.com"
+    "project_number": "954065521312",
+    "firebase_url": "https://kickzoeira-18931.firebaseio.com",
+    "project_id": "kickzoeira-18931",
+    "storage_bucket": "kickzoeira-18931.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:780903136306:android:84124f6d1ae22976",
+        "mobilesdk_app_id": "1:954065521312:android:84124f6d1ae22976",
         "android_client_info": {
           "package_name": "br.edu.ufcg.kickzoeira"
         }
       },
       "oauth_client": [
         {
-          "client_id": "780903136306-uibdujjj7einhbadeo07m9vp149bpuc1.apps.googleusercontent.com",
+          "client_id": "954065521312-jqf5nvje9cajeos7tjm4pc9iloe1nirj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBVfAiYBCMngSgL2Cm_pl_YNEis5cGLRkY"
+          "current_key": "AIzaSyCImmiPv1t8yC8-OWoO5lVEw_Lik3ZwuF8"
         }
       ],
       "services": {
