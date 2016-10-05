@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,6 +51,8 @@ public class SeguidoresFragment extends Fragment {
     private View rootView;
     private List<KickZoeiraUser> users;
     private OnFragmentInteractionListener mListener;
+
+    private static KickZoeiraMainActivity main_act;
 
     public SeguidoresFragment() {
         // Required empty public constructor
@@ -94,6 +98,9 @@ public class SeguidoresFragment extends Fragment {
             }
         });
 
+
+        main_act = (KickZoeiraMainActivity) getActivity();
+
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(
                 new ValueEventListener() {
@@ -120,7 +127,7 @@ public class SeguidoresFragment extends Fragment {
                                         usersToShow.add(usr);
                                     }
                                 }
-                                arrayAdapter = new SeguidoresAdapter(usersToShow);
+                                arrayAdapter = new SeguidoresAdapter(usersToShow, main_act.getApplicationContext());
                                 recyclerView.setAdapter(arrayAdapter);
                                 return true;
                             }
@@ -154,11 +161,24 @@ public class SeguidoresFragment extends Fragment {
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        main_act = (KickZoeiraMainActivity) getActivity();
+
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
         ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguidores Zoeiros");
 
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
         ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
+
+        ((KickZoeiraMainActivity)getContext()).actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        ((KickZoeiraMainActivity)getActivity()).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        ((KickZoeiraMainActivity)getActivity()).actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main_act.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                main_act.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+                main_act.onBackPressed();
+            }
+        });
 
         FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -171,7 +191,7 @@ public class SeguidoresFragment extends Fragment {
                             users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
                         }
 
-                        arrayAdapter = new SeguidoresAdapter(users);
+                        arrayAdapter = new SeguidoresAdapter(users, main_act.getApplicationContext());
                         recyclerView.setAdapter(arrayAdapter);
 
                     }
@@ -208,6 +228,8 @@ public class SeguidoresFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        main_act.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        main_act.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
     }
 
     /**
@@ -224,8 +246,5 @@ public class SeguidoresFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
-
 
 }

@@ -49,21 +49,27 @@ import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.fragments.ProfileFragment;
 import br.edu.ufcg.kickzoeira.fragments.SeguidoresFragment;
 import br.edu.ufcg.kickzoeira.fragments.SeguindoFragment;
+import br.edu.ufcg.kickzoeira.fragments.SeguirFragment;
 import br.edu.ufcg.kickzoeira.fragments.SimularFragment;
 import br.edu.ufcg.kickzoeira.fragments.SobreFragment;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
+import br.edu.ufcg.kickzoeira.utilities.GlobalStorage;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class KickZoeiraMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, SeguindoFragment.OnFragmentInteractionListener, SeguidoresFragment.OnFragmentInteractionListener, SimularFragment.OnFragmentInteractionListener, SobreFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, SeguindoFragment.OnFragmentInteractionListener, SeguidoresFragment.OnFragmentInteractionListener, SimularFragment.OnFragmentInteractionListener, SobreFragment.OnFragmentInteractionListener, SeguirFragment.OnFragmentInteractionListener {
 
     public CollapsingToolbarLayout collapsingToolbar;
     public AppBarLayout appBarLayout;
     public ImageView imageViewLogoTop;
     public Toolbar toolbar;
     public ActionBarDrawerToggle actionBarDrawerToggle;
+    public DrawerLayout drawerLayout;
+
 
     private static View headerView;
+
+    private static KickZoeiraMainActivity main_act;
 
     public FloatingActionButton fabFacebookShare;
     public FloatingActionButton fabSacanear;
@@ -72,13 +78,16 @@ public class KickZoeiraMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kick_zoeira_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        actionBarDrawerToggle.syncState();
         imageViewLogoTop = (ImageView) findViewById(R.id.backdrop);
         imageViewLogoTop.setImageResource(R.mipmap.estadio);
 
@@ -89,11 +98,7 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         fabFacebookShare = (FloatingActionButton) findViewById(R.id.fab_fb_share);
         fabSacanear = (FloatingActionButton) findViewById(R.id.fab_sacanear);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        main_act = (KickZoeiraMainActivity) this;
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -171,25 +176,35 @@ public class KickZoeiraMainActivity extends AppCompatActivity
 
     }
 
-    private static void retrieveProfilePicture(KickZoeiraUser user, final CircleImageView iv) {
+    private static void retrieveProfilePicture(final KickZoeiraUser user, final CircleImageView iv) {
         String path = "gs://kickzoeira-18931.appspot.com/kickzoeirauser/{id}/profile.png";
+
+//    private static void retrieveProfilePicture(final KickZoeiraUser user, final CircleImageView iv) {
+//        String path = "gs://kick-zoeira-6bec2.appspot.com/kickzoeirauser/{id}/profile.png";
+//>>>>>>> 3d8b5e0348376c31b3db500f9ccd3a1cc43ef4b8
         path = path.replace("{id}", user.getId());
         StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(path);
 
-        islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
+        if(GlobalStorage.profilePictures.get(user.getId()) != null){
+            iv.setImageBitmap(GlobalStorage.profilePictures.get(user.getId()));
+        }else{
+            islandRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                iv.setImageBitmap(bitmap);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    iv.setImageBitmap(bitmap);
+                    GlobalStorage.profilePictures.put(user.getId(), bitmap);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    GlobalStorage.profilePictures.put(user.getId(), BitmapFactory.decodeResource(main_act.getApplicationContext().getResources(), R.drawable.ic_person_outline));
+                }
+            });
+        }
 
     }
 
@@ -201,6 +216,8 @@ public class KickZoeiraMainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+        ProfileFragment.observableUser = null;
+        ProfileFragment.isOnlyShow = false;
     }
 
     @Override
@@ -234,12 +251,17 @@ public class KickZoeiraMainActivity extends AppCompatActivity
             ProfileFragment.observableUser = null;
             fragmentClass = ProfileFragment.class;
             //collapsingToolbar.setTitle(item.getTitle());
-        } else if (id == R.id.nav_seguindo) {
-            ProfileFragment.isOnlyShow = false;
-            fragmentClass = SeguindoFragment.class;
-        } else if (id == R.id.nav_seguidores) {
+        }
+//        else if (id == R.id.nav_seguindo) {
+//            ProfileFragment.isOnlyShow = false;
+//            fragmentClass = SeguindoFragment.class;
+//        } else if (id == R.id.nav_seguidores) {
+//            ProfileFragment.isOnlyShow = true;
+//            fragmentClass = SeguidoresFragment.class;
+//        }
+        else if (id == R.id.nav_seguir) {
             ProfileFragment.isOnlyShow = true;
-            fragmentClass = SeguidoresFragment.class;
+            fragmentClass = SeguirFragment.class;
         }
         else if (id == R.id.nav_simular) {
             fragmentClass = SimularFragment.class;

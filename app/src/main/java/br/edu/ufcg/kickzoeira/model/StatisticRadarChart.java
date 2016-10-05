@@ -92,12 +92,14 @@ public class StatisticRadarChart {
     }
 
     private void update_data(){
-        this.values_data[0] = ((float)this.posicionamento*100)/(this.total_avaliations*5);
-        this.values_data[1] = ((float)this.toque*100)/(this.total_avaliations*5);
-        this.values_data[2] = ((float)this.dominio*100)/(this.total_avaliations*5);
-        this.values_data[3] = ((float)this.drible*100)/(this.total_avaliations*5);
-        this.values_data[4] = ((float)this.defesa*100)/(this.total_avaliations*5);
-        this.values_data[5] = ((float)this.ataque*100)/(this.total_avaliations*5);
+        int ta=this.total_avaliations;
+        if(ta==0)ta = 1;
+        this.values_data[0] = ((float)this.posicionamento*100)/(ta*5);
+        this.values_data[1] = ((float)this.toque*100)/(ta*5);
+        this.values_data[2] = ((float)this.dominio*100)/(ta*5);
+        this.values_data[3] = ((float)this.drible*100)/(ta*5);
+        this.values_data[4] = ((float)this.defesa*100)/(ta*5);
+        this.values_data[5] = ((float)this.ataque*100)/(ta*5);
         this.addData();
     }
 
@@ -119,7 +121,6 @@ public class StatisticRadarChart {
 
         for (int i = 0; i < this.labels.length; i++) {
             labels2.add(this.labels[i]);
-            Log.d("labels",labels2.get(i));
         }
 
 
@@ -127,7 +128,7 @@ public class StatisticRadarChart {
 
         data.addDataSet(data_set);
         data.setLabels(labels2);
-        data.setValueTextSize(9f);
+        data.setValueTextSize(10f);
 
         this.radar_chart.setData(data);
         this.radar_chart.setDescription("");

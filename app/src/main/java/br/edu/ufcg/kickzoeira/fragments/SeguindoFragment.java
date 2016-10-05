@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -54,6 +55,8 @@ public class SeguindoFragment extends Fragment {
     private List<KickZoeiraUser> users;
     private DatabaseReference mDatabase;
 
+    private static KickZoeiraMainActivity main_act;
+
     public SeguindoFragment() {
         // Required empty public constructor
     }
@@ -98,6 +101,8 @@ public class SeguindoFragment extends Fragment {
             }
         });
 
+        main_act = (KickZoeiraMainActivity) getActivity();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(
                 new ValueEventListener() {
@@ -124,7 +129,7 @@ public class SeguindoFragment extends Fragment {
                                         usersToShow.add(usr);
                                     }
                                 }
-                                arrayAdapter = new SeguindoAdapter(usersToShow);
+                                arrayAdapter = new SeguindoAdapter(usersToShow, main_act.getApplicationContext());
                                 recyclerView.setAdapter(arrayAdapter);
                                 return true;
                             }
@@ -158,6 +163,8 @@ public class SeguindoFragment extends Fragment {
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        main_act = (KickZoeiraMainActivity) getActivity();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -170,7 +177,7 @@ public class SeguindoFragment extends Fragment {
                             String[] temp = info.split("\\|");
                             users.add(new KickZoeiraUser(temp[0],temp[1],temp[2],null));
                         }
-                        arrayAdapter = new SeguindoAdapter(users);
+                        arrayAdapter = new SeguindoAdapter(users, main_act.getApplicationContext());
                         recyclerView.setAdapter(arrayAdapter);
                     }
 
@@ -186,6 +193,18 @@ public class SeguindoFragment extends Fragment {
 
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
         ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
+
+        ((KickZoeiraMainActivity)getContext()).actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        ((KickZoeiraMainActivity)getActivity()).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        ((KickZoeiraMainActivity)getActivity()).actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((KickZoeiraMainActivity)getContext()).actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+                ((KickZoeiraMainActivity)getActivity()).drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                main_act.onBackPressed();
+            }
+        });
+
 
         return rootView;
     }
@@ -212,6 +231,8 @@ public class SeguindoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        main_act.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        main_act.actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
     }
 
     /**
