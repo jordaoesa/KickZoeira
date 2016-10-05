@@ -52,7 +52,11 @@ public class StatisticCompareRadarChart {
         this.me = me;
         this.other = other;
 
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+me.getEmail());
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+other.getEmail());
+
         List<Integer> votes_count  = me.getRadar_data();
+        System.out.println(votes_count.get(6));
         this.posicionamento = votes_count.get(0);
         this.toque = votes_count.get(1);
         this.dominio = votes_count.get(2);
@@ -62,19 +66,19 @@ public class StatisticCompareRadarChart {
         this.total_avaliations = votes_count.get(6);
 
         List<Integer> votes_count2 = other.getRadar_data();
-        this.posicionamento = votes_count2.get(0);
-        this.toque = votes_count2.get(1);
-        this.dominio = votes_count2.get(2);
-        this.drible = votes_count2.get(3);
-        this.defesa = votes_count2.get(4);
-        this.ataque = votes_count2.get(5);
-        this.total_avaliations = votes_count2.get(6);
+        this.posicionamento2 = votes_count2.get(0);
+        this.toque2 = votes_count2.get(1);
+        this.dominio2 = votes_count2.get(2);
+        this.drible2 = votes_count2.get(3);
+        this.defesa2 = votes_count2.get(4);
+        this.ataque2 = votes_count2.get(5);
+        this.total_avaliations2 = votes_count2.get(6);
 
 
 
         this.update_data();
 
-        this.addData();
+//        this.addData();
 
     }
 
@@ -102,20 +106,26 @@ public class StatisticCompareRadarChart {
 
     }
 
-    private void update_data(){
-        this.values_data[0] = this.posicionamento/this.total_avaliations;
-        this.values_data[1] = this.toque/this.total_avaliations;
-        this.values_data[2] = this.dominio/this.total_avaliations;
-        this.values_data[3] = this.drible/this.total_avaliations;
-        this.values_data[4] = this.defesa/this.total_avaliations;
-        this.values_data[5] = this.ataque/this.total_avaliations;
+    public void update_data(){
+        int ta=this.total_avaliations;
+        int ta2=this.total_avaliations2;
+        if(ta==0)ta = 1;
+        if(ta2==0)ta2 = 1;
+        this.values_data[0] = ((float)this.posicionamento*100)/(ta*5);
+        this.values_data[1] = ((float)this.toque*100)/(ta*5);
+        this.values_data[2] = ((float)this.dominio*100)/(ta*5);
+        this.values_data[3] = ((float)this.drible*100)/(ta*5);
+        this.values_data[4] = ((float)this.defesa*100)/(ta*5);
+        this.values_data[5] = ((float)this.ataque*100)/(ta*5);
 
-        this.values_data2[0] = this.posicionamento2/this.total_avaliations2;
-        this.values_data2[1] = this.toque2/this.total_avaliations2;
-        this.values_data2[2] = this.dominio2/this.total_avaliations2;
-        this.values_data2[3] = this.drible2/this.total_avaliations2;
-        this.values_data2[4] = this.defesa2/this.total_avaliations2;
-        this.values_data2[5] = this.ataque2/this.total_avaliations2;
+
+        this.values_data2[0] = ((float)this.posicionamento2*100)/(ta2*5);
+        this.values_data2[1] = ((float)this.toque2*100)/(ta2*5);
+        this.values_data2[2] = ((float)this.dominio2*100)/(ta2*5);
+        this.values_data2[3] = ((float)this.drible2*100)/(ta2*5);
+        this.values_data2[4] = ((float)this.defesa2*100)/(ta2*5);
+        this.values_data2[5] = ((float)this.ataque2*100)/(ta2*5);
+
 
         this.addData();
     }
@@ -125,25 +135,27 @@ public class StatisticCompareRadarChart {
         ArrayList<RadarEntry> entries2 = new ArrayList<>();
 
         for (int i = 0; i < this.values_data.length; i++) {
-            entries.add(new RadarEntry(this.values_data[i],this.values_data[i]));
-            entries2.add(new RadarEntry(this.values_data2[i],this.values_data2[i]));
+            entries.add(new RadarEntry(this.values_data[i]));
+            entries2.add(new RadarEntry(this.values_data2[i]));
         }
 
         RadarDataSet data_set = new RadarDataSet(entries, "Minha Eficácia");
         RadarDataSet data_set2 = new RadarDataSet(entries2, "Eficácia do Zoado");
 
-        data_set.setColor(Color.rgb(0,77,64));
+        data_set.setColor(Color.rgb(100,255,218));
         data_set.setValueTextColor(Color.BLACK);
         data_set.setFillColor(Color.rgb(100,255,218));
-        data_set.setFillAlpha(150);
+        data_set.setFillAlpha(100);
         data_set.setDrawFilled(true);
 
-
-        data_set2.setColor(Color.rgb(0,77,64));
+        data_set2.setColor(Color.rgb(229,57,53));
         data_set2.setValueTextColor(Color.BLACK);
         data_set2.setFillColor(Color.rgb(229,57,53));
-        data_set2.setFillAlpha(150);
+        data_set2.setFillAlpha(100);
         data_set2.setDrawFilled(true);
+
+        data_set.setLabel("ZOADO");
+        data_set2.setLabel("EU");
 
         ArrayList<String> labels = new ArrayList<>();
         ArrayList<String> labels2 = new ArrayList<>();
@@ -159,7 +171,7 @@ public class StatisticCompareRadarChart {
         data.addDataSet(data_set);
         data.addDataSet(data_set2);
         data.setLabels(labels2);
-        data.setValueTextSize(9f);
+        data.setValueTextSize(10f);
 
 
         this.radar_chart.setData(data);
@@ -192,10 +204,9 @@ public class StatisticCompareRadarChart {
 
             @Override
             public int getDecimalDigits() {
-                return 0;
+                return 2;
             }
         });
-
 
 
 
@@ -204,7 +215,7 @@ public class StatisticCompareRadarChart {
 
         YAxis yAxis = this.radar_chart.getYAxis();
         yAxis.setLabelCount(5, false);
-        yAxis.setTextSize(9f);
+        yAxis.setTextSize(12f);
         yAxis.setAxisMinValue(0f);
         yAxis.setAxisMaxValue(80f);
         yAxis.setDrawLabels(false);
@@ -220,7 +231,6 @@ public class StatisticCompareRadarChart {
 
 
         this.radar_chart.invalidate();
-
 
     }
 

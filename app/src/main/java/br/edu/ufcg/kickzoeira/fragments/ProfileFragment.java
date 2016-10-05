@@ -18,7 +18,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -47,8 +46,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,16 +55,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayOutputStream;
 
 import br.edu.ufcg.kickzoeira.R;
 import br.edu.ufcg.kickzoeira.activities.KickZoeiraMainActivity;
-import br.edu.ufcg.kickzoeira.adapters.SeguidoresAdapter;
-import br.edu.ufcg.kickzoeira.adapters.SeguindoAdapter;
 import br.edu.ufcg.kickzoeira.model.KickZoeiraUser;
 import br.edu.ufcg.kickzoeira.model.PerfilStatistic;
+import br.edu.ufcg.kickzoeira.model.StatisticCompareRadarChart;
 import br.edu.ufcg.kickzoeira.utilities.GlobalStorage;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -88,6 +82,7 @@ public class ProfileFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private KickZoeiraUser global_user_logado;
     private PieChart pie_chart;
     private RadarChart radar_chart;
     private Activity main_act;
@@ -96,10 +91,13 @@ public class ProfileFragment extends Fragment {
     private ProgressBar progress_bar_apelido;
     private Button seguindo;
     private Button seguidores;
+    private Button btn_comparar;
     private TextView tvSeguindo;
     private TextView tvSeguidores;
     private ProgressBar progressSeguindo;
     private ProgressBar progressSeguidores;
+
+    private boolean comparing = false;
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -155,6 +153,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_perfil, container, false);
+        btn_comparar = (Button) rootView.findViewById(R.id.btn_compare);
 
         if(isOnlyShow) {
             currentUser = observableUser;
@@ -163,14 +162,17 @@ public class ProfileFragment extends Fragment {
         else if (observableUser != null){
             currentUser = observableUser;
             ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.VISIBLE);
+            btn_comparar.setVisibility(View.VISIBLE);
         }
         else{
             currentUser = new KickZoeiraUser(FirebaseAuth.getInstance().getCurrentUser());
             ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
+            btn_comparar.setVisibility(View.GONE);
         }
 
         if(currentUser == null){
             currentUser = new KickZoeiraUser(FirebaseAuth.getInstance().getCurrentUser());
+
         }
 
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
@@ -192,6 +194,7 @@ public class ProfileFragment extends Fragment {
 
         seguindo = (Button) rootView.findViewById(R.id.btn_seguindo);
         seguidores = (Button) rootView.findViewById(R.id.btn_seguidores);
+
         tvSeguindo = (TextView) rootView.findViewById(R.id.textView1);
         tvSeguidores = (TextView) rootView.findViewById(R.id.textView2);
 
@@ -199,6 +202,7 @@ public class ProfileFragment extends Fragment {
         progressSeguidores = (ProgressBar) rootView.findViewById(R.id.progress_seguidores);
         progressSeguindo.setVisibility(View.VISIBLE);
         progressSeguidores.setVisibility(View.VISIBLE);
+
 
 
         final ProfileFragment frag = this;
@@ -272,6 +276,8 @@ public class ProfileFragment extends Fragment {
 
                         final PerfilStatistic perfil_statistic = new PerfilStatistic(main_act,pie_chart, radar_chart, user);
 
+
+
                         ((KickZoeiraMainActivity)main_act).fabSacanear.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -281,6 +287,9 @@ public class ProfileFragment extends Fragment {
                                 dialog.show();
 
                                 Button btn_confirm_zoacao = (Button) dialog.findViewById(R.id.button_confirm_zoar);
+
+
+
                                 btn_confirm_zoacao.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -331,6 +340,30 @@ public class ProfileFragment extends Fragment {
 
                             }
                         });
+                        comparing = false;
+                        FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                final KickZoeiraUser user_logado = dataSnapshot.getValue(KickZoeiraUser.class);
+                                global_user_logado = user_logado;
+                                btn_comparar.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        StatisticCompareRadarChart compare_radar_chart = new StatisticCompareRadarChart(radar_chart,user,user_logado);
+                                        compare_radar_chart.update_data();
+                                        comparing = true;
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
 
 
                     }
@@ -347,16 +380,22 @@ public class ProfileFragment extends Fragment {
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RelativeLayout rl1 = (RelativeLayout) rootView.findViewById(R.id.rl_info_user1);;
-                RelativeLayout rl2 = (RelativeLayout) rootView.findViewById(R.id.rl_info_user2);;
+                RelativeLayout rl1 = (RelativeLayout) rootView.findViewById(R.id.rl_info_user1);
+                RelativeLayout rl2 = (RelativeLayout) rootView.findViewById(R.id.rl_info_user2);
+                RelativeLayout rz = (RelativeLayout) rootView.findViewById(R.id.rl_info_zoado);
+
                 rl1.setVisibility(View.VISIBLE);
                 rl2.setVisibility(View.VISIBLE);
+                if(comparing)rz.setVisibility(View.VISIBLE);
 
                 ((ImageView)rootView.findViewById(R.id.pic_profile1)).setImageBitmap(GlobalStorage.profilePictures.get(currentUser.getId()));
                 ((TextView)rootView.findViewById(R.id.text_profile_name1)).setText((currentUser.getApelido() != null ? currentUser.getApelido() : "Zoeiro"));
 
                 ((ImageView)rootView.findViewById(R.id.pic_profile2)).setImageBitmap(GlobalStorage.profilePictures.get(currentUser.getId()));
                 ((TextView)rootView.findViewById(R.id.text_profile_name2)).setText((currentUser.getApelido() != null ? currentUser.getApelido() : "Zoeiro"));
+
+                ((ImageView)rootView.findViewById(R.id.pic_profile_zoado)).setImageBitmap(GlobalStorage.profilePictures.get(global_user_logado.getId()));
+                ((TextView)rootView.findViewById(R.id.text_profile_name_zoado)).setText((global_user_logado.getApelido() != null ? global_user_logado.getApelido() : "Zoeiro"));
 
 
                 View fbShareDeficiencia = rootView.findViewById(R.id.fb_share_deficiencia);
@@ -380,6 +419,7 @@ public class ProfileFragment extends Fragment {
                 ShareDialog.show(getActivity(), content);
                 rl1.setVisibility(View.GONE);
                 rl2.setVisibility(View.GONE);
+                rz.setVisibility(View.GONE);
                 fbShareDeficiencia.setBackgroundColor(Color.TRANSPARENT);
                 fbShareHumilhacao.setBackgroundColor(Color.TRANSPARENT);
             }

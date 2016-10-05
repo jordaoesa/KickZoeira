@@ -121,7 +121,6 @@ public class StatisticRadarChart {
 
         for (int i = 0; i < this.labels.length; i++) {
             labels2.add(this.labels[i]);
-            Log.d("labels",labels2.get(i));
         }
 
 
@@ -129,7 +128,7 @@ public class StatisticRadarChart {
 
         data.addDataSet(data_set);
         data.setLabels(labels2);
-        data.setValueTextSize(9f);
+        data.setValueTextSize(10f);
 
         this.radar_chart.setData(data);
         this.radar_chart.setDescription("");

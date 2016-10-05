@@ -29,6 +29,22 @@ public class KickZoeiraUser {
         this.email = email;
         this.apelido = apelido;
         this.photoUrl = photoUrl;
+
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+        this.pie_data.add(0);
+
+        this.radar_data.add(1);
+        this.radar_data.add(2);
+        this.radar_data.add(3);
+        this.radar_data.add(4);
+        this.radar_data.add(5);
+        this.radar_data.add(6);
+        this.radar_data.add(2);
     }
 
     public KickZoeiraUser(){
