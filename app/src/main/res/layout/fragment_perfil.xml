@@ -307,7 +307,8 @@
                                 android:orientation="vertical"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:visibility="invisible">
+                                android:visibility="invisible"
+                                android:layout_weight="0">
 
                                 <de.hdodenhof.circleimageview.CircleImageView
                                     android:layout_width="100dp"
@@ -336,8 +337,10 @@
                             </RelativeLayout>
 
                             <android.support.v4.widget.Space
-                                android:layout_width="150dp"
-                                android:layout_height="100dp" />
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_weight="1"/>
+
 
                             <RelativeLayout
                                 android:id="@+id/rl_info_zoado"
