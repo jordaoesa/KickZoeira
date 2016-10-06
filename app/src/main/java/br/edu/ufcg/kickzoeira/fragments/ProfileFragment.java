@@ -570,12 +570,31 @@ public class ProfileFragment extends Fragment {
                 FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(currentUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        KickZoeiraUser user_kick = (KickZoeiraUser) dataSnapshot.getValue(KickZoeiraUser.class);
+                        final KickZoeiraUser user_kick = dataSnapshot.getValue(KickZoeiraUser.class);
                         user_kick.setApelido(apelido_user);
                         mDatabase.child("kickzoeirauser").child(user_kick.getId()).setValue(user_kick).addOnCompleteListener(new OnCompleteListener() {
                             @Override
                             public void onComplete(@NonNull Task task) {
                                 KickZoeiraMainActivity.setupHeader();
+
+                                for(String str : user_kick.getSeguidores()){
+                                    String[] split = str.split("\\|");
+                                    String uid = split[0];
+                                    FirebaseDatabase.getInstance().getReference().child("kickzoeirauser").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            KickZoeiraUser seguindo = dataSnapshot.getValue(KickZoeiraUser.class);
+                                            seguindo = seguindo.updateListaSeguindo(user_kick);
+                                            mDatabase.child("kickzoeirauser").child(seguindo.getId()).setValue(seguindo);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+
                                 progressDialog.dismiss();
                             }
                         }).addOnFailureListener(new OnFailureListener() {

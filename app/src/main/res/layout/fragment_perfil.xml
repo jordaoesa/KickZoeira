@@ -68,7 +68,7 @@
                     <TextView
                         android:layout_below="@+id/frame_profile"
                         android:id="@+id/text_profile_description"
-                        android:hint="Descrição"
+                        android:hint="Zoeiro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"

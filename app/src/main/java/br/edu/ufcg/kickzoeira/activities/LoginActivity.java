@@ -187,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             focusView.requestFocus();
         } else {
 
-            progressDialog.setMessage("Logando User");
+            progressDialog.setMessage("Entrando ...");
             progressDialog.show();
             progressDialog.setCancelable(false);
 
@@ -255,7 +255,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                             } else {
 
                                 progressDialog.dismiss();
-                                Toast.makeText(LoginActivity.this, "Logado com successo.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Login realizado.", Toast.LENGTH_SHORT).show();
                                 Intent it = new Intent(getApplicationContext(), KickZoeiraMainActivity.class);
                                 startActivity(it);
                             }

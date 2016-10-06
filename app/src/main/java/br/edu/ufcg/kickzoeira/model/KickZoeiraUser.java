@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -156,20 +157,32 @@ public class KickZoeiraUser {
     public void setRadar_data(List<Integer> new_radar_data){this.radar_data = new_radar_data;}
 
 
-    public void addSeguidor(String userId){
-        this.seguidores.add(userId);
+    public void addSeguidor(String user){
+        this.seguidores.add(user);
     }
     public void removeSeguidor(String userId){
         this.seguidores.remove(userId);
     }
-    public void addSeguindo(String userId){
-        this.seguindo.add(userId);
+    public void addSeguindo(String user){
+        this.seguindo.add(user);
     }
     public void removeSeguind(String userId){
         this.seguindo.remove(userId);
     }
 
 
+    public KickZoeiraUser updateListaSeguindo(KickZoeiraUser user_kick) {
+        List<String> copy = new ArrayList<>();
+        for(String user : seguindo)
+            copy.add(user);
 
-
+        for(int i = 0; i < copy.size(); i++){
+            if(copy.get(i).contains(user_kick.getId())){
+                seguindo.remove(i);
+                seguindo.add(user_kick.getId() + "|" + user_kick.getEmail() + "|" + user_kick.getApelido());
+                break;
+            }
+        }
+        return this;
+    }
 }
