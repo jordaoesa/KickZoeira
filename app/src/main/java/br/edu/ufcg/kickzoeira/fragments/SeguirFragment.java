@@ -283,7 +283,7 @@ public class SeguirFragment extends Fragment {
                 });
 
         ((KickZoeiraMainActivity)getActivity()).appBarLayout.setExpanded(true);
-        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguindo Zoeiros");
+        ((KickZoeiraMainActivity)getActivity()).collapsingToolbar.setTitle("Seguir Zoeiros");
 
         ((KickZoeiraMainActivity)getContext()).fabFacebookShare.setVisibility(View.GONE);
         ((KickZoeiraMainActivity)getContext()).fabSacanear.setVisibility(View.GONE);
